@@ -1336,12 +1336,18 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
       const { paymentId } = req.params;
       const payment = getPaymentById(paymentId);
       if (!payment || !payment.receipt_path) {
-        return res.status(404).send('Receipt not found');
+        return sendReceiptUnavailableSvg(res, 'Qəbz Tapılmadı');
       }
 
       const receiptPath = payment.receipt_path.trim();
 
-      // 1. Yerli fayl yükləməsidirsə: /uploads/...
+      // 1. Yerli keşlənmiş və ya yerli fayl yükləməsidirsə
+      const localCachedName = `receipt_${paymentId}.jpg`;
+      const localCachedPath = path.resolve(config.paths.uploadsDir, localCachedName);
+      if (fs.existsSync(localCachedPath)) {
+        return res.sendFile(localCachedPath);
+      }
+
       if (receiptPath.startsWith('/uploads/') || receiptPath.startsWith('uploads/')) {
         const fileName = path.basename(receiptPath);
         const absUploadsPath = path.resolve(config.paths.uploadsDir, fileName);
@@ -1369,23 +1375,45 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
             const fetchRes = await fetch(directUrl);
             if (fetchRes.ok) {
               const contentType = fetchRes.headers.get('content-type') || 'image/jpeg';
+              const arrayBuf = await fetchRes.arrayBuffer();
+              const buf = Buffer.from(arrayBuf);
+
+              // Gələcək sorğular üçün yerli diske yaz
+              try {
+                if (!fs.existsSync(config.paths.uploadsDir)) {
+                  fs.mkdirSync(config.paths.uploadsDir, { recursive: true });
+                }
+                fs.writeFileSync(localCachedPath, buf);
+              } catch (writeErr) {}
+
               res.setHeader('Content-Type', contentType);
               res.setHeader('Cache-Control', 'public, max-age=86400');
-              const arrayBuf = await fetchRes.arrayBuffer();
-              return res.send(Buffer.from(arrayBuf));
+              return res.send(buf);
             }
           }
         } catch (botErr: any) {
-          console.error(`Telegram getFile xətası (${receiptPath}):`, botErr.message);
+          // Telegram file_id vaxtı keçib və ya əvvəlki bot tokeni ilə yüklənib
         }
       }
 
-      return res.status(404).send('Unable to resolve receipt file');
+      return sendReceiptUnavailableSvg(res, 'Qəbz Şəkli Əlçatan Deyil');
     } catch (err: any) {
-      console.error('Receipt image error:', err.message);
-      return res.status(500).send('Receipt image load error');
+      return sendReceiptUnavailableSvg(res, 'Xəta Baş Verdi');
     }
   });
+
+  function sendReceiptUnavailableSvg(res: any, msg: string) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+      <rect width="100%" height="100%" fill="#0f172a" rx="8"/>
+      <rect x="10" y="10" width="280" height="180" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5" stroke-dasharray="4"/>
+      <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-size="28">🧾</text>
+      <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="12" font-weight="bold">${msg}</text>
+      <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" fill="#475569" font-family="sans-serif" font-size="10">Telegram faylı arxivləşdirilib</text>
+    </svg>`;
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    return res.send(svg);
+  }
 
   // Ödənişi təsdiqlə
   app.post('/api/admin/payments/approve', requireAdminAuth, async (req, res) => {
