@@ -13,8 +13,7 @@ export function makeBtn(
   callbackData: string,
   customEmojiId?: string | null,
   style?: 'primary' | 'success' | 'danger',
-  fallbackIcon?: string,
-  forceTextIcon = false  // if true, ALSO include unicode emoji in text alongside customEmojiId (for mobile)
+  fallbackIcon?: string
 ) {
   // Bütün HTML teqlərini təmizlə (Telegram düymə mətni HTML dəstəkləmir!)
   let cleanText = text.replace(/<[^>]*>/g, '').trim();
@@ -22,7 +21,7 @@ export function makeBtn(
   const rawNoHtml = text.replace(/<[^>]*>/g, '').trim();
   const icon = fallbackIcon || rawNoHtml.match(/^(?:[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{E000}-\u{F8FF}\uFE0F\u200D]|\p{Extended_Pictographic})+/gu)?.[0] || '';
 
-  // Mətnin əvvəlindəki emojini təmizlə
+  // Mətnin əvvəlindəki unicode emojiləri təmizlə
   cleanText = cleanText.replace(/^(?:[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{E000}-\u{F8FF}\uFE0F\u200D]|\p{Extended_Pictographic})+\s*/gu, '').trim() || cleanText;
 
   const btn: any = { callback_data: callbackData };
@@ -30,12 +29,11 @@ export function makeBtn(
   const isValidNumericEmojiId = Boolean(customEmojiId && /^\d{10,24}$/.test(customEmojiId.trim()));
 
   if (isValidNumericEmojiId) {
-    // Masaüstü: icon_custom_emoji_id vasitəsilə premium animasiyalı emoji
+    // Xüsusi premium animasiyalı emoji aktivdir: mətndə ikinci emoji göstərilmir
     btn.icon_custom_emoji_id = customEmojiId!.trim();
-    // forceTextIcon=true → mobil (iOS/Nicegram) görə bilsin deyə unicode emojini də mətnə əlavə et
-    btn.text = (forceTextIcon && icon) ? `${icon} ${cleanText}` : cleanText;
+    btn.text = cleanText;
   } else {
-    // Xüsusi emoji yoxdur: birbaşa mətndə unicode emoji (bütün cihazlarda işləyir)
+    // Xüsusi emoji yoxdur: birbaşa mətndə standart unicode emoji göstərilir
     btn.text = icon ? `${icon} ${cleanText}` : cleanText;
   }
 
@@ -49,8 +47,7 @@ export function makeUrlBtn(
   text: string,
   url: string,
   customEmojiId?: string | null,
-  fallbackIcon?: string,
-  forceTextIcon = true
+  fallbackIcon?: string
 ) {
   let cleanText = text.replace(/<[^>]*>/g, '').trim();
   const rawNoHtml = text.replace(/<[^>]*>/g, '').trim();
@@ -62,7 +59,7 @@ export function makeUrlBtn(
 
   if (isValidNumericEmojiId) {
     btn.icon_custom_emoji_id = customEmojiId!.trim();
-    btn.text = (forceTextIcon && icon) ? `${icon} ${cleanText}` : cleanText;
+    btn.text = cleanText;
   } else {
     btn.text = icon ? `${icon} ${cleanText}` : cleanText;
   }
@@ -371,7 +368,7 @@ export function getOffersKeyboard(categoryId: string, offers: FazerOffer[], page
     if (isOutOfStock) {
       const outEmojiId = getCustomEmojiId('EPIN_STOCK_OUT') || '5399849634350768407';
       const outText = t.outOfStock || '[Stokda Yoxdur]';
-      rows.push([makeBtn(`${off.name} — ${priceDisplay} ${outText}`, 'noop_out_of_stock', outEmojiId, undefined, '🔴', true)]);
+      rows.push([makeBtn(`${off.name} — ${priceDisplay} ${outText}`, 'noop_out_of_stock', outEmojiId, undefined, '🔴')]);
       continue;
     }
 
@@ -379,12 +376,10 @@ export function getOffersKeyboard(categoryId: string, offers: FazerOffer[], page
     let labelSuffix = '';
     let itemEmojiId = customEmojiId;
     let fallbackIcon = icon;
-    let forceIcon = false;
 
     if (isEpin) {
       itemEmojiId = getCustomEmojiId('EPIN_STOCK_IN') || '5852871561983299073';
       fallbackIcon = '🟢';
-      forceIcon = true; // 🟢 must always be visible (mobile + desktop)
     }
 
     if (isWebPurchase) {
@@ -395,7 +390,7 @@ export function getOffersKeyboard(categoryId: string, offers: FazerOffer[], page
       labelSuffix = ` ${lastStockTpl.replace('{stock}', stock.toString())}`;
     }
 
-    rows.push([makeBtn(`${off.name} — ${priceDisplay}${labelSuffix}`, `off:${categoryId}:${off.offer_id}`, itemEmojiId, undefined, fallbackIcon, forceIcon)]);
+    rows.push([makeBtn(`${off.name} — ${priceDisplay}${labelSuffix}`, `off:${categoryId}:${off.offer_id}`, itemEmojiId, undefined, fallbackIcon)]);
   }
 
   const navRow: any[] = [];

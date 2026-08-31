@@ -1713,8 +1713,8 @@ export function createBot(): Bot {
 
       const devKeyboard = {
         inline_keyboard: [
-          [makeUrlBtn('WhatsApp: +994 77 211 70 11', 'https://wa.me/994772117011', getCustomEmojiId('WHATSAPP_SUPPORT') || '5271536803482981220', '💬', true)],
-          [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡', true)],
+          [makeUrlBtn('WhatsApp: +994 77 211 70 11', 'https://wa.me/994772117011', getCustomEmojiId('WHATSAPP_SUPPORT') || '5271536803482981220', '💬')],
+          [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
         ]
       };
 
@@ -1731,8 +1731,8 @@ export function createBot(): Bot {
 
       const storeKeyboard = {
         inline_keyboard: [
-          [makeUrlBtn('🛒 Bota Keç və Sifariş Et', `https://t.me/${config.botUsername || 'rentazbot'}`, getCustomEmojiId('GAMES_CATALOG') || '6104654892905796078', '🎮', true)],
-          [makeUrlBtn('⚡ Canlı Əlaqə: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡', true)],
+          [makeUrlBtn('🛒 Bota Keç və Sifariş Et', `https://t.me/${config.botUsername || 'rentazbot'}`, getCustomEmojiId('GAMES_CATALOG') || '6104654892905796078', '🎮')],
+          [makeUrlBtn('⚡ Canlı Əlaqə: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
         ]
       };
 

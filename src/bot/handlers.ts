@@ -742,9 +742,9 @@ export async function renderInfoCommand(ctx: Context, isCallback = false) {
 
   const keyboard = {
     inline_keyboard: [
-      [makeUrlBtn('WhatsApp: +994 77 211 70 11', 'https://wa.me/994772117011', getCustomEmojiId('WHATSAPP_SUPPORT') || '5271536803482981220', '💬', true)],
-      [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡', true)],
-      [makeBtn('Əsas Menyu / Back to Store', 'menu_main', getCustomEmojiId('MAIN_MENU_HEADER') || '5217822164362739968', undefined, '🏠', true)],
+      [makeUrlBtn('WhatsApp: +994 77 211 70 11', 'https://wa.me/994772117011', getCustomEmojiId('WHATSAPP_SUPPORT') || '5271536803482981220', '💬')],
+      [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
+      [makeBtn('Əsas Menyu / Back to Store', 'menu_main', getCustomEmojiId('MAIN_MENU_HEADER') || '5217822164362739968', undefined, '🏠')],
     ]
   };
 
