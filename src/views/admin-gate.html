@@ -2,26 +2,30 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Winners Shop — Təhlükəsiz Admin Girişi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Winners Shop — Admin Girişi</title>
   <link rel="icon" type="image/jpeg" href="/images/winnerslogo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #030712;
-      --card-surface: rgba(11, 19, 38, 0.72);
-      --card-border: rgba(56, 189, 248, 0.22);
-      --card-border-glow: rgba(56, 189, 248, 0.45);
-      --cyan-neon: #38bdf8;
-      --blue-accent: #3b82f6;
-      --indigo-accent: #6366f1;
-      --emerald-glow: #10b981;
-      --rose-alert: #f43f5e;
+      --bg: #090d16;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-sub: #64748b;
+      --input-bg: rgba(2, 6, 23, 0.65);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --error-bg: rgba(239, 68, 68, 0.12);
+      --error-border: rgba(239, 68, 68, 0.3);
+      --error-text: #fca5a5;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.3);
+      --success-text: #6ee7b7;
     }
 
     * {
@@ -35,645 +39,312 @@
       width: 100%;
       min-height: 100%;
       min-height: 100dvh;
-      background-color: var(--bg-dark);
+      background: radial-gradient(circle at 50% 15%, #172033 0%, #090d16 75%);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text-main);
-      overflow-x: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      padding: 20px;
     }
 
-    /* Arxa Fon Kətanı (Canvas Particle) */
-    #bgCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .login-card {
       width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Radial İşıq Şüaları */
-    .ambient-glow-1 {
-      position: fixed;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(14, 165, 233, 0.16) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
-      top: 15%;
-      left: 50%;
-      transform: translate(-50%, -30%);
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(60px);
-      animation: pulseAmbient 10s ease-in-out infinite alternate;
-    }
-
-    .ambient-glow-2 {
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(129, 140, 248, 0.12) 0%, transparent 65%);
-      bottom: 5%;
-      left: 30%;
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(70px);
-      animation: floatAmbient 12s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulseAmbient {
-      0% { transform: translate(-50%, -30%) scale(0.9); opacity: 0.7; }
-      100% { transform: translate(-50%, -25%) scale(1.15); opacity: 1; }
-    }
-
-    @keyframes floatAmbient {
-      0% { transform: translateY(0) scale(0.95); }
-      100% { transform: translateY(-40px) scale(1.1); }
-    }
-
-    /* Şəbəkə Qrif Toru (Cyber Grid) */
-    .cyber-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: 0;
-      pointer-events: none;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
-      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
-    }
-
-    /* Əsas Kart Konteyneri */
-    .login-container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 450px;
-      padding: 24px;
-      margin: auto;
-      perspective: 1000px;
-    }
-
-    .glass-card {
-      background: var(--card-surface);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      max-width: 370px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 44px 38px 36px 38px;
-      box-shadow: 
-        0 30px 70px -15px rgba(0, 0, 0, 0.85),
-        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-        0 0 35px -5px rgba(14, 165, 233, 0.15);
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-      animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      border-radius: 20px;
+      padding: 32px 26px;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      text-align: center;
+      animation: fadeIn 0.3s ease-out;
     }
 
-    @keyframes cardEntrance {
-      0% {
-        opacity: 0;
-        transform: translateY(32px) scale(0.96);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* Parıltılı Yuxarı Xətt */
-    .glass-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 10%;
-      right: 10%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--cyan-neon), var(--indigo-accent), transparent);
-      opacity: 0.85;
-      filter: drop-shadow(0 0 6px var(--cyan-neon));
-    }
-
-    /* Qalxan / Tac İkonu Animasiyası */
-    .badge-wrapper {
-      position: relative;
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 22px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .badge-halo {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(99, 102, 241, 0.2));
-      filter: blur(14px);
-      animation: haloPulse 3.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes haloPulse {
-      0% { transform: scale(0.85); opacity: 0.5; }
-      100% { transform: scale(1.18); opacity: 0.9; }
-    }
-
-    .badge-box {
-      position: relative;
-      width: 74px;
-      height: 74px;
-      border-radius: 22px;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.8));
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-      transition: transform 0.3s ease;
-    }
-
-    .badge-box img {
-      width: 44px;
-      height: 44px;
-      object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Status Canlı Pill */
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--cyan-neon);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background-color: var(--emerald-glow);
-      box-shadow: 0 0 8px var(--emerald-glow);
-      animation: blinkDot 1.8s ease-in-out infinite;
-    }
-
-    @keyframes blinkDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    /* Başlıq və Mətnlər */
-    h1 {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
-      color: #ffffff;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .subtitle {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.55;
-      margin-bottom: 28px;
-      font-weight: 500;
-    }
-
-    /* Bildiriş Qutuları */
-    .alert-box {
-      display: none;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      text-align: left;
-      line-height: 1.45;
-      animation: alertSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes alertSlideIn {
-      from { opacity: 0; transform: translateY(-8px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .alert-danger {
-      background: rgba(244, 63, 94, 0.12);
-      border: 1px solid rgba(244, 63, 94, 0.35);
-      color: #fda4af;
-      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.12);
+    .logo-box {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px auto;
+      border-radius: 14px;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 24px;
+    }
+
+    .alert {
+      display: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 18px;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .alert-error {
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      color: var(--error-text);
     }
 
     .alert-success {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success-text);
     }
 
-    /* Forma Elementləri */
     .form-group {
       text-align: left;
-      margin-bottom: 22px;
-    }
-
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
     }
 
     label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 7px;
     }
 
-    .enc-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 1px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-
-    .input-wrapper {
+    .input-box {
       position: relative;
       display: flex;
       align-items: center;
-      background: rgba(3, 7, 18, 0.75);
-      border: 1.5px solid rgba(56, 189, 248, 0.25);
-      border-radius: 16px;
-      padding: 2px 4px 2px 14px;
-      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 0 10px 0 12px;
+      height: 44px;
+      transition: all 0.2s ease;
     }
 
-    .input-wrapper:focus-within {
-      border-color: var(--cyan-neon);
-      background: rgba(3, 7, 18, 0.95);
-      box-shadow: 
-        0 0 0 4px rgba(56, 189, 248, 0.18),
-        0 0 20px rgba(56, 189, 248, 0.25),
-        inset 0 2px 4px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
+    .input-box:focus-within {
+      border-color: var(--primary);
+      background: rgba(2, 6, 23, 0.9);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
     }
 
     .input-icon {
       color: var(--text-sub);
       display: flex;
       align-items: center;
-      margin-right: 10px;
-      transition: color 0.2s ease;
+      margin-right: 8px;
     }
 
-    .input-wrapper:focus-within .input-icon {
-      color: var(--cyan-neon);
+    .input-box:focus-within .input-icon {
+      color: #60a5fa;
     }
 
     input[type="password"], input[type="text"] {
-      width: 100%;
+      flex: 1;
       background: transparent;
       border: none;
       color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14.5px;
-      font-weight: 600;
-      padding: 14px 4px 14px 0;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
       outline: none;
-      letter-spacing: 1.5px;
+      padding: 0;
     }
 
     input::placeholder {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13.5px;
-      letter-spacing: 0;
       color: #475569;
-      font-weight: 500;
+      font-size: 13.5px;
     }
 
-    .btn-toggle-eye {
+    .btn-eye {
       background: transparent;
       border: none;
-      color: #64748b;
-      padding: 10px 12px;
-      cursor: pointer;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .btn-toggle-eye:hover {
-      color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    /* Giriş Düyməsi (Hi-Tech Shimmer Glow) */
-    .btn-login {
-      position: relative;
-      width: 100%;
-      background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 15px 20px;
-      border-radius: 16px;
-      font-size: 14.5px;
-      font-weight: 800;
-      letter-spacing: 0.2px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px -4px rgba(2, 132, 199, 0.45), 0 0 15px rgba(37, 99, 235, 0.3);
-      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    .btn-login::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -100%;
-      width: 60%;
-      height: 200%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-      transform: rotate(25deg);
-      animation: lightSweep 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    @keyframes lightSweep {
-      0% { left: -100%; }
-      30%, 100% { left: 200%; }
-    }
-
-    .btn-login:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px -4px rgba(2, 132, 199, 0.6), 0 0 25px rgba(56, 189, 248, 0.5);
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
-    .btn-login:active {
-      transform: translateY(1px) scale(0.985);
-      box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4);
-    }
-
-    .btn-login:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-
-    /* Bölücü Xətt */
-    .divider-row {
-      display: flex;
-      align-items: center;
-      margin: 26px 0 20px 0;
       color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 6px;
+      transition: color 0.15s;
     }
 
-    .divider-row::before, .divider-row::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.08);
+    .btn-eye:hover {
+      color: #cbd5e1;
     }
 
-    .divider-row span {
-      padding: 0 12px;
+    .btn-submit {
+      width: 100%;
+      height: 44px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      margin-top: 6px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
 
-    /* Mağazaya Qayıt Linki */
-    .btn-back-link {
+    .btn-submit:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-weight: 500;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.2s ease;
-    }
-
-    .btn-back-link:hover {
-      color: var(--cyan-neon);
-      background: rgba(56, 189, 248, 0.08);
-      border-color: rgba(56, 189, 248, 0.25);
-      transform: translateX(-3px);
-    }
-
-    /* Aşağı Sistem Məlumatları Footer */
-    .system-footer {
-      margin-top: 24px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
-      color: #475569;
-    }
-
-    .system-status {
-      display: flex;
-      align-items: center;
       gap: 6px;
+      transition: color 0.15s ease;
     }
 
-    .system-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #10b981;
+    .back-link:hover {
+      color: #cbd5e1;
     }
 
-    /* Titrəmə Animasiyası (Səhv şifrə üçün) */
-    .shake-card {
-      animation: shakeCard 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    .shake {
+      animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
 
-    @keyframes shakeCard {
-      10%, 90% { transform: translate3d(-3px, 0, 0); }
-      20%, 80% { transform: translate3d(5px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-      40%, 60% { transform: translate3d(6px, 0, 0); }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(3px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
     }
 
-    /* Mobil Uyğunluq (Responsive) */
-    @media (max-width: 480px) {
-      body {
-        padding: 16px 12px;
-      }
-      .login-container {
-        padding: 0;
-        max-width: 100%;
-      }
-      .glass-card {
-        padding: 34px 22px 28px 22px;
-        border-radius: 24px;
+    @media (max-width: 400px) {
+      .login-card {
+        padding: 26px 20px;
+        border-radius: 16px;
       }
       h1 {
-        font-size: 21px;
-      }
-      .subtitle {
-        font-size: 12.5px;
-        margin-bottom: 24px;
-      }
-      input[type="password"], input[type="text"] {
-        font-size: 14px;
-      }
-      .btn-login {
-        padding: 14px 18px;
-        font-size: 14px;
+        font-size: 19px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Arxa Fon Kətanı -->
-  <canvas id="bgCanvas"></canvas>
-  <div class="cyber-grid"></div>
-  <div class="ambient-glow-1"></div>
-  <div class="ambient-glow-2"></div>
+  <div class="login-card" id="loginCard">
+    <!-- Logo -->
+    <div class="logo-box">
+      <img src="/images/winnerslogo.jpg" alt="Winners Shop" onerror="this.src='/images/winnerslogo.jpg'">
+    </div>
 
-  <div class="login-container">
-    <div class="glass-card" id="cardElement">
-      
-      <!-- Logo & İkon -->
-      <div class="badge-wrapper">
-        <div class="badge-halo"></div>
-        <div class="badge-box">
-          <img src="/images/winnerslogo.jpg" alt="Winners Shop" onerror="this.src='/images/winnerslogo.jpg'">
-        </div>
-      </div>
+    <h1>Admin Girişi</h1>
+    <p class="subtitle">İdarəetmə panelinə daxil olmaq üçün şifrənizi daxil edin.</p>
 
-      <!-- Təhlükəsizlik Statusu -->
-      <div style="text-align: center;">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span>TLS 1.3 • ŞİFRƏLƏNMİŞ GİRİŞ</span>
-        </div>
-      </div>
+    <!-- Xəta / Uğur Bildirişi -->
+    <div id="alertBox" class="alert"></div>
 
-      <h1 style="text-align: center;">WINNERS ADMIN</h1>
-      <p class="subtitle" style="text-align: center;">Mərkəzi idarəetmə konsoluna daxil olmaq üçün təhlükəsizlik şifrənizi təsdiqləyin.</p>
-
-      <!-- Alert Mesajı -->
-      <div id="alertBox" class="alert-box"></div>
-
-      <!-- Giriş Forması -->
-      <form id="loginForm" onsubmit="handleAdminGateLogin(event)">
-        <div class="form-group">
-          <div class="label-row">
-            <label for="adminPass">İdarəçi Şifrəsi</label>
-            <span class="enc-tag">AES-256</span>
+    <!-- Giriş Forması -->
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="adminPass">Şifrə</label>
+        <div class="input-box">
+          <div class="input-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
           </div>
-          <div class="input-wrapper">
-            <div class="input-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-            </div>
-            <input 
-              type="password" 
-              id="adminPass" 
-              placeholder="Admin şifrəsini daxil edin..." 
-              autofocus 
-              required 
-              autocomplete="current-password"
-            >
-            <button 
-              type="button" 
-              class="btn-toggle-eye" 
-              id="btnToggleEye"
-              onclick="togglePasswordVisibility()" 
-              title="Şifrəni göstər/gizlə"
-            >
-              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-          </div>
+          <input 
+            type="password" 
+            id="adminPass" 
+            placeholder="Şifrəni daxil edin..." 
+            autofocus 
+            required 
+            autocomplete="current-password"
+          >
+          <button 
+            type="button" 
+            class="btn-eye" 
+            onclick="togglePassword()" 
+            title="Şifrəni göstər/gizlə"
+            tabindex="-1"
+          >
+            <svg id="eyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
         </div>
-
-        <button type="submit" id="btnSubmit" class="btn-login">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-            <polyline points="10 17 15 12 10 7"></polyline>
-            <line x1="15" y1="12" x2="3" y2="12"></line>
-          </svg>
-          <span id="btnText">Konsola Daxil Ol</span>
-        </button>
-      </form>
-
-      <div class="divider-row"><span>və ya</span></div>
-
-      <div style="text-align: center;">
-        <a href="/" class="btn-back-link">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          Əsas Mağazaya Qayıt
-        </a>
       </div>
 
-      <!-- Senior Dev Sistem Footerı -->
-      <div class="system-footer">
-        <div class="system-status">
-          <span class="system-dot"></span>
-          <span>NODE CLUSTER: ACTIVE</span>
-        </div>
-        <span>v2.4 ENTERPRISE</span>
-      </div>
+      <button type="submit" id="btnSubmit" class="btn-submit">
+        <span id="btnText">Daxil Ol</span>
+      </button>
+    </form>
 
+    <div class="footer-links">
+      <a href="/" class="back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Əsas səhifəyə qayıt
+      </a>
     </div>
   </div>
 
   <script>
-    // ---------------- PAROLUN GÖSTƏRİLMƏSİ / GİZLƏDİLMƏSİ ----------------
-    function togglePasswordVisibility() {
+    function togglePassword() {
       const input = document.getElementById('adminPass');
       const eyeIcon = document.getElementById('eyeIcon');
       if (!input) return;
@@ -693,103 +364,19 @@
       }
     }
 
-    // ---------------- 3D TİLT EFFEKTİ (DESKTOP ÜÇÜN) ----------------
-    const card = document.getElementById('cardElement');
-    if (window.innerWidth > 768 && card) {
-      document.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const cardX = rect.left + rect.width / 2;
-        const cardY = rect.top + rect.height / 2;
-        const diffX = (e.clientX - cardX) / 30;
-        const diffY = (e.clientY - cardY) / 30;
-        card.style.transform = `perspective(1000px) rotateY(${diffX}deg) rotateX(${-diffY}deg)`;
-      });
-
-      document.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
-      });
-    }
-
-    // ---------------- ARXA FON KƏTAN HİSSƏCİKLƏRİ (CANVAS PARTICLES) ----------------
-    (function initCanvasParticles() {
-      const canvas = document.getElementById('bgCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      const particles = [];
-      const particleCount = Math.min(Math.floor((width * height) / 16000), 55);
-
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 1.6 + 0.6,
-          alpha: Math.random() * 0.5 + 0.2
-        });
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, width, height);
-
-        // Hissəcikləri çək və birləşdir
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y < 0) p.y = height;
-          if (p.y > height) p.y = 0;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha})`;
-          ctx.fill();
-
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if (dist < 110) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / 110) * 0.12})`;
-              ctx.lineWidth = 0.75;
-              ctx.stroke();
-            }
-          }
-        }
-
-        requestAnimationFrame(draw);
-      }
-
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      draw();
-    })();
-
-    // ---------------- TƏHLÜKƏSİZ GİRİŞ İCRAÇISI ----------------
-    async function handleAdminGateLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       const passInput = document.getElementById('adminPass');
       const btnSubmit = document.getElementById('btnSubmit');
       const btnText = document.getElementById('btnText');
       const alertBox = document.getElementById('alertBox');
-      const cardEl = document.getElementById('cardElement');
+      const card = document.getElementById('loginCard');
       const password = passInput.value.trim();
 
       if (!password) return;
 
       btnSubmit.disabled = true;
-      btnText.innerText = 'Sistem Yoxlayır...';
+      btnText.innerText = 'Daxil olunur...';
       alertBox.style.display = 'none';
 
       try {
@@ -801,51 +388,49 @@
         const data = await res.json();
 
         if (data.ok && data.token) {
-          // Tokenləri tam sinxronizasiya ilə yaddaşa yaz
           document.cookie = 'admin_token=' + encodeURIComponent(data.token) + '; path=/; max-age=2592000; SameSite=Lax';
           localStorage.setItem('admin_token', data.token);
           localStorage.setItem('winners_admin_token', data.token);
           sessionStorage.setItem('admin_token', data.token);
           sessionStorage.setItem('winners_admin_token', data.token);
 
-          alertBox.className = 'alert-box alert-success';
-          alertBox.innerHTML = '🛡️ <b>Doğrulandı!</b> Konsol açılır, zəhmət olmasa gözləyin...';
+          alertBox.className = 'alert alert-success';
+          alertBox.innerHTML = 'Giriş uğurludur, yönləndirilirsiniz...';
           alertBox.style.display = 'block';
 
-          btnSubmit.style.background = 'linear-gradient(135deg, #059669, #10b981)';
-          btnText.innerText = 'Giriş Təsdiqləndi ✓';
+          btnSubmit.style.background = '#059669';
+          btnText.innerText = 'Uğurlu ✓';
 
           setTimeout(() => {
             window.location.href = '/admin.html';
-          }, 350);
+          }, 300);
         } else {
-          alertBox.className = 'alert-box alert-danger';
-          alertBox.innerHTML = '❌ <b>İcazə Verilmədi:</b> ' + (data.error || 'Təhlükəsizlik şifrəsi yalnışdır!');
+          alertBox.className = 'alert alert-error';
+          alertBox.innerHTML = data.error || 'Daxil edilmiş şifrə yanlışdır.';
           alertBox.style.display = 'block';
 
-          // Titrəmə animasiyası ver
-          if (cardEl) {
-            cardEl.classList.add('shake-card');
-            setTimeout(() => cardEl.classList.remove('shake-card'), 500);
+          if (card) {
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 400);
           }
 
           passInput.value = '';
           passInput.focus();
         }
       } catch (err) {
-        alertBox.className = 'alert-box alert-danger';
-        alertBox.innerHTML = '⚠️ <b>Şəbəkə Xətası:</b> Serverlə əlaqə qurula bilmədi.';
+        alertBox.className = 'alert alert-error';
+        alertBox.innerHTML = 'Şəbəkə xətası baş verdi. Zəhmət olmasa yenidən cəhd edin.';
         alertBox.style.display = 'block';
       } finally {
         btnSubmit.disabled = false;
         if (!alertBox.classList.contains('alert-success')) {
-          btnText.innerText = 'Konsola Daxil Ol';
+          btnText.innerText = 'Daxil Ol';
         }
       }
     }
 
-    // Əgər token artıq varsa -> avtomatik paneli aç
-    (async function autoVerify() {
+    // Əgər aktiv sessiya varsa dərhal aç
+    (async function checkExistingAuth() {
       const token = localStorage.getItem('admin_token') || localStorage.getItem('winners_admin_token');
       if (token) {
         try {
