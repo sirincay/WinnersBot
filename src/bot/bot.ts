@@ -1350,7 +1350,7 @@ export function createBot(): Bot {
       const pageStr = data.startsWith('games_page:') ? data.replace('games_page:', '') : data.replace('games_page_', '');
       const page = parseInt(pageStr, 10) || 0;
       const lang = getUserLanguage(ctx.from.id);
-      const kb = getGamesMenuKeyboard(page, 12, lang);
+      const kb = getGamesMenuKeyboard(page, 6, lang);
       try {
         await ctx.editMessageReplyMarkup({ reply_markup: kb });
       } catch (e) {}

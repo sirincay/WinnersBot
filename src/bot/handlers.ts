@@ -424,7 +424,7 @@ export async function renderGamesMenu(ctx: Context, isEdit = true, page = 0) {
     `${EMOJIS.LIGHTNING} <i>${cleanDesc}</i>\n\n` +
     `${EMOJIS.TARGET_ID} <i>${t.selectGameToTopup || 'Yükləmək istədiyiniz oyunu və ya xidməti seçin:'}</i>`;
 
-  const kb = getGamesMenuKeyboard(page, 12, lang);
+  const kb = getGamesMenuKeyboard(page, 6, lang);
   await sendOrEdit(ctx, text, kb, isEdit);
 }
 

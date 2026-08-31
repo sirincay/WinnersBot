@@ -124,8 +124,8 @@ export function getLanguageKeyboard(showHome = false) {
   return kb;
 }
 
-// Oyun Seçimi Menyusu - Oyunları 12 elementlik səhifələrdə göstərir (6 sətir x 2 sütun = 6 sol, 6 sağ)
-export function getGamesMenuKeyboard(page = 0, limit = 12, lang: SupportedLanguage = 'az') {
+// Oyun Seçimi Menyusu - Oyunları 6 elementlik səhifələrdə göstərir (3 sətir x 2 sütun = 3 sol, 3 sağ)
+export function getGamesMenuKeyboard(page = 0, limit = 6, lang: SupportedLanguage = 'az') {
   const t = translations[lang] || translations.az;
   const kb = new InlineKeyboard();
   const rows: any[][] = [];
