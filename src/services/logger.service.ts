@@ -99,7 +99,7 @@ class LoggerService {
   }
 
   /**
-    * Təhlükəsizlik xəbərdarlıqları göndər: brute force şifrə cəhdləri, DDoS / Rate-Limit yığılmaları, IP Qadağaları, API sui-istifadə, Honeypotlar
+   * Təhlükəsizlik xəbərdarlıqları göndər: brute force şifrə cəhdləri, DDoS / Rate-Limit yığılmaları, IP Qadağaları, API sui-istifadə, Honeypotlar, İcazəsiz Admin Cəhdləri
    */
   async sendSecurityAlert(type: SecurityAlertType, data: {
     ip: string;
@@ -109,13 +109,20 @@ class LoggerService {
     count?: number;
     details?: any;
     actionTaken?: string;
+    user?: {
+      telegramId?: string | number;
+      username?: string | null;
+      firstName?: string | null;
+      balance?: number;
+    } | null;
   }) {
     if (!this.bot) return;
     const target = this.getLogTarget();
     if (!target) return;
 
     // IP və növ üzrə dublikat açarı (eyni IP-dən eyni hücum üçün hər 30 saniyədə maks 1 xəbərdarlıq)
-    const dedupKey = `${type}:${data.ip}:${data.endpoint || ''}`;
+    const userIdentifier = data.user?.telegramId ? `u:${data.user.telegramId}` : `ip:${data.ip}`;
+    const dedupKey = `${type}:${userIdentifier}:${data.endpoint || ''}`;
     const now = Date.now();
     const lastTime = this.recentSecurityAlertTimes.get(dedupKey) || 0;
     if (now - lastTime < 30 * 1000) {
@@ -174,9 +181,29 @@ class LoggerService {
       extraDetails = `\n🔍 <b>Detallar:</b> <code>${escapeTgHtml(typeof data.details === 'object' ? JSON.stringify(data.details).slice(0, 300) : String(data.details))}</code>\n`;
     }
 
+    let userSection = '';
+    if (data.user && (data.user.telegramId || data.user.username || data.user.firstName)) {
+      const tgIdStr = data.user.telegramId ? String(data.user.telegramId) : 'Bilinmir';
+      const uName = data.user.username ? `@${data.user.username.replace(/^@/, '')}` : '<i>Yoxdur</i>';
+      const fName = data.user.firstName ? escapeTgHtml(data.user.firstName) : '<i>Ad qeyd edilməyib</i>';
+      const balStr = data.user.balance !== undefined ? `${data.user.balance.toFixed(2)} AZN` : null;
+
+      userSection =
+        `👤 <b>İstifadəçi Hesabı (Saytda Login Olmuş):</b>\n` +
+        `• <b>Ad:</b> <b>${fName}</b>\n` +
+        `• <b>Telegram Tağı:</b> <b>${uName}</b>\n` +
+        `• <b>Telegram ID:</b> <code>${escapeTgHtml(tgIdStr)}</code>\n` +
+        (balStr ? `• <b>Balans:</b> <code>${escapeTgHtml(balStr)}</code>\n` : '') +
+        `\n`;
+    } else {
+      userSection =
+        `👤 <b>İstifadəçi Vəziyyəti:</b> <i>Sayta daxil olmayıb (Anonim Qonaq)</i>\n\n`;
+    }
+
     const text =
       `🛡️ <b>TƏHLÜKƏSİZLİK XƏBƏRDARLIĞI (SECURITY ALERT)</b>\n\n` +
-      `⚠️ <b>Təhdid Növü:</b> <b>${typeTitle}</b>\n` +
+      `⚠️ <b>Təhdid Növü:</b> <b>${typeTitle}</b>\n\n` +
+      userSection +
       `🌐 <b>IP Ünvanı:</b> <code>${escapeTgHtml(data.ip || 'Unknown IP')}</code>\n` +
       (data.endpoint ? `🎯 <b>Hədəf Endpoint:</b> <code>${escapeTgHtml(data.endpoint)}</code>\n` : '') +
       (data.count ? `🔢 <b>Ardıcıl Cəhd Sayı:</b> <b>${data.count}</b>\n` : '') +

@@ -167,6 +167,70 @@ export function createServer() {
     return rawIp.split(',')[0].trim().replace(/^::ffff:/, '');
   };
 
+  // Cookie Təhlili Köməkçisi
+  const parseCookies = (req: express.Request): Record<string, string> => {
+    const list: Record<string, string> = {};
+    const rc = req.headers.cookie;
+    if (rc) {
+      rc.split(';').forEach(cookie => {
+        const parts = cookie.split('=');
+        const key = parts.shift()?.trim();
+        if (key) {
+          list[key] = decodeURIComponent(parts.join('='));
+        }
+      });
+    }
+    return list;
+  };
+
+  // İstifadəçi Tokeni Təsdiq Köməkçisi (VULN-01 & VULN-02 Fix: IDOR və icazəsiz balans xərcləməsinin qarşısını alır)
+  function getValidatedUserTgId(req: express.Request): string {
+    const cookies = parseCookies(req);
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.slice(7).trim()
+      : ((req.headers['x-user-token'] as string) || cookies['user_token'] || '').trim();
+
+    if (token) {
+      const session = getUserSession(token);
+      if (session && session.telegram_id && session.expires_at > Date.now()) {
+        return session.telegram_id;
+      }
+    }
+    return '';
+  }
+
+  // Sorğu göndərən istifadəçinin Telegram profil məlumatlarını (Ad, Tağ, ID, Balans) çıxaran köməkçi
+  function getRequestUser(req: express.Request): { telegramId: string; username?: string | null; firstName?: string | null; balance?: number } | null {
+    const tgId = getValidatedUserTgId(req);
+    if (tgId) {
+      const user = getUserById(tgId);
+      if (user) {
+        return {
+          telegramId: user.telegram_id,
+          username: user.username,
+          firstName: user.first_name,
+          balance: user.balance
+        };
+      }
+      return { telegramId: tgId };
+    }
+    const cookies = parseCookies(req);
+    const queryTgId = (req.query?.telegram_id || req.query?.tg_id || req.headers['x-telegram-id'] || cookies['tg_id'] || cookies['telegram_id']) as string;
+    if (queryTgId && typeof queryTgId === 'string' && /^\d{5,15}$/.test(queryTgId.trim())) {
+      const user = getUserById(queryTgId.trim());
+      if (user) {
+        return {
+          telegramId: user.telegram_id,
+          username: user.username,
+          firstName: user.first_name,
+          balance: user.balance
+        };
+      }
+    }
+    return null;
+  }
+
   // Yaddaşdaxili Sürüşən Pəncərə Sürət İzləyicisi və IP başına DDoS / Yığılma Monitoru
   interface IpRateData {
     count: number;
@@ -218,6 +282,7 @@ export function createServer() {
           endpoint: req.originalUrl || req.path,
           count: rateData.count,
           userAgent: req.headers['user-agent'] as string,
+          user: getRequestUser(req),
           reason: `1 dəqiqədə ${rateData.count} intensiv sorğu göndərildi (DDoS / Bot axını təhlükəsi)`
         });
       }
@@ -239,6 +304,7 @@ export function createServer() {
       loggerService.sendSecurityAlert('IP_BAN', {
         ip: cleanIp,
         endpoint: req.originalUrl || req.path,
+        user: getRequestUser(req),
         reason: 'Bloklanmış IP vebsayta və ya API-yə girişə cəhd etdi'
       });
 
@@ -296,39 +362,6 @@ export function createServer() {
     }
     next();
   });
-
-  // Cookie Təhlili Köməkçisi
-  const parseCookies = (req: express.Request): Record<string, string> => {
-    const list: Record<string, string> = {};
-    const rc = req.headers.cookie;
-    if (rc) {
-      rc.split(';').forEach(cookie => {
-        const parts = cookie.split('=');
-        const key = parts.shift()?.trim();
-        if (key) {
-          list[key] = decodeURIComponent(parts.join('='));
-        }
-      });
-    }
-    return list;
-  };
-
-  // İstifadəçi Tokeni Təsdiq Köməkçisi (VULN-01 & VULN-02 Fix: IDOR və icazəsiz balans xərcləməsinin qarşısını alır)
-  function getValidatedUserTgId(req: express.Request): string {
-    const cookies = parseCookies(req);
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith('Bearer ')
-      ? authHeader.slice(7).trim()
-      : ((req.headers['x-user-token'] as string) || cookies['user_token'] || '').trim();
-
-    if (token) {
-      const session = getUserSession(token);
-      if (session && session.telegram_id && session.expires_at > Date.now()) {
-        return session.telegram_id;
-      }
-    }
-    return '';
-  }
 
   // Daxil olan HTTP sorğusunun səlahiyyətli Admin tərəfindən edildiyini yoxlayan köməkçi (ARCH-04 Fix)
   const isRequestAuthorizedAdmin = (req: express.Request): boolean => {
