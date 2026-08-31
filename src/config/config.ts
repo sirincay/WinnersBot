@@ -9,6 +9,7 @@ export const config = {
   adminTelegramId: process.env.ADMIN_TELEGRAM_ID || '',
   logChannelId: process.env.LOG_CHANNEL_ID || '',
   adminPassword: process.env.ADMIN_PASSWORD || '',
+  adminWhitelistIps: (process.env.ADMIN_WHITELIST_IPS || '').split(',').map(s => s.trim()).filter(Boolean),
   fazerCards: {
     baseUrl: process.env.FAZERCARDS_BASE_URL || 'https://api.fzr.cards/api/v2',
     apiKey: process.env.FAZERCARDS_API_KEY || process.env.FAZER_API_KEY || 'fc_eb9eea253d224b931a44d880',

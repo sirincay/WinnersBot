@@ -757,6 +757,11 @@ export function updateUserLastIp(telegramId: string | number, ip: string): void 
 export function addBannedIp(ip: string, reason: string = 'Təhlükəsizlik qaydalarının pozulması'): boolean {
   if (!ip) return false;
   const cleanIp = ip.trim();
+  // Admin/owner IP-ləri heç vaxt bloklanmamalıdır
+  if (config.adminWhitelistIps && config.adminWhitelistIps.includes(cleanIp)) {
+    console.log(`[WHITELIST] IP ${cleanIp} admin whitelist-dədir, ban əlavə edilmədi.`);
+    return false;
+  }
   try {
     db.prepare(`
       INSERT INTO banned_ips (ip, reason) VALUES (?, ?)
@@ -805,6 +810,10 @@ export function removeBannedIp(ip: string): boolean {
 export function isIpBanned(ip: string): boolean {
   if (!ip) return false;
   const cleanIp = ip.trim();
+  // Admin/owner IP-ləri heç vaxt bloklanmamalıdır
+  if (config.adminWhitelistIps && config.adminWhitelistIps.includes(cleanIp)) {
+    return false;
+  }
   try {
     const row = db.prepare(`SELECT id FROM banned_ips WHERE ip = ?`).get(cleanIp);
     return !!row;
