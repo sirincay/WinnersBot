@@ -174,7 +174,7 @@ export function getCategoryCustomEmojiId(categoryId: string): string | null {
 }
 
 export function getCategoryEmoji(categoryId: string): string {
-  const customId = getCategoryCustomEmojiId(categoryId);
+  const customId = getCategoryCustomEmojiId(categoryId) || getCustomEmojiId('GAMES_CATALOG') || '5994703708653361268';
   const catRec = getApiCategory(categoryId);
   if (customId) {
     return `<tg-emoji emoji-id="${customId}">${catRec?.icon || '🎮'}</tg-emoji>`;
@@ -212,5 +212,5 @@ export function getOfferCustomEmojiId(categoryId: string, offerName: string, off
   if (/pass|prime|vip|plus|elite/i.test(name)) return getCustomEmojiId('TIER_CROWN') || getCustomEmojiId('ADMIN_CROWN');
   if (/gift|card|voucher|epin|code/i.test(name)) return getCustomEmojiId('TIER_GIFT') || getCustomEmojiId('GIFT_REDEEM');
 
-  return getCustomEmojiId('GAMES_CATALOG') || getCustomEmojiId('TIER_DIAMOND');
+  return getCustomEmojiId('GAMES_CATALOG') || '5994703708653361268';
 }
