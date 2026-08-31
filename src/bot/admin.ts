@@ -13,6 +13,7 @@ import {
   getAllActiveApiCategories,
   updateOrderStatus,
   setUserBlocked,
+  getUserOrders,
   db
 } from '../database/db.js';
 import { paymentService } from '../services/payment.service.js';
@@ -383,6 +384,116 @@ export async function handleAdminCallbacks(ctx: Context) {
   if (data.startsWith('adm_view_user_')) {
     const tid = data.replace('adm_view_user_', '');
     return handleAdminUserSearch(ctx, tid);
+  }
+
+  // Müştərinin Son Sifarişləri: adm_uord_<telegram_id>
+  if (data.startsWith('adm_uord_')) {
+    const tid = data.replace('adm_uord_', '');
+    const user = getUserById(tid);
+    const orders = getUserOrders(tid, 5);
+
+    await ctx.answerCallbackQuery();
+
+    if (orders.length === 0) {
+      await ctx.reply(
+        `📜 <b>İSTİFADƏÇİNİN SİFARİŞ TARİXÇƏSİ</b>\n\n` +
+        `👤 <b>İstifadəçi:</b> ${escapeTgHtml(user?.first_name || 'Müştəri')} (<code>${tid}</code>)\n` +
+        `ℹ️ Bu istifadəçinin hələ heç bir sifarişi yoxdur.`,
+        {
+          parse_mode: 'HTML',
+          reply_markup: new InlineKeyboard()
+            .text('👤 İstifadəçiyə Qayıt', `adm_view_user_${tid}`)
+            .text('🏠 Admin Panel', 'adm_refresh_stats'),
+        }
+      );
+      return;
+    }
+
+    let text = `📜 <b>MÜŞTƏRİNİN SON SİFARİŞLƏRİ</b>\n\n` +
+      `👤 <b>İstifadəçi:</b> ${escapeTgHtml(user?.first_name || 'Müştəri')} (<code>${tid}</code>)\n` +
+      `🛒 <b>Göstərilir:</b> Son ${orders.length} ədəd sifariş\n\n` +
+      `─────────────────────────\n`;
+
+    const kb = new InlineKeyboard();
+
+    orders.forEach((ord, idx) => {
+      let statusIcon = '⏳ Gözləyir';
+      if (ord.status === 'completed') statusIcon = '✅ Uğurlu';
+      else if (ord.status === 'failed') statusIcon = '❌ Ləğv';
+
+      text += `<b>${idx + 1}. #${ord.id}</b> — ${statusIcon}\n` +
+        `📦 <b>Paket:</b> ${escapeTgHtml(ord.offer_name)}\n` +
+        `💰 <b>Məbləğ:</b> ${(ord.price_azn || 0).toFixed(2)} ₼ ($${(ord.price_usd || 0).toFixed(2)})\n` +
+        (ord.player_id ? `🎯 <b>ID:</b> <code>${escapeTgHtml(ord.player_id)}</code>\n` : '') +
+        `📅 <i>${ord.created_at || '—'}</i>\n\n`;
+
+      kb.text(`🔍 #${ord.id}`, `adm_view_order_${ord.id}`);
+      if ((idx + 1) % 2 === 0) kb.row();
+    });
+
+    kb.row()
+      .text('👤 İstifadəçiyə Qayıt', `adm_view_user_${tid}`)
+      .text('🏠 Admin Panel', 'adm_refresh_stats');
+
+    await ctx.reply(text, { parse_mode: 'HTML', reply_markup: kb });
+    return;
+  }
+
+  // Sifariş Kartına Baxış: adm_view_order_<order_id>
+  if (data.startsWith('adm_view_order_')) {
+    const ordId = data.replace('adm_view_order_', '');
+    await ctx.answerCallbackQuery();
+    return handleAdminOrderSearch(ctx, ordId);
+  }
+
+  // Müştəri Balans Dəyişdir: adm_ubal_<tg_id>_<action>
+  if (data.startsWith('adm_ubal_')) {
+    const parts = data.split('_');
+    const tid = parts[2];
+    const action = parts[3];
+
+    let delta = 0;
+    if (action === 'add5') delta = 5;
+    if (action === 'add20') delta = 20;
+    if (action === 'sub5') delta = -5;
+
+    if (delta !== 0) {
+      updateUserBalance(tid, delta);
+      const sign = delta > 0 ? `+${delta}` : `${delta}`;
+      await ctx.answerCallbackQuery({ text: `Balans yeniləndi: ${sign} ₼ ✅`, show_alert: true });
+      return handleAdminUserSearch(ctx, tid);
+    }
+  }
+
+  // Müştərini Blokla / Blokdan Çıxart: adm_ublk_<tg_id>
+  if (data.startsWith('adm_ublk_')) {
+    const tid = data.replace('adm_ublk_', '');
+    const user = getUserById(tid);
+    if (user) {
+      const willBlock = user.is_blocked !== 1;
+      setUserBlocked(tid, willBlock);
+      const alertText = willBlock ? 'İstifadəçi bloklandı (Ban) 🚫' : 'İstifadəçi blokdan çıxarıldı 🟢';
+      await ctx.answerCallbackQuery({ text: alertText, show_alert: true });
+      return handleAdminUserSearch(ctx, tid);
+    }
+  }
+
+  // Müştəriyə Şəxsi Mesaj Yaz: adm_umsg_<tg_id>
+  if (data.startsWith('adm_umsg_')) {
+    const tid = data.replace('adm_umsg_', '');
+    await ctx.answerCallbackQuery();
+    const { setUserState } = await import('./handlers.js');
+    setUserState(ctx.from.id, { step: 'awaiting_user_direct_msg', extra: { targetTgId: tid } });
+    await ctx.reply(
+      `✉️ <b>MÜŞTƏRİYƏ ŞƏXSİ MESAJ</b>\n\n` +
+      `<code>${tid}</code> nömrəli istifadəçiyə göndərmək istədiyiniz mesajı birbaşa bu çata yazın:\n\n` +
+      `<i>(İmtina etmək üçün "❌ Ləğv Et" düyməsinə basın):</i>`,
+      {
+        parse_mode: 'HTML',
+        reply_markup: new InlineKeyboard().text('❌ Ləğv Et', `adm_view_user_${tid}`),
+      }
+    );
+    return;
   }
 
   // Nüsxə Yarat
