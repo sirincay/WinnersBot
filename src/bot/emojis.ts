@@ -161,6 +161,7 @@ export function getCategoryCustomEmojiId(categoryId: string): string | null {
   if (cat.includes('pubg') && (cat.includes('auto') || cat.includes('direct'))) return getCustomEmojiId('PUBG_MOBILE_AUTO') || getCustomEmojiId('PUBG_AUTO') || getCustomEmojiId('PUBG_MOBILE');
   if (cat.includes('pubg') && cat.includes('epin')) return getCustomEmojiId('PUBG_MOBILE_EPIN') || getCustomEmojiId('PUBG_EPIN') || getCustomEmojiId('PUBG_MOBILE');
   if (cat.includes('pubg') && (cat.includes('web') || cat.includes('manual'))) return getCustomEmojiId('PUBG_MOBILE_WEB') || getCustomEmojiId('PUBG_MOBILE');
+  if (cat.includes('pubg') && cat.includes('card')) return getCustomEmojiId('PUBG_MOBILE_CARD') || getCustomEmojiId('PUBG_MOBILE');
   if (cat.includes('pubg')) return getCustomEmojiId('PUBG_MOBILE');
   if (cat.includes('free_fire') || cat.includes('freefire')) return getCustomEmojiId('FREE_FIRE_CIS') || getCustomEmojiId('FREE_FIRE');
   if (cat.includes('telegram_stars') || (cat.includes('star') && !cat.includes('brawl'))) return getCustomEmojiId('TELEGRAM_STARS');

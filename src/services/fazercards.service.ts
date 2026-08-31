@@ -134,6 +134,7 @@ class FazerCardsService {
   getFeaturedCategories() {
     return [
       { id: 'pubg_mobile_web', name: 'PUBG Mobile (Web Purchase)', type: 'topup', icon: '🎮', tag: 'PlayPin API' },
+      { id: 'pubg_mobile_card', name: 'PUBG Mobile (UC Card Purchase)', type: 'topup', icon: '💳', tag: 'PlayPin API' },
       { id: 'pubg_mobile_epin', name: 'PUBG Mobile (E-Pin Voucher)', type: 'giftcard', icon: '💳', tag: 'PlayPin API' },
       { id: 'free_fire_cis', name: 'Free Fire (CIS)', type: 'topup', icon: '🔥', tag: 'Avtomatik' },
       { id: 'mobile_legends_global', name: 'Mobile Legends (Global)', type: 'topup', icon: '⚔️', tag: 'Avtomatik' },

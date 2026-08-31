@@ -500,6 +500,11 @@
     "default": "🔹",
     "custom_emoji_id": "5357194239665000219"
   },
+  "PUBG_MOBILE_CARD": {
+    "name": "PUBG_MOBILE_CARD",
+    "default": "💳",
+    "custom_emoji_id": "5357194239665000219"
+  },
   "VALORANT_TR": {
     "name": "VALORANT_TR",
     "default": "🔹",

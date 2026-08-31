@@ -200,11 +200,13 @@ export function getPubgMenuKeyboard(lang: SupportedLanguage = 'az') {
   const autoId = getCategoryCustomEmojiId('pubg_mobile_auto');
   const epinId = getCategoryCustomEmojiId('pubg_mobile_epin') || getCategoryCustomEmojiId('pubg_mobile');
   const webId = getCategoryCustomEmojiId('pubg_mobile_web') || getCategoryCustomEmojiId('pubg_mobile');
+  const cardId = getCategoryCustomEmojiId('pubg_mobile_card') || getCategoryCustomEmojiId('pubg_mobile');
 
   (kb as any).inline_keyboard = [
     [makeBtn(t.pubgAutoDesc, 'cat:pubg_mobile_auto', autoId, 'primary', '⚡')],
     [makeBtn(t.pubgEpinDesc, 'cat:pubg_mobile_epin', epinId, 'success', '🎟️')],
     [makeBtn(t.pubgWebDesc, 'cat:pubg_mobile_web', webId, 'primary', '🌐')],
+    [makeBtn(t.pubgCardDesc, 'cat:pubg_mobile_card', cardId, 'success', '💳')],
     [
       makeBtn(t.back, 'menu_games', getCustomEmojiId('NAV_BACK'), undefined, '🔙'),
       makeBtn(t.home, 'menu_main', getCustomEmojiId('NAV_HOME'), undefined, '🏠')

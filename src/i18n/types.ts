@@ -55,6 +55,8 @@ export interface TranslationStrings {
   pubgAutoDesc: string;
   pubgEpinDesc: string;
   pubgWebDesc: string;
+  pubgCardDesc: string;
+  pubgCardInfo: string;
   enterPlayerId: string;
   invalidPlayerId: string;
   orderConfirmTitle: string;

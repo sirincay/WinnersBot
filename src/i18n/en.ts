@@ -52,6 +52,8 @@ export const en: TranslationStrings = {
   pubgAutoDesc: 'Instant Direct ID Top-Up',
   pubgEpinDesc: 'E-Pin / Digital Code (Redeem)',
   pubgWebDesc: 'Web Purchase (Operator)',
+  pubgCardDesc: 'UC Card Purchase (Best Price)',
+  pubgCardInfo: 'Get UC Card codes at the best price. Delivered by operator within 5–10 minutes.',
   enterPlayerId: 'ENTER PLAYER ID\n\n✍️ <i>Please send the recipient Player ID in this chat:</i>',
   invalidPlayerId: 'Invalid Player ID format! ID must be 8-12 digits.',
   orderConfirmTitle: 'ORDER CONFIRMATION',

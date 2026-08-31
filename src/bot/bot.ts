@@ -82,6 +82,7 @@ export function isGiftcardCategory(categoryId: string): boolean {
   if (
     categoryId === 'pubg_mobile_auto' ||
     categoryId === 'pubg_mobile_web' ||
+    categoryId === 'pubg_mobile_card' ||
     categoryId === 'free_fire_cis' ||
     categoryId === 'mobile_legends_direct' ||
     categoryId.includes('brawl')
@@ -791,15 +792,18 @@ export function createBot(): Bot {
 
       const priceDisplay = formatPrice(aznPrice, usdPrice, lang);
       const isWebPurchase = state.data.categoryId === 'pubg_mobile_web';
+      const isCardPurchase = state.data.categoryId === 'pubg_mobile_card';
 
       const confirmText = `${EMOJIS.CONFIRM} <b>${t.orderConfirmTitle || 'SİFARİŞİNİZİN TƏSDİQİ'}</b>\n\n` +
         `${EMOJIS.GAMES} <b>${t.fieldGame || 'Oyun / Xidmət:'}</b> ${state.data.categoryName}\n` +
         `${EMOJIS.PACKAGE} <b>${t.fieldPackage || 'Paket:'}</b> ${state.data.offerName}\n` +
-        `${EMOJIS.TG_ID} <b>${t.fieldPlayerId || 'Oyunçu ID:'}</b> <code>${playerId}</code>\n` +
+        (isCardPurchase ? '' : `${EMOJIS.TG_ID} <b>${t.fieldPlayerId || 'Oyunçu ID:'}</b> <code>${playerId}</code>\n`) +
         `${EMOJIS.MONEY} <b>${t.fieldAmountToPay || 'Ödəniləcək Məbləğ:'}</b> <b>${priceDisplay}</b>\n\n` +
-        (isWebPurchase
-          ? `👑 <i>${t.noteWebPurchase}</i>\n\n`
-          : `⚡ <i>${t.noteTopup}</i>\n\n`) +
+        (isCardPurchase
+          ? `💳 <i>${t.pubgCardInfo || 'UC Card kodu operator tərəfindən 5–10 dəqiqə ərzində göndərilir.'}</i>\n\n`
+          : isWebPurchase
+            ? `👑 <i>${t.noteWebPurchase}</i>\n\n`
+            : `⚡ <i>${t.noteTopup}</i>\n\n`) +
         `<i>${t.confirmPrompt || 'Məlumatların düzgünlüyünə əminsinizsə, "Təsdiqlə və Yüklə" düyməsini basın:'}</i>`;
 
       const orderKey = `${state.data.categoryId}:::${state.data.offerId}:::${encodeURIComponent(playerId)}`;
@@ -1325,6 +1329,8 @@ export function createBot(): Bot {
       let deliveryNote: string;
       if (categoryId === 'pubg_mobile_web') {
         deliveryNote = `${EMOJIS.LIGHTNING} <i>${t.noteWebPurchase}</i>`;
+      } else if (categoryId === 'pubg_mobile_card') {
+        deliveryNote = `${EMOJIS.LIGHTNING} <i>${t.pubgCardInfo || 'UC Card kodu operator tərəfindən 5–10 dəqiqə ərzində göndərilir.'}</i>`;
       } else if (categoryId === 'pubg_mobile_epin' || categoryId === 'pubg_mobile') {
         deliveryNote = `${EMOJIS.LIGHTNING} <i>${t.noteEpin}</i>`;
       } else if (isGiftcardCategory(categoryId)) {
@@ -1724,7 +1730,7 @@ export function createBot(): Bot {
           return ctx.editMessageText(`⚠️ ${t.invalidPlayerId || 'Təklif tapılmadı.'}`);
         }
 
-        if (categoryId === 'pubg_mobile_web') {
+        if (categoryId === 'pubg_mobile_web' || categoryId === 'pubg_mobile_card') {
           await ctx.editMessageText(`${EMOJIS.PENDING} <b>${t.orderForwardingOperator}</b>`, { parse_mode: 'HTML' }).catch(() => {});
         } else {
           await ctx.editMessageText(`${EMOJIS.LIGHTNING} <b>${t.orderAutoProcessing}</b>`, { parse_mode: 'HTML' }).catch(() => {});

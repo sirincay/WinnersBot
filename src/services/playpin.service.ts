@@ -212,6 +212,115 @@ class PlayPinService {
     }
   }
 
+  // PUBG Card Purchase Təkliflərini Gətir — Kateqoriya 3 = "PUBG CARD PURCHASE"
+  async getPubgCardOffers(): Promise<{ ok: boolean; offers: PlayPinOffer[]; error?: string }> {
+    try {
+      if (!this.isConfigured()) {
+        return { ok: true, offers: this.getFallbackCardPurchaseOffers() };
+      }
+
+      const res = await axios.get(`${this.baseUrl}/v1/category/3`, {
+        headers: this.getHeaders(),
+        timeout: 10000,
+        validateStatus: () => true,
+      });
+
+      let rawItems = res.data;
+      if (!Array.isArray(rawItems) && rawItems && rawItems.products) {
+        rawItems = rawItems.products;
+      }
+
+      if (Array.isArray(rawItems) && rawItems.length > 0) {
+        const mapped: PlayPinOffer[] = rawItems
+          .filter((p: any) => {
+            const t = (p.name || p.title || '').toLowerCase();
+            return t.includes('uc') && t.includes('card');
+          })
+          .map((p: any) => {
+            let cleanTitle = (p.name || p.title || `UC Card ${p.id}`).trim();
+            const ucMatch = cleanTitle.match(/(\d+)\s*uc/i);
+            if (ucMatch) {
+              cleanTitle = `${ucMatch[1]} UC Card`;
+            }
+            return {
+              id: p.id,
+              title: cleanTitle,
+              unit_price: typeof p.price !== 'undefined' ? p.price : (p.unit_price || 0),
+              stock: typeof p.stock !== 'undefined' ? p.stock : 0,
+              description: p.description || '',
+              category_id: 3,
+              category_title: 'PUBG CARD PURCHASE',
+            };
+          });
+
+        mapped.sort((a, b) => Number(a.unit_price || 0) - Number(b.unit_price || 0));
+        return { ok: true, offers: mapped.length > 0 ? mapped : this.getFallbackCardPurchaseOffers() };
+      }
+
+      return { ok: true, offers: this.getFallbackCardPurchaseOffers() };
+    } catch (err: any) {
+      console.error('PlayPin getPubgCardOffers error:', err.message);
+      return { ok: true, offers: this.getFallbackCardPurchaseOffers() };
+    }
+  }
+
+  // PUBG Card Purchase — Manual sifariş (Player ID lazım deyil, kart kodu göndərilir)
+  async purchasePubgCard(
+    productId: number | string,
+    count = 1
+  ): Promise<PlayPinPurchaseResult> {
+    try {
+      if (!this.isConfigured()) {
+        return { success: false, error: 'PlayPin API Key təyin edilməyib.' };
+      }
+
+      const res = await axios.post(
+        `${this.baseUrl}/v1/manual/order`,
+        {
+          product_id: Number(productId),
+          count: count,
+        },
+        {
+          headers: this.getHeaders(),
+          timeout: 20000,
+          validateStatus: () => true,
+        }
+      );
+
+      const data = res.data;
+
+      if ((res.status === 200 || res.status === 201) && (data.id || data.order_id || data.success)) {
+        return {
+          success: true,
+          order_id: data.id || data.order_id,
+          product_id: productId,
+          product_title: data.product_title || data.product?.name || `PUBG UC Card (${productId})`,
+        };
+      }
+
+      let errStr = 'Card Purchase sifarişi qəbul edilmədi';
+      if (data && typeof data === 'object') {
+        if (data.detail) errStr = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+        else if (data.error) errStr = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
+        else if (data.message) errStr = data.message;
+        else errStr = JSON.stringify(data).slice(0, 200);
+      }
+      return { success: false, error: errStr };
+    } catch (err: any) {
+      console.error('PlayPin purchasePubgCard error:', err.message);
+      return { success: false, error: err.message };
+    }
+  }
+
+  // PUBG Card Purchase fallback təklifləri — Kateqoriya 3
+  public getFallbackCardPurchaseOffers(): PlayPinOffer[] {
+    return [
+      { id: 100, title: '1800 UC Card', unit_price: 22.00, stock: 0, category_id: 3, category_title: 'PUBG CARD PURCHASE' },
+      { id: 101, title: '3850 UC Card', unit_price: 42.50, stock: 0, category_id: 3, category_title: 'PUBG CARD PURCHASE' },
+      { id: 102, title: '8100 UC Card', unit_price: 84.00, stock: 0, category_id: 3, category_title: 'PUBG CARD PURCHASE' },
+    ];
+  }
+
   // PUBG Kart Vauçeri Alışı (E-Pin)
   async purchasePubgCardVoucher(
     productId: number | string,

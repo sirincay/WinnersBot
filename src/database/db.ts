@@ -208,6 +208,7 @@ export function initDatabase() {
     ensureCat.run('pubg_mobile_auto', 'PUBG Mobile (Auto Direct ID)', '🔫', 'topup', 'FazerCards Direct ID', 1);
     ensureCat.run('pubg_mobile_epin', 'PUBG Mobile (E-Pin Voucher)', '🎟️','giftcard', 'PlayPin Category 1 E-Pin', 2);
     ensureCat.run('pubg_mobile_web', 'PUBG Mobile (Web Purchase)', '🌐', 'topup', 'PlayPin Web Direct ID', 3);
+    ensureCat.run('pubg_mobile_card', 'PUBG Mobile (UC Card Purchase)', '💳', 'topup', 'PlayPin Category 3 Card', 4);
     try {
       db.prepare("UPDATE api_categories SET name = 'PUBG Mobile (Web Purchase)' WHERE category_id = 'pubg_mobile_web'").run();
     } catch (e: any) { console.error("Database error:", e?.message || e); }
