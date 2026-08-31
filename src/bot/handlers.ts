@@ -527,7 +527,7 @@ export async function renderReferralMenu(ctx: Context, isEdit = true) {
   const lang = getUserLanguage(ctx.from.id);
   const t = getT(ctx.from.id);
   const stats = getReferralStats(ctx.from.id);
-  const botUser = settingsService.getBotUsername() || 'rentazbot';
+  const botUser = settingsService.getBotUsername() || config.botUsername || 'WS_StoreBot';
   const refLink = `https://t.me/${botUser}?start=ref_${ctx.from.id}`;
   const shareText = encodeURIComponent(`🔥 PUBG Mobile UC & Game Top-Up — Winners Shop:\n${refLink}`);
   const shareUrl = `https://t.me/share/url?url=${refLink}&text=${shareText}`;

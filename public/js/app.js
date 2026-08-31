@@ -10,7 +10,7 @@ if (tg && typeof tg.expand === 'function') {
 
 // İstifadəçi vəziyyəti (null = qonaq, object = daxil olub)
 let currentUser = null;
-let systemSettings = { usd_azn_rate: 1.70, margin_percent: 10, bot_username: 'rentazbot' };
+let systemSettings = { usd_azn_rate: 1.70, margin_percent: 10, bot_username: 'WS_StoreBot' };
 let currentAuthCode = null;
 let authPollInterval = null;
 let currentLanguage = localStorage.getItem('winners_web_lang') || 'en';
@@ -958,7 +958,7 @@ async function initTelegramAuthSession() {
 
     if (data.ok) {
       currentAuthCode = data.code;
-      const botUser = data.botUsername || systemSettings.bot_username || 'rentazbot';
+      const botUser = data.botUsername || systemSettings.bot_username || 'WS_StoreBot';
       applyDynamicBotInfo(botUser);
 
       const linkEl = document.getElementById('btnTelegramAuthLink');
@@ -1449,7 +1449,7 @@ function redirectToTelegramBuy() {
     return;
   }
 
-  const botUser = systemSettings.bot_username || 'rentazbot';
+  const botUser = systemSettings.bot_username || 'WS_StoreBot';
   const url = `https://t.me/${botUser}?start=buy_${currentSelectedCategory.id}_${currentSelectedOffer.offer_id}`;
 
   showToast('Redirecting to Telegram Bot...');

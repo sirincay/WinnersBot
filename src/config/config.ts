@@ -5,7 +5,7 @@ dotenv.config();
 
 export const config = {
   botToken: process.env.BOT_TOKEN || '',
-  botUsername: process.env.BOT_USERNAME || 'ArsivAzBot',
+  botUsername: process.env.BOT_USERNAME || 'WS_StoreBot',
   adminTelegramId: process.env.ADMIN_TELEGRAM_ID || '',
   logChannelId: process.env.LOG_CHANNEL_ID || '',
   adminPassword: process.env.ADMIN_PASSWORD || '',

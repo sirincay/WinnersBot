@@ -1751,17 +1751,17 @@ export function createBot(): Bot {
       const rawStoreUrl = (config.server.webAppUrl || '').trim();
       const safeStoreUrl = (rawStoreUrl.startsWith('https://') && !rawStoreUrl.includes('localhost') && !rawStoreUrl.includes('127.0.0.1'))
         ? rawStoreUrl
-        : `https://t.me/${config.botUsername || 'rentazbot'}`;
+        : `https://t.me/${config.botUsername || 'WS_StoreBot'}`;
 
       const storeText =
         `${EMOJIS.GAMES} <b>WINNERS SHOP — OFFICIAL DIGITAL STORE</b>\n\n` +
         `${EMOJIS.LIGHTNING} PUBG Mobile UC, Free Fire, Mobile Legends və bütün rəqəmsal oyun valyutaları 100% avtomatik çatdırılma ilə!\n\n` +
-        `${EMOJIS.LANGUAGE} <b>Rəsmi Bot:</b> @${config.botUsername || 'rentazbot'}\n` +
+        `${EMOJIS.LANGUAGE} <b>Rəsmi Bot:</b> @${config.botUsername || 'WS_StoreBot'}\n` +
         `${EMOJIS.TELEGRAM} <b>Dəstək & Sifariş:</b> 100% Avtomatik və Təhlükəsiz`;
 
       const storeKeyboard = {
         inline_keyboard: [
-          [makeUrlBtn('🛒 Bota Keç və Sifariş Et', `https://t.me/${config.botUsername || 'rentazbot'}`, getCustomEmojiId('GAMES_CATALOG') || '6104654892905796078', '🎮')],
+          [makeUrlBtn('🛒 Bota Keç və Sifariş Et', `https://t.me/${config.botUsername || 'WS_StoreBot'}`, getCustomEmojiId('GAMES_CATALOG') || '5994703708653361268', '🎮')],
           [makeUrlBtn('⚡ Canlı Əlaqə: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
         ]
       };
