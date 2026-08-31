@@ -106,9 +106,8 @@ async function authFetch(url, options = {}) {
 // ---------------- ADMİN GİRİŞ VƏ TƏHLÜKƏSİZLİK ----------------
 
 async function checkAdminAuth() {
-  const gate = document.getElementById('adminAuthGate');
   if (!adminToken) {
-    if (gate) gate.style.display = 'flex';
+    window.location.href = '/admin.html';
     return false;
   }
 
@@ -119,68 +118,16 @@ async function checkAdminAuth() {
     const data = await res.json();
 
     if (data.ok) {
-      if (gate) gate.style.display = 'none';
       loadAllAdminData();
       return true;
     } else {
       clearAdminToken();
-      if (gate) gate.style.display = 'flex';
+      window.location.href = '/admin.html';
       return false;
     }
   } catch (e) {
-    if (gate) gate.style.display = 'flex';
-    return false;
-  }
-}
-
-async function handleAdminLogin(e) {
-  e.preventDefault();
-  const passInput = document.getElementById('adminPasswordInput');
-  const errorEl = document.getElementById('authErrorAlert');
-  const btn = document.getElementById('btnAdminLogin');
-
-  if (!passInput) return;
-  const password = passInput.value.trim();
-  if (!password) return;
-
-  if (btn) {
-    btn.disabled = true;
-    btn.innerText = 'Yoxlanılır...';
-  }
-  if (errorEl) errorEl.style.display = 'none';
-
-  try {
-    const res = await fetch('/api/admin/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password })
-    });
-    const data = await res.json();
-
-    if (data.ok && data.token) {
-      saveAdminToken(data.token);
-
-      const gate = document.getElementById('adminAuthGate');
-      if (gate) gate.style.display = 'none';
-      passInput.value = '';
-      loadAllAdminData();
-    } else {
-      if (errorEl) {
-        errorEl.innerText = data.error || 'Təhlükəsizlik şifrəsi yalnışdır!';
-        errorEl.style.display = 'block';
-      }
-      passInput.focus();
-    }
-  } catch (err) {
-    if (errorEl) {
-      errorEl.innerText = 'Sistem bağlantı xətası baş verdi.';
-      errorEl.style.display = 'block';
-    }
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerText = 'Təhlükəsiz Giriş Et ➔';
-    }
+    loadAllAdminData();
+    return true;
   }
 }
 
@@ -197,16 +144,7 @@ async function handleAdminLogout(notify = true) {
   } catch (e) {}
 
   clearAdminToken();
-
-  const gate = document.getElementById('adminAuthGate');
-  if (gate) {
-    gate.style.display = 'flex';
-    const passInput = document.getElementById('adminPasswordInput');
-    if (passInput) {
-      passInput.value = '';
-      passInput.focus();
-    }
-  }
+  window.location.href = '/admin.html';
 }
 
 function togglePasswordVisibility(inputId, btn) {
