@@ -51,7 +51,7 @@ export const az: TranslationStrings = {
   pubgTitle: 'PUBG MOBILE (UC YÜKLƏMƏ)',
   pubgAutoDesc: 'ID ilə Avtomatik Yükləmə (Instant)',
   pubgEpinDesc: 'E-Pin / Kod ilə Yükləmə (Redeem)',
-  pubgWebDesc: 'Operator ilə Yükləmə (Manual)',
+  pubgWebDesc: 'Web Purchase (Operator)',
   enterPlayerId: 'OYUNÇU ID-SİNİ DAXİL EDİN\n\n✍️ <i>Zəhmət olmasa yükləmə ediləcək Oyunçu ID-sini (Player ID) çata göndərin:</i>',
   invalidPlayerId: 'Yanlış Oyunçu ID formatı! ID yalnız 8-12 rəqəmdən ibarət olmalıdır.',
   orderConfirmTitle: 'SİFARİŞİNİZİN TƏSDİQİ',

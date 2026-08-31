@@ -117,7 +117,7 @@ class FazerCardsService {
     
     // PlayPin PUBG Kateqoriyalarını ən üstə açıq şəkildə əlavə et
     const playPinTopups: FazerCategory[] = [
-      { category_id: 'pubg_mobile_web', name: 'PUBG Mobile (Operator Manual)', note: 'PlayPin API Top-Up', type: 'topup' }
+      { category_id: 'pubg_mobile_web', name: 'PUBG Mobile (Web Purchase)', note: 'PlayPin API Top-Up', type: 'topup' }
     ];
     const playPinGiftcards: FazerCategory[] = [
       { category_id: 'pubg_mobile_epin', name: 'PUBG Mobile (E-Pin Voucher)', note: 'PlayPin API E-Pin', type: 'giftcard' }
@@ -133,7 +133,7 @@ class FazerCardsService {
   // Anında Telegram Menyusu və Veb qəhrəmanı (Hero) üçün əvvəlcədən təyin olunmuş yüksək tələbatlı kateqoriyalar
   getFeaturedCategories() {
     return [
-      { id: 'pubg_mobile_web', name: 'PUBG Mobile (Operator Manual)', type: 'topup', icon: '🎮', tag: 'PlayPin API' },
+      { id: 'pubg_mobile_web', name: 'PUBG Mobile (Web Purchase)', type: 'topup', icon: '🎮', tag: 'PlayPin API' },
       { id: 'pubg_mobile_epin', name: 'PUBG Mobile (E-Pin Voucher)', type: 'giftcard', icon: '💳', tag: 'PlayPin API' },
       { id: 'free_fire_cis', name: 'Free Fire (CIS)', type: 'topup', icon: '🔥', tag: 'Avtomatik' },
       { id: 'mobile_legends_global', name: 'Mobile Legends (Global)', type: 'topup', icon: '⚔️', tag: 'Avtomatik' },

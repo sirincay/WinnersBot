@@ -51,7 +51,7 @@ export const en: TranslationStrings = {
   pubgTitle: 'PUBG MOBILE (UC TOP-UP)',
   pubgAutoDesc: 'Instant Direct ID Top-Up',
   pubgEpinDesc: 'E-Pin / Digital Code (Redeem)',
-  pubgWebDesc: 'Operator Top-Up (Manual)',
+  pubgWebDesc: 'Web Purchase (Operator)',
   enterPlayerId: 'ENTER PLAYER ID\n\n✍️ <i>Please send the recipient Player ID in this chat:</i>',
   invalidPlayerId: 'Invalid Player ID format! ID must be 8-12 digits.',
   orderConfirmTitle: 'ORDER CONFIRMATION',
