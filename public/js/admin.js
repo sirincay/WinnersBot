@@ -119,25 +119,31 @@ async function authFetch(url, options = {}) {
 async function checkAdminAuth() {
   const token = getActiveAdminToken();
   if (!token) {
-    window.location.href = '/admin.html';
+    clearAdminToken();
+    window.location.replace('/admin');
     return false;
   }
 
   try {
     const res = await fetch('/api/admin/auth/verify', {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'x-admin-token': token
+      }
     });
     const data = await res.json();
 
-    if (data.ok) {
+    if (data && data.ok) {
       return true;
     } else {
       clearAdminToken();
-      window.location.href = '/admin.html';
+      window.location.replace('/admin');
       return false;
     }
   } catch (e) {
-    return true;
+    clearAdminToken();
+    window.location.replace('/admin');
+    return false;
   }
 }
 
@@ -149,13 +155,16 @@ async function handleAdminLogout(notify = true) {
     if (token) {
       await fetch('/api/admin/auth/logout', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'x-admin-token': token
+        }
       });
     }
   } catch (e) {}
 
   clearAdminToken();
-  window.location.href = '/admin.html';
+  window.location.replace('/admin');
 }
 
 function togglePasswordVisibility(inputId, btn) {
