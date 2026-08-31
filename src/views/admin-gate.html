@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Girişi — Winners Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(56, 189, 248, 0.25);
+      --brand: #38bdf8;
+      --brand-glow: rgba(56, 189, 248, 0.35);
+      --accent: #818cf8;
+      --danger: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(99, 102, 241, 0.06) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .gate-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.1);
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .gate-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 0 25px var(--brand-glow);
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      background: rgba(3, 7, 18, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      padding: 13px 16px;
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    input[type="password"]:focus, input[type="text"]:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+      background: rgba(3, 7, 18, 0.9);
+    }
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+    }
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+    }
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .alert-msg {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      margin-bottom: 18px;
+      display: none;
+      text-align: left;
+      line-height: 1.4;
+    }
+    .alert-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #fca5a5;
+    }
+    .alert-success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0 20px 0;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .divider span {
+      padding: 0 10px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .btn-back:hover {
+      color: #38bdf8;
+    }
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gate-card">
+    <div class="gate-icon">👑</div>
+    <div class="security-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      TƏHLÜKƏSİZLİK QORUMASI
+    </div>
+    <h1>Admin Girişi Tələb Olunur</h1>
+    <p class="subtitle">Bu bölmə yalnız Winners Shop Administrator hesabı üçün qapalıdır. Giriş etmək üçün təhlükəsizlik şifrənizi daxil edin.</p>
+
+    <div id="alertBox" class="alert-msg"></div>
+
+    <form id="loginForm" onsubmit="handleAdminGateLogin(event)">
+      <div class="form-group">
+        <label for="adminPass">Admin Təhlükəsizlik Şifrəsi</label>
+        <div class="input-wrap">
+          <input type="password" id="adminPass" placeholder="••••••••••••" autofocus required autocomplete="current-password">
+        </div>
+      </div>
+      <button type="submit" id="btnSubmit" class="btn-submit">
+        <span>👑 Daxil Ol və Paneli Aç</span>
+      </button>
+    </form>
+
+    <div class="divider"><span>və ya</span></div>
+
+    <div>
+      <a href="/" class="btn-back">
+        ← Əsas Mağazaya Qayıt
+      </a>
+    </div>
+  </div>
+
+  <script>
+    async function handleAdminGateLogin(e) {
+      e.preventDefault();
+      const passInput = document.getElementById('adminPass');
+      const btnSubmit = document.getElementById('btnSubmit');
+      const alertBox = document.getElementById('alertBox');
+      const password = passInput.value.trim();
+
+      if (!password) return;
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<span>⏳ Yoxlanılır...</span>';
+      alertBox.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/admin/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+
+        if (data.ok && data.token) {
+          // Tokeni cookie və localStorage-da saxla
+          document.cookie = 'admin_token=' + data.token + '; path=/; max-age=2592000; SameSite=Lax';
+          localStorage.setItem('admin_token', data.token);
+
+          alertBox.className = 'alert-msg alert-success';
+          alertBox.innerText = '✅ Uğurla daxil oldunuz! Admin Paneli açılır...';
+          alertBox.style.display = 'block';
+
+          setTimeout(() => {
+            window.location.href = '/admin.html';
+          }, 400);
+        } else {
+          alertBox.className = 'alert-msg alert-danger';
+          alertBox.innerText = '❌ ' + (data.error || 'Şifrə yalnışdır!');
+          alertBox.style.display = 'block';
+          passInput.value = '';
+          passInput.focus();
+        }
+      } catch (err) {
+        alertBox.className = 'alert-msg alert-danger';
+        alertBox.innerText = '⚠️ Əlaqə xətası baş verdi. Zəhmət olmasa yenidən cəhd edin.';
+        alertBox.style.display = 'block';
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<span>👑 Daxil Ol və Paneli Aç</span>';
+      }
+    }
+
+    // Tokenin localStorage və ya cookie-lərdə olub-olmadığını avtomatik yoxla
+    (async function autoVerify() {
+      const token = localStorage.getItem('admin_token');
+      if (token) {
+        try {
+          const res = await fetch('/api/admin/auth/verify', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          const data = await res.json();
+          if (data.ok) {
+            document.cookie = 'admin_token=' + token + '; path=/; max-age=2592000; SameSite=Lax';
+            window.location.href = '/admin.html';
+          }
+        } catch (e) {}
+      }
+    })();
+  </script>
+</body>
+</html>

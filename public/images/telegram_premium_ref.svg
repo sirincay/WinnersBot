@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320">
+  <defs>
+    <linearGradient id="tgPremBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140727"/>
+      <stop offset="50%" stop-color="#2a0e4e"/>
+      <stop offset="100%" stop-color="#0e041c"/>
+    </linearGradient>
+    <linearGradient id="premPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e879f9"/>
+      <stop offset="50%" stop-color="#c026d3"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="starPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdf4ff"/>
+      <stop offset="40%" stop-color="#f0abfc"/>
+      <stop offset="100%" stop-color="#c026d3"/>
+    </linearGradient>
+    <filter id="tgPremGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="320" fill="url(#tgPremBg)"/>
+
+  <!-- Telegram Premium 3D Star Badge (Reference: LiveCards) -->
+  <g transform="translate(60, 45)" filter="url(#tgPremGlow)">
+    <!-- Deep Violet Disc -->
+    <circle cx="65" cy="65" r="60" fill="url(#premPurple)" stroke="#ffffff" stroke-width="2"/>
+    
+    <!-- 3D Telegram Purple Cosmic Star -->
+    <g transform="translate(65, 65)">
+      <!-- 5-Point Star -->
+      <polygon points="0,-42 12,-12 42,-10 18,12 25,42 0,24 -25,42 -18,12 -42,-10 -12,-12" fill="url(#starPurple)" stroke="#ffffff" stroke-width="1.5"/>
+      <!-- Star Facets -->
+      <polygon points="0,-42 0,24 12,-12" fill="#ffffff" opacity="0.6"/>
+      <polygon points="42,-10 0,24 18,12" fill="#7c3aed" opacity="0.5"/>
+      <polygon points="25,42 0,24 0,0" fill="#581c87" opacity="0.6"/>
+    </g>
+  </g>
+
+  <!-- Typography & Details (Right Side) -->
+  <g transform="translate(220, 50)">
+    <!-- Publisher Chip -->
+    <rect width="150" height="22" rx="4" fill="#000000" fill-opacity="0.6" stroke="#c026d3" stroke-width="1"/>
+    <text x="12" y="15" fill="#e879f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="900" letter-spacing="1.5">TELEGRAM FZ-LLC</text>
+
+    <!-- Main Title -->
+    <text x="0" y="65" fill="#ffffff" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">TELEGRAM</text>
+    <text x="210" y="65" fill="url(#premPurple)" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">PREMIUM</text>
+
+    <text x="2" y="95" fill="#f5d0fe" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" letter-spacing="1">SUBSCRIPTION DIGITAL GIFT CARD</text>
+
+    <!-- Gift Card Badge -->
+    <g transform="translate(0, 115)">
+      <rect width="210" height="34" rx="6" fill="#000000" fill-opacity="0.75" stroke="#c026d3" stroke-width="1.5"/>
+      <text x="16" y="22" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="800">💎 3 / 6 / 12 AYLIK ABUNƏLİK</text>
+    </g>
+  </g>
+
+  <!-- Bottom Footer Line -->
+  <line x1="40" y1="260" x2="560" y2="260" stroke="#c026d3" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="40" y="285" fill="#9ca3af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600">Avtomatik Aktivasiya Linki • Heç bir şifrə tələb olunmur</text>
+</svg>

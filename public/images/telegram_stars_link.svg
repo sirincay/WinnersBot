@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1329"/>
+      <stop offset="50%" stop-color="#142145"/>
+      <stop offset="100%" stop-color="#080c1a"/>
+    </linearGradient>
+
+    <!-- Telegram Circle Blue Gradient (Adobe Stock 533753588 style) -->
+    <linearGradient id="tgBlueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2aabee"/>
+      <stop offset="100%" stop-color="#229ed9"/>
+    </linearGradient>
+
+    <!-- 3D Gold Star Gradient -->
+    <linearGradient id="goldTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#fef08a"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+
+    <linearGradient id="goldDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ca8a04"/>
+      <stop offset="100%" stop-color="#854d0e"/>
+    </linearGradient>
+
+    <filter id="starGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="360" fill="url(#bgGrad)"/>
+
+  <!-- Radial Soft Glow in center -->
+  <circle cx="300" cy="180" r="140" fill="#2aabee" opacity="0.15" filter="url(#starGlow)"/>
+
+  <!-- Telegram Blue Disc Badge (Center) -->
+  <g transform="translate(300, 160)" filter="url(#starGlow)">
+    <circle cx="0" cy="0" r="95" fill="url(#tgBlueGrad)" stroke="#ffffff" stroke-width="4"/>
+    
+    <!-- White Paper Plane Silhouette behind the star -->
+    <path d="M-45 15 L45 -35 L10 40 L-10 15 Z" fill="#ffffff" opacity="0.25"/>
+
+    <!-- 3D Flying Gold Star (Adobe Stock 533753588) -->
+    <!-- 5-Point Faceted Star -->
+    <g transform="scale(1.35) rotate(-8)">
+      <!-- Base shape -->
+      <polygon points="0,-48 14,-14 48,-10 22,14 28,48 0,28 -28,48 -22,14 -48,-10 -14,-14" fill="url(#goldTop)" stroke="#ffffff" stroke-width="2"/>
+      
+      <!-- 3D Facet Shading -->
+      <polygon points="0,-48 0,28 14,-14" fill="#ffffff" opacity="0.65"/>
+      <polygon points="48,-10 0,28 22,14" fill="url(#goldDark)" opacity="0.6"/>
+      <polygon points="28,48 0,28 0,5" fill="#713f12" opacity="0.7"/>
+      <polygon points="-28,48 0,28 -22,14" fill="#a16207" opacity="0.5"/>
+      <polygon points="-48,-10 0,28 -14,-14" fill="#fde047" opacity="0.4"/>
+    </g>
+  </g>
+
+  <!-- Title Bottom Tag -->
+  <rect x="180" y="285" width="240" height="38" rx="8" fill="#000000" fill-opacity="0.8" stroke="#eab308" stroke-width="1.5"/>
+  <text x="300" y="309" fill="#ffffff" font-family="'Impact', 'Arial Black', sans-serif" font-size="16" font-weight="900" letter-spacing="2" text-anchor="middle">TELEGRAM STARS ⭐</text>
+</svg>

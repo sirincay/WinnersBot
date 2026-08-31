@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Environment secrets (Extremely sensitive!)
+.env
+.env.local
+.env.production
+
+# Database & SQLite files
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+database.sqlite
+backups/
+
+# Build outputs
+dist/
+
+# Uploads
+uploads/
+public/uploads/
+
+# OS and log files
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+build_errors.txt
+api_test.ts
+scratch/

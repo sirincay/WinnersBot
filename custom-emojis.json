@@ -1,0 +1,533 @@
+{
+  "_README": "Bu faylda botdakı BÜTÜN emojilərin siyahısı var. İstədiyiniz emojinin yanındakı 'custom_emoji_id' hissəsinə Telegram-dan aldığınız stiker ID-sini yazın. Boş ('') saxlasanız, standart təmiz emoji işləyəcək.",
+  "MAIN_MENU_HEADER": {
+    "name": "Ana Menyu Başlıq İkonu (WINNERS SHOP)",
+    "default": "🏛",
+    "custom_emoji_id": "5217822164362739968"
+  },
+  "PROFILE_USER": {
+    "name": "İstifadəçi / Müştəri Profili (Adınız)",
+    "default": "👤",
+    "custom_emoji_id": "5978769938330947487"
+  },
+  "TELEGRAM_ID": {
+    "name": "Telegram ID İkonu",
+    "default": "🆔",
+    "custom_emoji_id": "5319120041780726017"
+  },
+  "USERNAME_LINK": {
+    "name": "İstifadəçi Adı (@username) Link İkonu",
+    "default": "🔗",
+    "custom_emoji_id": "5188381825701021648"
+  },
+  "BALANCE_WALLET": {
+    "name": "Cari Balans / Pul / Cüzdan",
+    "default": "💳",
+    "custom_emoji_id": "5474641619317698626"
+  },
+  "MONEY_BAG": {
+    "name": "Məbləğ / Pul Torbası (Ödəniləcək Məbləğ)",
+    "default": "💰",
+    "custom_emoji_id": "5440539497383087970"
+  },
+  "TELEGRAM_CHANNEL": {
+    "name": "Rəsmi Telegram / Kanal",
+    "default": "✈️",
+    "custom_emoji_id": "5271801931814165886"
+  },
+  "WHATSAPP_SUPPORT": {
+    "name": "WhatsApp & Müştəri Dəstəyi",
+    "default": "💬",
+    "custom_emoji_id": "5271536803482981220"
+  },
+  "WORKING_HOURS": {
+    "name": "İş Rejimi / Saat (24/7 Fasiləsiz)",
+    "default": "⏰",
+    "custom_emoji_id": "5895592588064328942"
+  },
+  "FAQ_HELP": {
+    "name": "Tez-tez Verilən Suallar (FAQ & Kömək)",
+    "default": "❓",
+    "custom_emoji_id": "5330514439693152547"
+  },
+  "REVIEWS_RATING": {
+    "name": "Müştəri Rəyləri və Reytinq İkonu",
+    "default": "⭐",
+    "custom_emoji_id": "5884244133417067674"
+  },
+  "REFERRAL_FRIENDS": {
+    "name": "Dostunu Dəvət Et (Qazan / Referral)",
+    "default": "👥",
+    "custom_emoji_id": ""
+  },
+  "LANGUAGE_SELECT": {
+    "name": "Dil Seçimi Menyu İkonu",
+    "default": "🌐",
+    "custom_emoji_id": "5188381825701021648"
+  },
+  "SHIELD_SECURITY": {
+    "name": "Təhlükəsizlik və Zəmanət (Qalxan)",
+    "default": "🛡️",
+    "custom_emoji_id": "5789600753773451989"
+  },
+  "STATS_CHART": {
+    "name": "Statistika və Qrafik İkonu",
+    "default": "📊",
+    "custom_emoji_id": "5231200819986047254"
+  },
+  "GAMES_CATALOG": {
+    "name": "Oyunlar Kataloqu Başlıq İkonu",
+    "default": "🎮",
+    "custom_emoji_id": "6104654892905796078"
+  },
+  "LIGHTNING_FAST": {
+    "name": "İldırım / Ani Çatdırılma İkonu",
+    "default": "⚡",
+    "custom_emoji_id": "5785334962190293693"
+  },
+  "TARGET_PLAYER_ID": {
+    "name": "Oyunçu ID Daxiletmə İkonu",
+    "default": "🎯",
+    "custom_emoji_id": "5350427505805238170"
+  },
+  "GIFT_REDEEM": {
+    "name": "Hədiyyə Kartı / Promo Kod İkonu",
+    "default": "🎁",
+    "custom_emoji_id": "5785179664762805955"
+  },
+  "PACKAGE_BOX": {
+    "name": "Paket / Məhsul Qutusu İkonu",
+    "default": "📦",
+    "custom_emoji_id": "5453902265922376865"
+  },
+  "ORDER_CONFIRM": {
+    "name": "Sifariş Təsdiqi Başlığı",
+    "default": "📋",
+    "custom_emoji_id": "6014602790351936385"
+  },
+  "ORDER_HISTORY": {
+    "name": "Sifariş Tarixçəsi Başlığı",
+    "default": "📜",
+    "custom_emoji_id": "6014602790351936385"
+  },
+  "ORDERS_CART": {
+    "name": "Son Sifarişləriniz (Səbət)",
+    "default": "🛒",
+    "custom_emoji_id": "6014602790351936385"
+  },
+  "PUBG_MOBILE": {
+    "name": "PUBG Mobile Başlığı",
+    "default": "🔫",
+    "custom_emoji_id": "6104654892905796078"
+  },
+  "PUBG_AUTO": {
+    "name": "PUBG ID ilə Avtomatik Yükləmə",
+    "default": "⚡",
+    "custom_emoji_id": "5785334962190293693"
+  },
+  "PUBG_EPIN": {
+    "name": "PUBG E-Pin / Aktivasiya Kodu",
+    "default": "🎟️",
+    "custom_emoji_id": "5785179664762805955"
+  },
+  "TELEGRAM_STARS": {
+    "name": "Telegram Stars (Ulduzlar)",
+    "default": "⭐️",
+    "custom_emoji_id": "5952066863931331270"
+  },
+  "TELEGRAM_PREMIUM": {
+    "name": "Telegram Premium (Abunəlik)",
+    "default": "💎",
+    "custom_emoji_id": "6008060777771045457"
+  },
+  "ADMIN_CROWN": {
+    "name": "Admin / Developer Qızıl Tac İkonu",
+    "default": "👑",
+    "custom_emoji_id": "6008060777771045457"
+  },
+  "BRIEFCASE_PORTFOLIO": {
+    "name": "Portfolio / Sifariş Çantası",
+    "default": "💼",
+    "custom_emoji_id": "5453902265922376865"
+  },
+  "FREE_FIRE": {
+    "name": "Free Fire Almaz",
+    "default": "🔥",
+    "custom_emoji_id": "5427168083074628963"
+  },
+  "MOBILE_LEGENDS": {
+    "name": "Mobile Legends Almaz",
+    "default": "⚔️",
+    "custom_emoji_id": "5188264839381788929"
+  },
+  "ROBLOX": {
+    "name": "Roblox Robux",
+    "default": "🧱",
+    "custom_emoji_id": "5222099603897228689"
+  },
+  "STEAM": {
+    "name": "Steam Cüzdan Kodu",
+    "default": "🎮",
+    "custom_emoji_id": "5372817526801589587"
+  },
+  "GENSHIN": {
+    "name": "Genshin Impact Genesis Crystals",
+    "default": "✨",
+    "custom_emoji_id": ""
+  },
+  "POOL_8_BALL": {
+    "name": "8 Ball Pool",
+    "default": "🎱",
+    "custom_emoji_id": "5418138833457793454"
+  },
+  "ARENA_BREAKOUT": {
+    "name": "Arena Breakout",
+    "default": "🛡️",
+    "custom_emoji_id": ""
+  },
+  "ASPHALT": {
+    "name": "Asphalt Legends",
+    "default": "🏎️",
+    "custom_emoji_id": "5312084631946808779"
+  },
+  "AGE_OF_MAGIC": {
+    "name": "Age of Magic",
+    "default": "🔮",
+    "custom_emoji_id": ""
+  },
+  "VALORANT": {
+    "name": "Valorant VP",
+    "default": "🎯",
+    "custom_emoji_id": "5222380129686169202"
+  },
+  "BRAWL_STARS": {
+    "name": "Brawl Stars Gems",
+    "default": "⭐",
+    "custom_emoji_id": "5368399156505228697"
+  },
+  "NETFLIX": {
+    "name": "Netflix Hədiyyə Kartı",
+    "default": "🎬",
+    "custom_emoji_id": "5418026554422750284"
+  },
+  "BINANCE_PAY": {
+    "name": "Binance Pay (Kripto)",
+    "default": "🟡",
+    "custom_emoji_id": "5789439443391747533"
+  },
+  "USDT_TRC20": {
+    "name": "USDT (TRC20 Şəbəkəsi)",
+    "default": "🟢",
+    "custom_emoji_id": "5422625785791945449"
+  },
+  "USDT_BEP20": {
+    "name": "USDT (BEP20 / BSC Şəbəkəsi)",
+    "default": "🟡",
+    "custom_emoji_id": "5424722962488006915"
+  },
+  "EPIN_STOCK_IN": {
+    "name": "E-Pin Stokda Olan Məhsullar (Yaşıl)",
+    "default": "🟢",
+    "custom_emoji_id": "5852871561983299073"
+  },
+  "EPIN_STOCK_OUT": {
+    "name": "E-Pin Stokda Olmayan Məhsullar (Qırmızı)",
+    "default": "🔴",
+    "custom_emoji_id": "5399849634350768407"
+  },
+  "RECEIPT_BILL": {
+    "name": "Ödəniş Qəbzi İkonu",
+    "default": "🧾",
+    "custom_emoji_id": "6014602790351936385"
+  },
+  "PHOTO_CAMERA": {
+    "name": "Qəbz Şəkli Çəkmək / Göndərmək",
+    "default": "📷",
+    "custom_emoji_id": "6021462012037437193"
+  },
+  "PHONE_MOBILE": {
+    "name": "Mobil Nömrə İkonu",
+    "default": "📱",
+    "custom_emoji_id": "5319120041780726017"
+  },
+  "WRITE_EDIT": {
+    "name": "ID / Kod Daxil Etmək (Qələm)",
+    "default": "✍️",
+    "custom_emoji_id": "5350427505805238170"
+  },
+  "STATUS_SUCCESS": {
+    "name": "Uğurlu / Tamamlandı İkonu",
+    "default": "✅",
+    "custom_emoji_id": "5852871561983299073"
+  },
+  "STATUS_PENDING": {
+    "name": "Gözləmədə / Yoxlanılır İkonu",
+    "default": "⏳",
+    "custom_emoji_id": "5386367538735104399"
+  },
+  "STATUS_ERROR": {
+    "name": "Xəta / Ləğv Edildi İkonu",
+    "default": "❌",
+    "custom_emoji_id": "5852812849780362931"
+  },
+  "STATUS_WARNING": {
+    "name": "Xəbərdarlıq / Diqqət İkonu",
+    "default": "⚠️",
+    "custom_emoji_id": "5420323339723881652"
+  },
+  "SUCCESS_CELEBRATE": {
+    "name": "Uğurlu Giriş / Qeydiyyat Salütü",
+    "default": "🎉",
+    "custom_emoji_id": "5188614183431710025"
+  },
+  "NAV_HOME": {
+    "name": "Əsas Menyu Düyməsi",
+    "default": "🏠",
+    "custom_emoji_id": "5416041192905265756"
+  },
+  "NAV_BACK": {
+    "name": "Geri Qayıt Düyməsi",
+    "default": "🔙",
+    "custom_emoji_id": "5352759161945867747"
+  },
+  "NAV_WEB": {
+    "name": "Veb Mağazaya Keçid Düyməsi",
+    "default": "🌐",
+    "custom_emoji_id": "5188381825701021648"
+  },
+  "NAV_RELOAD": {
+    "name": "Yenidən Cəhd Et Düyməsi",
+    "default": "🔄",
+    "custom_emoji_id": "5373310679241466020"
+  },
+  "NAV_MORE": {
+    "name": "Daha Çox / Növbəti Səhifə Düyməsi (More / Next)",
+    "default": "➡️",
+    "custom_emoji_id": "5796664978542956370"
+  },
+  "NAV_PREV": {
+    "name": "Əvvəlki Səhifə Düyməsi (Prev Page)",
+    "default": "⬅️",
+    "custom_emoji_id": ""
+  },
+  "ADMIN_CROWN": {
+    "name": "Admin Paneli İkonu (Tac)",
+    "default": "👑",
+    "custom_emoji_id": "5217822164362739968"
+  },
+  "BE_THE_KING": {
+    "name": "Be The King",
+    "default": "👑",
+    "custom_emoji_id": "5415677800017323108"
+  },
+  "TIER_CROWN": {
+    "name": "Tac / VIP Paket İkonu",
+    "default": "👑",
+    "custom_emoji_id": "5217822164362739968"
+  },
+  "TIER_BOX": {
+    "name": "Qutu / Material İkonu",
+    "default": "📦",
+    "custom_emoji_id": "5453902265922376865"
+  },
+  "TIER_GIFT": {
+    "name": "Hədiyyə / Promo Paket İkonu",
+    "default": "🎁",
+    "custom_emoji_id": "5785179664762805955"
+  },
+  "TIER_BRONZE": {
+    "name": "Bürünc Paket İkonu (Kiçik paketlər)",
+    "default": "🥉",
+    "custom_emoji_id": "5453902265922376865"
+  },
+  "TIER_SILVER": {
+    "name": "Gümüş Paket İkonu (Orta paketlər)",
+    "default": "🥈",
+    "custom_emoji_id": "5447203607294265305"
+  },
+  "TIER_GOLD": {
+    "name": "Qızıl Paket İkonu (Böyük paketlər)",
+    "default": "🥇",
+    "custom_emoji_id": "5440539497383087970"
+  },
+  "TIER_DIAMOND": {
+    "name": "Almaz / Brilliant Paket İkonu",
+    "default": "💎",
+    "custom_emoji_id": "5427168083074628963"
+  },
+  "API_DOCS": {
+    "name": "WINNERS API & Sənədlər Düyməsi / İkonu",
+    "default": "🔌",
+    "custom_emoji_id": "5287480366330816274"
+  },
+  "API_KEY": {
+    "name": "X-API-KEY Token / Açar İkonu",
+    "default": "🔑",
+    "custom_emoji_id": ""
+  },
+  "API_REGEN": {
+    "name": "API Açarını Yeniləmə (Regenerate) İkonu",
+    "default": "🔄",
+    "custom_emoji_id": "5373310679241466020"
+  },
+  "DOCS_EXTERNAL": {
+    "name": "API Sənədləri (Docs) Link İkonu",
+    "default": "📖",
+    "custom_emoji_id": "5235851281725147393"
+  },
+  "BROADCAST_ANNOUNCE": {
+    "name": "Toplu Bildiriş / Elan İkonu",
+    "default": "📢",
+    "custom_emoji_id": "5789925998761875820"
+  },
+  "DISCORD_NITRO": {
+    "name": "Discord Nitro Abunəliyi İkonu",
+    "default": "💎",
+    "custom_emoji_id": ""
+  },
+  "SPOTIFY_PREMIUM": {
+    "name": "Spotify Premium İkonu",
+    "default": "🎵",
+    "custom_emoji_id": ""
+  },
+  "CALL_OF_DUTY": {
+    "name": "Call of Duty Mobile (CP) İkonu",
+    "default": "🎖️",
+    "custom_emoji_id": "5861559984470364755"
+  },
+  "DISCORD_GLOBAL": {
+    "name": "DISCORD_GLOBAL",
+    "default": "🔹",
+    "custom_emoji_id": "5300896830551254527"
+  },
+  "PUBG_MOBILE_AUTO": {
+    "name": "PUBG_MOBILE_AUTO",
+    "default": "🔹",
+    "custom_emoji_id": "6188163810352695433"
+  },
+  "AFK_JOURNEY": {
+    "name": "AFK_JOURNEY",
+    "default": "🔹",
+    "custom_emoji_id": "5415863316834709572"
+  },
+  "8_BALL_POOL": {
+    "name": "8_BALL_POOL",
+    "default": "🔹",
+    "custom_emoji_id": "5418138833457793454"
+  },
+  "BATTLEFIELDTM_2042_XBOX_BFC": {
+    "name": "BATTLEFIELDTM_2042_XBOX_BFC",
+    "default": "🔹",
+    "custom_emoji_id": "5370556235110176378"
+  },
+  "APP_STORE_ITUNES_US": {
+    "name": "APP_STORE_ITUNES_US",
+    "default": "🔹",
+    "custom_emoji_id": "5904702780634828027"
+  },
+  "CODM_GARENA_SGMY": {
+    "name": "CODM_GARENA_SGMY",
+    "default": "🔹",
+    "custom_emoji_id": "5024321088675382576"
+  },
+  "DELTA_FORCE": {
+    "name": "DELTA_FORCE",
+    "default": "🔹",
+    "custom_emoji_id": "5938036240862418061"
+  },
+  "DELTA_FORCE_STEAM_GLOBAL": {
+    "name": "DELTA_FORCE_STEAM_GLOBAL",
+    "default": "🔹",
+    "custom_emoji_id": "5938036240862418061"
+  },
+  "EA_SPORTS_FCTM_26_EA_POINTS": {
+    "name": "EA_SPORTS_FCTM_26_EA_POINTS",
+    "default": "🔹",
+    "custom_emoji_id": "5931457282972848918"
+  },
+  "EAFC_MOBILE_ID": {
+    "name": "EAFC_MOBILE_ID",
+    "default": "🔹",
+    "custom_emoji_id": "5931457282972848918"
+  },
+  "EPIC_GAMES_US": {
+    "name": "EPIC_GAMES_US",
+    "default": "🔹",
+    "custom_emoji_id": "5190877923254492865"
+  },
+  "FREE_FIRE_EU": {
+    "name": "FREE_FIRE_EU",
+    "default": "🔹",
+    "custom_emoji_id": "5472057595193743789"
+  },
+  "GARENA_FREE_FIRE_GLOBAL": {
+    "name": "GARENA_FREE_FIRE_GLOBAL",
+    "default": "🔹",
+    "custom_emoji_id": "5472057595193743789"
+  },
+  "MOBILE_LEGENDS_GLOBAL": {
+    "name": "MOBILE_LEGENDS_GLOBAL",
+    "default": "🔹",
+    "custom_emoji_id": "5330146988061122262"
+  },
+  "NETFLIX_US": {
+    "name": "NETFLIX_US",
+    "default": "🔹",
+    "custom_emoji_id": "5418026554422750284"
+  },
+  "POINT_BLANK_ID": {
+    "name": "POINT_BLANK_ID",
+    "default": "🔹",
+    "custom_emoji_id": "5301288922410670386"
+  },
+  "SPOTIFY_US": {
+    "name": "SPOTIFY_US",
+    "default": "🔹",
+    "custom_emoji_id": "6008235948012211945"
+  },
+  "FREE_FIRE_CIS": {
+    "name": "FREE_FIRE_CIS",
+    "default": "🔹",
+    "custom_emoji_id": "5472057595193743789"
+  },
+  "PUBG_MOBILE_EPIN": {
+    "name": "PUBG_MOBILE_EPIN",
+    "default": "🔹",
+    "custom_emoji_id": "5357194239665000219"
+  },
+  "PUBG_MOBILE_WEB": {
+    "name": "PUBG_MOBILE_WEB",
+    "default": "🔹",
+    "custom_emoji_id": "5357194239665000219"
+  },
+  "VALORANT_TR": {
+    "name": "VALORANT_TR",
+    "default": "🔹",
+    "custom_emoji_id": "5427355030116133014"
+  },
+  "MOBILE_LEGENDS_DIRECT": {
+    "name": "MOBILE_LEGENDS_DIRECT",
+    "default": "🔹",
+    "custom_emoji_id": "5330146988061122262"
+  },
+  "TELEGRAM_PREMIUM_GIFT": {
+    "name": "TELEGRAM_PREMIUM_GIFT",
+    "default": "🔹",
+    "custom_emoji_id": "5249148968625002018"
+  },
+  "DATE_CALENDAR": {
+    "name": "Tarix / Təqvim İkonu (📅)",
+    "default": "📅",
+    "custom_emoji_id": "5274055917766202507"
+  },
+  "PIN_STATUS": {
+    "name": "Status / Qeyd / Pin İkonu (📌)",
+    "default": "📌",
+    "custom_emoji_id": "5789782521084385229"
+  },
+  "ROBLOX_GLOBAL": {
+    "name": "ROBLOX_GLOBAL",
+    "default": "🔹",
+    "custom_emoji_id": "5222099603897228689"
+  }
+}

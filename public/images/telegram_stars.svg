@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320">
+  <defs>
+    <linearGradient id="tgStarsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1929"/>
+      <stop offset="50%" stop-color="#132742"/>
+      <stop offset="100%" stop-color="#08101a"/>
+    </linearGradient>
+    <linearGradient id="tgBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2aabee"/>
+      <stop offset="100%" stop-color="#229ed9"/>
+    </linearGradient>
+    <linearGradient id="goldStar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="30%" stop-color="#fde047"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <filter id="tgStarGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="320" fill="url(#tgStarsBg)"/>
+
+  <!-- Telegram Flying Gold Star Emblem (Reference: Adobe Stock 533753588) -->
+  <g transform="translate(60, 45)" filter="url(#tgStarGlow)">
+    <circle cx="65" cy="65" r="60" fill="url(#tgBlue)" stroke="#ffffff" stroke-width="2"/>
+    <g transform="translate(65, 65)">
+      <polygon points="0,-42 12,-12 42,-10 18,12 25,42 0,24 -25,42 -18,12 -42,-10 -12,-12" fill="url(#goldStar)" stroke="#ffffff" stroke-width="1.5"/>
+      <polygon points="0,-42 0,24 12,-12" fill="#fffbeb" opacity="0.6"/>
+      <polygon points="42,-10 0,24 18,12" fill="#ca8a04" opacity="0.4"/>
+      <polygon points="25,42 0,24 0,0" fill="#a16207" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Typography & Details (Right Side) -->
+  <g transform="translate(220, 50)">
+    <rect width="150" height="22" rx="4" fill="#000000" fill-opacity="0.6" stroke="#fde047" stroke-width="1"/>
+    <text x="12" y="15" fill="#fde047" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="900" letter-spacing="1.5">TELEGRAM FZ-LLC</text>
+
+    <text x="0" y="65" fill="#ffffff" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">TELEGRAM</text>
+    <text x="210" y="65" fill="url(#goldStar)" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">STARS</text>
+
+    <text x="2" y="95" fill="#bae6fd" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" letter-spacing="1">RƏSMİ TELEGRAM ULDUZLARI (STARS)</text>
+
+    <g transform="translate(0, 115)">
+      <rect width="210" height="34" rx="6" fill="#000000" fill-opacity="0.75" stroke="#fde047" stroke-width="1.5"/>
+      <polygon points="22,11 25,18 33,18 27,23 29,30 22,25 15,30 17,23 11,18 19,18" fill="url(#goldStar)"/>
+      <text x="40" y="22" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="800">TELEGRAM ULDUZ (STARS)</text>
+    </g>
+  </g>
+
+  <line x1="40" y1="260" x2="560" y2="260" stroke="#fde047" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="40" y="285" fill="#9ca3af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600">İstifadəçi Adı və ya Kanal Linki ilə Ani Hədiyyə Göndərilməsi</text>
+</svg>

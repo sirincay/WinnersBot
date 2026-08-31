@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- 
+  ========================================================================
+      _   _ _   _  _____ _   _ _   _ _____ _____ _____ _   _ 
+     | | | | | | |/  ___| \ | | | | |_   _|  ___/  __ \ | | |
+     | |_| | | | |\ `--.|  \| | | | | | | | |__ | /  \/ |_| |
+     |  _  | | | | `--. \ . ` | | | | | | |  __|| |   |  _  |
+     | | | | |_| |/\__/ / |\  | |_| | | | | |___| \__/\ | | |
+     \_| |_/\___/ \____/\_| \_/\___/  \_/ \____/ \____/\_| |_/
+                                                             
+     (c) Engineered by @HUSNUTECH
+  ========================================================================
+-->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Winners B2B Gateway — Enterprise Reseller Portal & Sandbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #06080f;
+      --bg-surface: #0b0f19;
+      --bg-card: #101625;
+      --bg-card-hover: #151d30;
+      --bg-input: #080c16;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.12);
+      --border-cyan: rgba(0, 242, 254, 0.4);
+      --primary: #00f2fe;
+      --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #0284c7 100%);
+      --emerald: #10b981;
+      --emerald-subtle: rgba(16, 185, 129, 0.12);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Yuxarı Qlobal Başlıq */
+    .portal-header {
+      background: rgba(11, 15, 25, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-logo-shield {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #06080f;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+    }
+
+    .brand-title-wrap h1 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .env-badge {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 1px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .brand-title-wrap p {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.5px;
+    }
+
+    /* Başlıq Naviqasiya və İdarəetmə */
+    .header-nav-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .view-switcher-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn.active {
+      background: #0284c7;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+    }
+
+    .balance-card-pill {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 10px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .balance-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: #34d399;
+      font-family: var(--font-mono);
+    }
+
+    .btn-action-topup {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-action-topup:hover { background: #10b981; color: #06080f; }
+
+    /* Əsas Konteyner */
+    .portal-main {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Müəssisə Statistika Banneri */
+    .enterprise-stats-ribbon {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .stat-ribbon-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-ribbon-meta span {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-ribbon-meta h4 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-mono);
+      margin-top: 2px;
+    }
+
+    .stat-icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    /* Mağaza Bölməsi */
+    .catalog-controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-pill-btn:hover, .filter-pill-btn.active {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .search-field-wrap {
+      position: relative;
+      min-width: 280px;
+    }
+
+    .search-box-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px 9px 36px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box-input:focus { border-color: var(--primary); }
+
+    .search-icon-svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    /* Məhsullar Şəbəkəsi */
+    .products-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .game-product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-product-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 242, 254, 0.45);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.15);
+      background: var(--bg-card-hover);
+    }
+
+    .game-icon-frame {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      color: var(--primary);
+    }
+
+    .game-card-info h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .game-card-info code {
+      font-size: 11px;
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+
+    .game-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: auto;
+    }
+
+    .pill-type-tag {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 5px;
+    }
+    .tag-topup { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-giftcard { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .btn-select-catalog {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Əməliyyat Jurnalı Cədvəli */
+    .ledger-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ledger-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ledger-title-bar h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .table-responsive-box {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .enterprise-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .enterprise-data-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .enterprise-data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+
+    .status-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-pill-completed { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .status-pill-processing { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .status-pill-failed { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
+    /* =========================================================================
+       CHECKOUT MODAL
+       ========================================================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-card {
+      background: #0d1322;
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 242, 254, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlideUp {
+      0% { opacity: 0; transform: scale(0.96) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header-bar {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .modal-game-headline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-close-svg {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.15s;
+    }
+    .btn-close-svg:hover { color: #fff; background: rgba(255,255,255,0.12); }
+
+    .modal-body-scroll {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .packages-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .package-item-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .package-item-btn:hover {
+      border-color: rgba(0, 242, 254, 0.4);
+      background: rgba(0, 242, 254, 0.05);
+    }
+
+    .package-item-btn.selected {
+      border-color: var(--primary);
+      background: rgba(0, 242, 254, 0.12);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+    }
+
+    .pkg-title { font-size: 13px; font-weight: 700; color: #fff; }
+    .pkg-price-tag { font-size: 14px; font-weight: 800; color: #34d399; font-family: var(--font-mono); }
+
+    .validation-card {
+      background: #060911;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-flex-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .form-text-input {
+      flex: 1;
+      background: #0d1322;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 14px;
+      font-family: var(--font-mono);
+      outline: none;
+    }
+    .form-text-input:focus { border-color: var(--primary); }
+
+    .btn-lookup-uid {
+      background: var(--primary-gradient);
+      color: #06080f;
+      border: none;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .btn-lookup-uid:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .lookup-status-box {
+      font-size: 12.5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: none;
+    }
+    .lookup-success { display: block; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .lookup-error { display: block; background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    .margin-calc-summary {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .margin-calc-summary .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-footer-bar {
+      padding: 18px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-execute-order {
+      background: var(--primary-gradient);
+      color: #06080f;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-execute-order:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 242, 254, 0.5); }
+    .btn-execute-order:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Uğurlu Qəbz Sahəsi */
+    .receipt-box-card {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pin-display-banner {
+      background: #020617;
+      border: 1px dashed rgba(16, 185, 129, 0.5);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Xam API Konsol Görünüşü */
+    #viewRawConsole {
+      display: none;
+      grid-template-columns: 340px 1fr;
+      flex: 1;
+      height: calc(100vh - 71px);
+      overflow: hidden;
+    }
+
+    .raw-console-sidebar {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .raw-console-main {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      background: var(--bg-base);
+      overflow: hidden;
+    }
+
+    .raw-console-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .raw-json-viewer {
+      background: #02040a;
+      padding: 20px;
+      overflow: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    /* SVG İkon Köməkçiləri */
+    .svg-icon-standard {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+
+    /* Mobil Uyğunlaşma */
+    @media (max-width: 1024px) {
+      .enterprise-stats-ribbon {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .raw-console-split {
+        grid-template-columns: 1fr;
+      }
+      #viewRawConsole {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .portal-header { padding: 12px 16px; flex-wrap: wrap; }
+      .enterprise-stats-ribbon { grid-template-columns: 1fr; }
+      .products-catalog-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .packages-selection-grid { grid-template-columns: 1fr; }
+      .modal-card { border-radius: 16px; margin: 10px; }
+      .modal-body-scroll { padding: 16px; }
+    }
+  </style>
+
+
+
+</head>
+<body>
+
+  <!-- Qlobal Yuxarı Başlıq -->
+  <header class="portal-header">
+    <a href="/" class="brand-section">
+      <div class="brand-logo-shield">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </div>
+      <div class="brand-title-wrap">
+        <h1>WINNERS GATEWAY <span class="env-badge">SANDBOX B2B</span></h1>
+        <p>RESELLER DEMO &amp; API TEST SUITE</p>
+      </div>
+    </a>
+
+    <!-- Görünüş Dəyişdiricisi -->
+    <div class="view-switcher-pill">
+      <button class="view-btn active" id="btnTabStorefront" onclick="switchPortalView('storefront')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        Reseller Storefront
+      </button>
+      <button class="view-btn" id="btnTabConsole" onclick="switchPortalView('console')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        Developer Console
+      </button>
+    </div>
+
+    <!-- Satıcı Balansı və Linklər -->
+    <div class="header-nav-group">
+      <div class="balance-card-pill">
+        <div>
+          <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Sandbox Wallet (USD)</div>
+          <div class="balance-val" id="topResellerBalanceDisplay">$ 500.00</div>
+        </div>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn-action-topup" onclick="addSandboxBalanceUsd(50)">+$50</button>
+          <button class="btn-action-topup" onclick="addSandboxBalanceUsd(100)">+$100</button>
+        </div>
+      </div>
+
+      <a href="/docs.html" target="_blank" class="filter-pill-btn" style="padding: 7px 14px; font-size: 12.5px; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); color: #fff;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        API Documentation
+      </a>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: STOREFRONT SIMULATION
+       ========================================================================= -->
+  <main class="portal-main" id="viewStorefront">
+    
+    <!-- Müəssisə Statistikaları Lenti -->
+    <section class="enterprise-stats-ribbon">
+      <div class="stat-ribbon-card">
+        <div class="stat-ribbon-meta">
+          <span>Orders Processed</span>
+          <h4 id="statTotalOrdersVal">0</h4>
+        </div>
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="stat-ribbon-card">
+        <div class="stat-ribbon-meta">
+          <span>Gross Volume (USD)</span>
+          <h4 id="statTotalSpentVal">$ 0.00</h4>
+        </div>
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+      </div>
+
+      <div class="stat-ribbon-card">
+        <div class="stat-ribbon-meta">
+          <span>API Uptime &amp; SLA</span>
+          <h4 style="color: #34d399;">99.98%</h4>
+        </div>
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+        </div>
+      </div>
+
+      <div class="stat-ribbon-card">
+        <div class="stat-ribbon-meta">
+          <span>Environment Mode</span>
+          <h4 style="color: var(--primary);">0-Risk Sandbox</h4>
+        </div>
+        <div class="stat-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kataloq Paneli -->
+    <div class="catalog-controls-bar">
+      <div class="filter-btn-group">
+        <button class="filter-pill-btn active" onclick="filterStoreCatalog('all', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          All Games &amp; Digital Cards
+        </button>
+        <button class="filter-pill-btn" onclick="filterStoreCatalog('topup', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Direct UID Top-Up
+        </button>
+        <button class="filter-pill-btn" onclick="filterStoreCatalog('giftcard', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+          E-Pins &amp; Gift Cards
+        </button>
+      </div>
+
+      <div class="search-field-wrap">
+        <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="catalogSearchInput" class="search-box-input" placeholder="Search products, vouchers or digital cards..." oninput="onSearchCatalog(this.value)">
+      </div>
+    </div>
+
+    <!-- Məhsullar Şəbəkəsi -->
+    <div class="products-catalog-grid" id="productsCatalogGrid">
+      <!-- JavaScript vasitəsilə daxil edilir -->
+    </div>
+
+    <!-- Sifarişlər Jurnalı -->
+    <div class="ledger-container">
+      <div class="ledger-title-bar">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Real-time Reseller Order Ledger
+        </h3>
+        <span style="font-size: 12px; color: var(--text-dim);" id="ordersCounterLabel">0 transactions</span>
+      </div>
+
+      <div class="table-responsive-box">
+        <table class="enterprise-data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product &amp; Package</th>
+              <th>Player UID / Digital PIN</th>
+              <th>Charged (USD)</th>
+              <th>Status</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-dim); padding: 32px;">
+                No orders recorded yet. Select any product above to start testing live!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       VIEW 2: RAW CONSOLE INSPECTOR
+       ========================================================================= -->
+  <div id="viewRawConsole">
+    <aside class="raw-console-sidebar">
+      <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">
+        API Endpoints
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <button class="filter-pill-btn active" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('getme', this)">
+          <code>GET</code> /getMe
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('categories', this)">
+          <code>GET</code> /categories
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('offers', this)">
+          <code>GET</code> /offers
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('validate', this)">
+          <code>POST</code> /validate-player-id
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('topup', this)">
+          <code>POST</code> /orders/topup
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('giftcard', this)">
+          <code>POST</code> /orders/giftcard
+        </button>
+        <button class="filter-pill-btn" style="width: 100%; justify-content: flex-start;" onclick="selectRawEndpoint('user_orders', this)">
+          <code>GET</code> /user-orders
+        </button>
+      </div>
+    </aside>
+
+    <main class="raw-console-main">
+      <div style="padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="env-badge" id="rawMethodBadge">GET</span>
+          <span style="font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-mono);" id="rawUrlDisplay">/api/v1/getMe</span>
+        </div>
+        <button class="btn-execute-order" style="padding: 8px 18px; font-size: 12.5px;" onclick="executeRawApiRequest()">
+          ▶ Send Request
+        </button>
+      </div>
+
+      <div class="raw-console-split">
+        <div style="padding: 20px; border-right: 1px solid var(--border); overflow-y: auto;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; display: block;">Request Payload (JSON):</label>
+          <textarea id="rawPayloadInput" style="width: 100%; height: 220px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; color: #fff; font-family: var(--font-mono); font-size: 13px; outline: none;"></textarea>
+        </div>
+        <div class="raw-json-viewer" id="rawJsonResponseBox">// Live JSON response will appear here...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       CHECKOUT & PLAYER ID VALIDATION MODAL
+       ========================================================================= -->
+  <div class="modal-overlay" id="checkoutModalOverlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <div class="modal-game-headline">
+          <div class="game-icon-frame" id="modalGameIconFrame">
+            <svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <div>
+            <h3 id="modalGameTitleText">PUBG Mobile Auto</h3>
+            <span style="font-size: 11px; color: var(--primary); font-family: var(--font-mono);" id="modalCategoryIdCode">pubg_mobile_auto</span>
+          </div>
+        </div>
+        <button class="btn-close-svg" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <div class="modal-body-scroll">
+        <!-- 1. Paketlər -->
+        <div>
+          <label style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block;">
+            1. Select Package:
+          </label>
+          <div class="packages-selection-grid" id="modalPackagesGrid">
+            <!-- JS vasitəsilə doldurulur -->
+          </div>
+        </div>
+
+        <!-- 2. Oyunçu ID Təsdiqi (Birbaşa ID Top-Upları üçün) -->
+        <div id="modalTopupSection">
+          <label style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block;">
+            2. Live In-Game Account Verification (UID Lookup):
+          </label>
+          <div class="validation-card">
+            <div class="input-flex-row">
+              <input type="text" id="modalPlayerIdInput" class="form-text-input" placeholder="Enter Player UID (e.g. 5123456789)" value="5123456789">
+              <button class="btn-lookup-uid" onclick="triggerPlayerIdLookup()">Verify UID</button>
+            </div>
+            <div id="modalLookupResultBadge" class="lookup-status-box"></div>
+          </div>
+        </div>
+
+        <!-- 2. Hədiyyə Kartı Sayı (E-Pinlər üçün) -->
+        <div id="modalGiftcardSection" style="display: none;">
+          <label style="font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block;">
+            2. Quantity (Vouchers Count):
+          </label>
+          <input type="number" id="modalGiftcardCountInput" class="form-text-input" value="1" min="1" max="20" onchange="recalculateModalMargin()">
+        </div>
+
+        <!-- Marja və Qiymət Kartı -->
+        <div class="margin-calc-summary">
+          <div class="row">
+            <span style="color: var(--text-dim);">Reseller Wholesale Cost:</span>
+            <strong style="color: #fff; font-family: var(--font-mono);" id="modalCostDisplay">$ 0.00</strong>
+          </div>
+          <div class="row">
+            <span style="color: var(--text-dim);">Recommended Retail Price (MSRP):</span>
+            <span style="color: #38bdf8; font-family: var(--font-mono);" id="modalRetailDisplay">$ 0.00</span>
+          </div>
+          <div class="row" style="border-top: 1px solid var(--border); padding-top: 6px; margin-top: 4px;">
+            <span style="color: #34d399; font-weight: 700;">Estimated Net Margin:</span>
+            <strong style="color: #34d399; font-family: var(--font-mono);" id="modalProfitDisplay">+$ 0.00 (25%)</strong>
+          </div>
+        </div>
+
+        <!-- Nəticə Qəbzi Bölməsi -->
+        <div id="modalOrderReceiptBox" style="display: none;">
+          <div class="receipt-box-card">
+            <div style="display: flex; align-items: center; gap: 8px; color: #34d399; font-weight: 800;">
+              <span>ORDER SUCCESSFULLY FULFILLED</span>
+            </div>
+            <div id="receiptDetailsText" style="font-size: 12.5px; color: var(--text-muted); line-height: 1.6;"></div>
+            <div id="receiptPinBanner" style="display: none;" class="pin-display-banner">
+              <span id="deliveredPinText">EPIN-XXXX-XXXX</span>
+              <button class="btn-action-topup" onclick="copyDeliveredPinCode()">Copy PIN</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer-bar">
+        <div>
+          <span style="font-size: 11px; color: var(--text-dim);">Amount Charged:</span>
+          <div style="font-size: 19px; font-weight: 900; color: #34d399; font-family: var(--font-mono);" id="modalFinalPriceText">$ 0.00</div>
+        </div>
+        <button class="btn-execute-order" id="btnExecutePurchase" onclick="executeModalOrder()">
+          <span>Place Order via API</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let globalApiKey = '';
+    let allCategories = [];
+    let activeCategory = null;
+    let selectedPackage = null;
+    let currentCatalogFilter = 'all';
+    const USD_AZN_EXCHANGE_RATE = 1.70;
+
+    // Realistik Vektor Brend SVG-ləri (Emoji Olmadan)
+    const BRAND_SVGS = {
+      telegram_premium_gift: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2L2 9.5l7 3.5 3 7 3-5 6.5 2z"></path><path d="M9 13l12.5-11"></path></svg>`,
+      pubg_mobile_auto: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>`,
+      pubg_mobile_web: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`,
+      pubg_mobile_epin: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>`,
+      free_fire_cis: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
+      free_fire_id: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
+      mobile_legends_global: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+      mobile_legends_direct: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+      brawl_stars: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+      clash_of_clans: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`,
+      steam_wallet_global: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>`,
+      steam_tl: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>`,
+      app_store_itunes_us: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.94c1.88 0 3.05-.88 4.22-.88 1.15 0 2.18.88 4.06.88 2.06 0 3.72-2.18 4.72-4.12-2.38-1.12-3.1-4.12-1.38-5.88-1.5-2.06-4-2.22-4.94-2.22-1.88 0-3.28 1-4.22 1-.94 0-2.34-.94-3.84-.94-2.4 0-4.66 1.5-5.91 3.75-2.5 4.38-.66 10.94 1.78 14.44.88 1.25 1.94 2.66 3.51 2.66z"></path><path d="M15.5 2c-.6 1.4-2.1 2.4-3.5 2.2.3-1.4 1.8-2.6 3.5-2.2z"></path></svg>`,
+      app_store_itunes_tr: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20.94c1.88 0 3.05-.88 4.22-.88 1.15 0 2.18.88 4.06.88 2.06 0 3.72-2.18 4.72-4.12-2.38-1.12-3.1-4.12-1.38-5.88-1.5-2.06-4-2.22-4.94-2.22-1.88 0-3.28 1-4.22 1-.94 0-2.34-.94-3.84-.94-2.4 0-4.66 1.5-5.91 3.75-2.5 4.38-.66 10.94 1.78 14.44.88 1.25 1.94 2.66 3.51 2.66z"></path><path d="M15.5 2c-.6 1.4-2.1 2.4-3.5 2.2.3-1.4 1.8-2.6 3.5-2.2z"></path></svg>`,
+      google_play_us: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`,
+      google_play_tr: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`,
+      playstation_psn_us: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="4"></rect><path d="M6 12h4M8 10v4M15 10l3 4M18 10l-3 4"></path></svg>`,
+      playstation_psn_tr: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="4"></rect><path d="M6 12h4M8 10v4M15 10l3 4M18 10l-3 4"></path></svg>`,
+      xbox_global: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 8l8 8M16 8l-8 8"></path></svg>`,
+      roblox_global: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" transform="rotate(15 12 12)"></rect></svg>`,
+      valorant_tr: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 16L20 4"></path></svg>`,
+      valorant_us: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 16L20 4"></path></svg>`,
+      netflix_us: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16l8-16v16l8-16v16"></path></svg>`,
+      netflix_tr: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16l8-16v16l8-16v16"></path></svg>`,
+      spotify_premium: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11.5c3-1 6-.5 8.5 1M7.5 14.5c2.5-.8 5-.4 7 1M9 8.5c3.5-1 7-.5 10 1"></path></svg>`,
+      discord_nitro: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="4"></rect><circle cx="8.5" cy="12" r="1.5"></circle><circle cx="15.5" cy="12" r="1.5"></circle></svg>`,
+      razer_gold_global: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>`,
+      default: `<svg class="svg-icon-standard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`
+    };
+
+    function getBrandSvg(catId) {
+      return BRAND_SVGS[catId] || BRAND_SVGS.default;
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await fetchInitialToken();
+      await refreshWalletBalance();
+      await loadStoreCategories();
+      await fetchRecentOrderLedger();
+    });
+
+    async function fetchInitialToken() {
+      try {
+        const res = await fetch('/api/v1/demo-token');
+        const data = await res.json();
+        if (data.ok && data.apiKey) {
+          globalApiKey = data.apiKey;
+        }
+      } catch (e) {
+        console.error('Token fetch error:', e);
+      }
+    }
+
+    async function refreshWalletBalance() {
+      try {
+        const res = await fetch('/api/v1/getMe', {
+          headers: { 'X-API-KEY': globalApiKey }
+        });
+        const data = await res.json();
+        if (data.ok && data.account) {
+          const usdBal = (data.account.balance_azn / USD_AZN_EXCHANGE_RATE).toFixed(2);
+          document.getElementById('topResellerBalanceDisplay').innerText = `$ ${usdBal}`;
+          if (data.api_key_info) {
+            document.getElementById('statTotalOrdersVal').innerText = data.api_key_info.total_orders || 0;
+            const spentUsd = ((data.api_key_info.total_spent_azn || 0) / USD_AZN_EXCHANGE_RATE).toFixed(2);
+            document.getElementById('statTotalSpentVal').innerText = `$ ${spentUsd}`;
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function addSandboxBalanceUsd(amountUsd) {
+      try {
+        const amountAzn = amountUsd * USD_AZN_EXCHANGE_RATE;
+        const res = await fetch('/api/v1/demo-add-balance', {
+          method: 'POST',
+          headers: {
+            'X-API-KEY': globalApiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ amount: amountAzn })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          const newUsd = (data.balance / USD_AZN_EXCHANGE_RATE).toFixed(2);
+          document.getElementById('topResellerBalanceDisplay').innerText = `$ ${newUsd}`;
+        }
+      } catch (e) {}
+    }
+
+    async function loadStoreCategories() {
+      try {
+        const res = await fetch('/api/v1/categories', {
+          headers: { 'X-API-KEY': globalApiKey }
+        });
+        const data = await res.json();
+        if (data.ok && data.categories) {
+          allCategories = data.categories;
+          renderProductCards();
+        }
+      } catch (e) {}
+    }
+
+    function renderProductCards() {
+      const grid = document.getElementById('productsCatalogGrid');
+      const searchVal = document.getElementById('catalogSearchInput').value.toLowerCase().trim();
+
+      const list = allCategories.filter(c => {
+        const matchType = currentCatalogFilter === 'all' || c.type === currentCatalogFilter;
+        const matchSearch = !searchVal || c.name.toLowerCase().includes(searchVal) || c.category_id.toLowerCase().includes(searchVal);
+        return matchType && matchSearch;
+      });
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px;">No products found matching criteria.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(c => {
+        const iconSvg = getBrandSvg(c.category_id);
+        return `
+          <div class="game-product-card" onclick="openCheckoutModal('${c.category_id}')">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="game-icon-frame">${iconSvg}</div>
+              <span class="pill-type-tag ${c.type === 'topup' ? 'tag-topup' : 'tag-giftcard'}">
+                ${c.type === 'topup' ? 'Direct UID' : 'Digital E-Pin'}
+              </span>
+            </div>
+            <div class="game-card-info">
+              <h3>${c.name}</h3>
+              <code>${c.category_id}</code>
+            </div>
+            <div class="game-card-footer">
+              <span style="font-size: 11px; color: var(--text-dim);">● Instant API</span>
+              <span class="btn-select-catalog">Packages ↗</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterStoreCatalog(type, btn) {
+      currentCatalogFilter = type;
+      document.querySelectorAll('.filter-pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProductCards();
+    }
+
+    function onSearchCatalog() {
+      renderProductCards();
+    }
+
+    // Modal Əməliyyatları
+    async function openCheckoutModal(catId) {
+      const cat = allCategories.find(c => c.category_id === catId);
+      if (!cat) return;
+
+      activeCategory = cat;
+      selectedPackage = null;
+
+      document.getElementById('modalGameIconFrame').innerHTML = getBrandSvg(cat.category_id);
+      document.getElementById('modalGameTitleText').innerText = cat.name;
+      document.getElementById('modalCategoryIdCode').innerText = cat.category_id;
+      document.getElementById('modalOrderReceiptBox').style.display = 'none';
+      document.getElementById('modalLookupResultBadge').className = 'lookup-status-box';
+      document.getElementById('btnExecutePurchase').disabled = true;
+
+      const isTopup = cat.type === 'topup';
+      document.getElementById('modalTopupSection').style.display = isTopup ? 'block' : 'none';
+      document.getElementById('modalGiftcardSection').style.display = isTopup ? 'none' : 'block';
+
+      const pkgBox = document.getElementById('modalPackagesGrid');
+      pkgBox.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 20px;">Loading live wholesale rates...</div>`;
+
+      document.getElementById('checkoutModalOverlay').classList.add('open');
+
+      try {
+        const res = await fetch(`/api/v1/offers?category_id=${encodeURIComponent(cat.category_id)}`, {
+          headers: { 'X-API-KEY': globalApiKey }
+        });
+        const data = await res.json();
+        if (data.ok && data.offers && data.offers.length > 0) {
+          pkgBox.innerHTML = data.offers.map((o, idx) => {
+            const priceUsd = o.price_usd ? o.price_usd : (o.price_azn / USD_AZN_EXCHANGE_RATE);
+            return `
+              <button class="package-item-btn ${idx === 0 ? 'selected' : ''}" onclick="onSelectPackageItem('${o.offer_id}', ${priceUsd}, ${o.price_azn}, this)">
+                <span class="pkg-title">${o.name}</span>
+                <span class="pkg-price-tag">$ ${priceUsd.toFixed(2)}</span>
+              </button>
+            `;
+          }).join('');
+
+          const first = data.offers[0];
+          const firstUsd = first.price_usd ? first.price_usd : (first.price_azn / USD_AZN_EXCHANGE_RATE);
+          onSelectPackageItem(first.offer_id, firstUsd, first.price_azn, pkgBox.children[0]);
+        } else {
+          pkgBox.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--rose); padding: 20px;">No packages available.</div>`;
+        }
+      } catch (e) {
+        pkgBox.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--rose);">Connection error.</div>`;
+      }
+    }
+
+    function onSelectPackageItem(offerId, priceUsd, priceAzn, el) {
+      selectedPackage = { offerId, priceUsd, priceAzn };
+      document.querySelectorAll('.package-item-btn').forEach(b => b.classList.remove('selected'));
+      if (el) el.classList.add('selected');
+
+      recalculateModalMargin();
+      document.getElementById('btnExecutePurchase').disabled = false;
+    }
+
+    function recalculateModalMargin() {
+      if (!selectedPackage) return;
+      const count = parseInt(document.getElementById('modalGiftcardCountInput')?.value, 10) || 1;
+      const isGift = activeCategory && activeCategory.type ==='giftcard';
+      const multiplier = isGift ? count : 1;
+
+      const unitCost = selectedPackage.priceUsd;
+      const totalCost = unitCost * multiplier;
+      const retail = totalCost * 1.25;
+      const profit = totalCost * 0.25;
+
+      document.getElementById('modalCostDisplay').innerText = `$ ${totalCost.toFixed(2)}`;
+      document.getElementById('modalRetailDisplay').innerText = `$ ${retail.toFixed(2)}`;
+      document.getElementById('modalProfitDisplay').innerText = `+$ ${profit.toFixed(2)} (25%)`;
+      document.getElementById('modalFinalPriceText').innerText = `$ ${totalCost.toFixed(2)}`;
+    }
+
+    async function triggerPlayerIdLookup() {
+      const pId = document.getElementById('modalPlayerIdInput').value.trim();
+      const badge = document.getElementById('modalLookupResultBadge');
+
+      if (!pId) {
+        badge.className = 'lookup-status-box lookup-error';
+        badge.innerText = 'Please enter a Player UID.';
+        return;
+      }
+
+      badge.className = 'lookup-status-box lookup-success';
+      badge.innerText = 'Querying live player account...';
+
+      try {
+        const res = await fetch('/api/v1/validate-player-id', {
+          method: 'POST',
+          headers: {
+            'X-API-KEY': globalApiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            category_id: activeCategory.category_id,
+            player_id: pId,
+            sandbox: true
+          })
+        });
+        const data = await res.json();
+        if (data.ok && data.username) {
+          badge.className = 'lookup-status-box lookup-success';
+          badge.innerText = `Verified In-Game Account: "${data.username}"`;
+        } else {
+          badge.className = 'lookup-status-box lookup-error';
+          badge.innerText = `Lookup failed: ${data.error || 'Account not found.'}`;
+        }
+      } catch (e) {
+        badge.className = 'lookup-status-box lookup-error';
+        badge.innerText = 'Error: UID lookup service unavailable.';
+      }
+    }
+
+    async function executeModalOrder() {
+      if (!selectedPackage || !activeCategory) return;
+
+      const btn = document.getElementById('btnExecutePurchase');
+      btn.disabled = true;
+      btn.innerHTML = 'Processing Order...';
+
+      const isTopup = activeCategory.type === 'topup';
+      let endpoint = isTopup ? '/api/v1/orders/topup' : '/api/v1/orders/giftcard';
+      let payload = {
+        category_id: activeCategory.category_id,
+        offer_id: selectedPackage.offerId,
+        sandbox: true
+      };
+
+      if (isTopup) {
+        payload.player_id = document.getElementById('modalPlayerIdInput').value.trim() || '5123456789';
+      } else {
+        payload.count = parseInt(document.getElementById('modalGiftcardCountInput').value, 10) || 1;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'X-API-KEY': globalApiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        btn.disabled = false;
+        btn.innerHTML = 'Place Order via API';
+
+        if (data.ok) {
+          if (data.remaining_balance_usd !== undefined) {
+            document.getElementById('topResellerBalanceDisplay').innerText = '$ ' + parseFloat(data.remaining_balance_usd).toFixed(2);
+          }
+          await refreshWalletBalance();
+          await fetchRecentOrderLedger();
+
+          const count = payload.count || 1;
+          const chargedUsd = data.charged_amount_usd ? data.charged_amount_usd.toFixed(2) : (selectedPackage.priceUsd * count).toFixed(2);
+
+          document.getElementById('modalOrderReceiptBox').style.display = 'block';
+          document.getElementById('receiptDetailsText').innerHTML = `
+            Order Reference: <b style="color: var(--primary); font-family: var(--font-mono);">${data.order_id || 'SUCCESSFUL'}</b><br>
+            Amount Charged: <b>$ ${chargedUsd} USD</b><br>
+            Remaining Balance: <b style="color: #34d399;">$ ${data.remaining_balance_usd ? data.remaining_balance_usd.toFixed(2) : '...'} USD</b><br>
+            Environment: <span style="color: var(--primary);">0-Risk Sandbox (Zero Provider Deductions)</span>
+          `;
+
+          if (data.codes && data.codes.length > 0) {
+            document.getElementById('receiptPinBanner').style.display = 'flex';
+            document.getElementById('deliveredPinText').innerText = data.codes.join(', ');
+          } else {
+            document.getElementById('receiptPinBanner').style.display = 'none';
+          }
+        } else {
+          alert(`Order Error: ${data.error || 'Unknown error'}`);
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.innerHTML = 'Place Order via API';
+        alert('Connection error with the server.');
+      }
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModalOverlay').classList.remove('open');
+    }
+
+    function copyDeliveredPinCode() {
+      const code = document.getElementById('deliveredPinText').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('Digital PIN code copied to clipboard!');
+      });
+    }
+
+    async function fetchRecentOrderLedger() {
+      try {
+        const res = await fetch('/api/v1/user-orders?limit=15', {
+          headers: { 'X-API-KEY': globalApiKey }
+        });
+        const data = await res.json();
+        if (data.ok && data.orders) {
+          const tbody = document.getElementById('ordersTableBody');
+          document.getElementById('ordersCounterLabel').innerText = `${data.orders.length} transactions`;
+
+          if (data.orders.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 32px;">No transactions recorded yet.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = data.orders.map(o => {
+            const usdPrice = (o.price_azn / USD_AZN_EXCHANGE_RATE).toFixed(2);
+            return `
+              <tr>
+                <td><b style="color: var(--primary); font-family: var(--font-mono);">${o.id}</b></td>
+                <td><b>${o.category_name}</b><br><span style="font-size: 11px; color: var(--text-dim);">${o.offer_name}</span></td>
+                <td>${o.player_id ? `<code style="color: #38bdf8;">${o.player_id}</code>` : (o.delivered_codes ? `<code style="color: #34d399;">${o.delivered_codes.join(', ')}</code>` : '—')}</td>
+                <td><strong style="color: #fff; font-family: var(--font-mono);">$ ${usdPrice}</strong></td>
+                <td><span class="status-pill ${o.status === 'completed' ? 'status-pill-completed' : (o.status === 'failed' ? 'status-pill-failed' : 'status-pill-processing')}">${o.status.toUpperCase()}</span></td>
+                <td style="color: var(--text-dim); font-size: 11.5px;">${new Date(o.created_at).toLocaleTimeString('en-US', { hour12: false })}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (e) {}
+    }
+
+    function switchPortalView(view) {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      if (view === 'storefront') {
+        document.getElementById('btnTabStorefront').classList.add('active');
+        document.getElementById('viewStorefront').style.display = 'flex';
+        document.getElementById('viewRawConsole').style.display = 'none';
+      } else {
+        document.getElementById('btnTabConsole').classList.add('active');
+        document.getElementById('viewStorefront').style.display = 'none';
+        document.getElementById('viewRawConsole').style.display = 'grid';
+        selectRawEndpoint('getme');
+      }
+    }
+
+    // Xam Konsol Məntiqi
+    let currentRawEndpointKey = 'getme';
+    function selectRawEndpoint(epKey, el) {
+      currentRawEndpointKey = epKey;
+      document.querySelectorAll('.raw-console-sidebar .filter-pill-btn').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const endpoints = {
+        getme: { method: 'GET', url: '/api/v1/getMe', payload: '' },
+        categories: { method: 'GET', url: '/api/v1/categories', payload: '' },
+        offers: { method: 'GET', url: '/api/v1/offers?category_id=pubg_mobile_auto', payload: '' },
+        validate: { method: 'POST', url: '/api/v1/validate-player-id', payload: JSON.stringify({ category_id: 'pubg_mobile_auto', player_id: '5123456789', sandbox: true }, null, 2) },
+        topup: { method: 'POST', url: '/api/v1/orders/topup', payload: JSON.stringify({ category_id: 'pubg_mobile_auto', offer_id: '60_uc', player_id: '5123456789', sandbox: true }, null, 2) },
+        giftcard: { method: 'POST', url: '/api/v1/orders/giftcard', payload: JSON.stringify({ category_id: 'pubg_mobile_epin', offer_id: '60_uc_pin', count: 1, sandbox: true }, null, 2) },
+        user_orders: { method: 'GET', url: '/api/v1/user-orders', payload: '' }
+      };
+
+      const ep = endpoints[epKey];
+      document.getElementById('rawMethodBadge').innerText = ep.method;
+      document.getElementById('rawUrlDisplay').innerText = ep.url;
+      document.getElementById('rawPayloadInput').value = ep.payload;
+    }
+
+    async function executeRawApiRequest() {
+      const box = document.getElementById('rawJsonResponseBox');
+      box.innerText = '// Dispatching HTTP request...';
+
+      try {
+        let url = document.getElementById('rawUrlDisplay').innerText;
+        let method = document.getElementById('rawMethodBadge').innerText;
+        let payloadText = document.getElementById('rawPayloadInput').value.trim();
+
+        let options = {
+          method,
+          headers: {
+            'X-API-KEY': globalApiKey,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        if (method === 'POST' && payloadText) {
+          options.body = payloadText;
+        }
+
+        const res = await fetch(url, options);
+        const data = await res.json();
+        box.innerText = JSON.stringify(data, null, 2);
+      } catch (e) {
+        box.innerText = `// Error: ${e.message}`;
+      }
+    }
+  </script>
+</body>
+</html>

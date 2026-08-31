@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320">
+  <defs>
+    <linearGradient id="ffBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#180b05"/>
+      <stop offset="50%" stop-color="#2c1106"/>
+      <stop offset="100%" stop-color="#0e0603"/>
+    </linearGradient>
+    <linearGradient id="ffGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb703"/>
+      <stop offset="50%" stop-color="#fb8500"/>
+      <stop offset="100%" stop-color="#d90429"/>
+    </linearGradient>
+    <linearGradient id="ffOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff7900"/>
+      <stop offset="100%" stop-color="#d90429"/>
+    </linearGradient>
+    <filter id="ffGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="320" fill="url(#ffBg)"/>
+  
+  <!-- Subtle Battle Flare Effect -->
+  <circle cx="300" cy="140" r="160" fill="#fb8500" opacity="0.12" filter="url(#ffGlow)"/>
+
+  <!-- Official Free Fire Rounded Square Icon (Reference: Vecteezy 67565504) -->
+  <g transform="translate(60, 45)" filter="url(#ffGlow)">
+    <rect width="130" height="130" rx="28" fill="url(#ffOrange)" stroke="#ffb703" stroke-width="2.5"/>
+    <path d="M40 30 L95 30 L75 55 L90 55 L55 105 L65 65 L45 65 Z" fill="#ffffff"/>
+    <path d="M40 30 L65 30 L50 65 L40 65 Z" fill="#ffb703" opacity="0.4"/>
+  </g>
+
+  <!-- Typography & Details (Right Side) -->
+  <g transform="translate(220, 50)">
+    <rect width="90" height="22" rx="4" fill="#000000" fill-opacity="0.6" stroke="#fb8500" stroke-width="1"/>
+    <text x="12" y="15" fill="#fb8500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="900" letter-spacing="1.5">GARENA</text>
+
+    <text x="0" y="65" fill="#ffffff" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">FREE</text>
+    <text x="105" y="65" fill="url(#ffGold)" font-family="'Impact', 'Arial Black', sans-serif" font-size="38" font-weight="900" letter-spacing="2">FIRE</text>
+
+    <text x="2" y="95" fill="#fdba74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="800" letter-spacing="1">BATTLE ROYALE • BOOYAH PASS</text>
+
+    <g transform="translate(0, 115)">
+      <rect width="210" height="34" rx="6" fill="#000000" fill-opacity="0.75" stroke="#38bdf8" stroke-width="1.5"/>
+      <polygon points="22,8 32,17 22,27 12,17" fill="#38bdf8"/>
+      <text x="40" y="22" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="800">FREE FIRE DIAMONDS</text>
+    </g>
+  </g>
+
+  <line x1="40" y1="260" x2="560" y2="260" stroke="#fb8500" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="40" y="285" fill="#9ca3af" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600">CIS &amp; Global Server • 3 Saniyəyə Ani Avtomatik ID Yükləməsi</text>
+</svg>
