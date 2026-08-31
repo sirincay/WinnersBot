@@ -52,7 +52,7 @@ export const ru: TranslationStrings = {
   pubgAutoDesc: 'Моментальный донат по ID',
   pubgEpinDesc: 'E-Pin ваучер / Код активации',
   pubgWebDesc: 'Web Purchase (Оператор)',
-  pubgCardDesc: 'Покупка UC Card (Лучшая Цена)',
+  pubgCardDesc: 'Покупка UC Card (Оператор)',
   pubgCardInfo: 'Получите UC Card коды по лучшей цене. Доставка оператором в течение 5–10 минут.',
   enterPlayerId: 'ВВЕДИТЕ ID ИГРОКА\n\n✍️ <i>Пожалуйста, отправьте ID игрока в этот чат:</i>',
   invalidPlayerId: 'Неверный формат ID игрока! ID должен состоять из 8-12 цифр.',

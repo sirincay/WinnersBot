@@ -52,7 +52,7 @@ export const tr: TranslationStrings = {
   pubgAutoDesc: 'ID ile Otomatik Yükleme (Anında)',
   pubgEpinDesc: 'E-Pin / Dijital Kod (Redeem)',
   pubgWebDesc: 'Web Purchase (Operatör)',
-  pubgCardDesc: 'UC Card Satın Alma (En Uygun)',
+  pubgCardDesc: 'UC Card Satın Alma (Operatör)',
   pubgCardInfo: 'En uygun fiyatla UC Card kodu alın. Operatör tarafından 5–10 dakika içinde teslim edilir.',
   enterPlayerId: 'OYUNCU ID’SİNİ GİRİN\n\n✍️ <i>Lütfen yükleme yapılacak Oyuncu ID’sini (Player ID) sohbete gönderin:</i>',
   invalidPlayerId: 'Geçersiz Oyuncu ID formatı! ID yalnızca 8-12 rakamdan oluşmalıdır.',
