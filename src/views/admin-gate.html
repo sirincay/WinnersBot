@@ -271,9 +271,12 @@
         const data = await res.json();
 
         if (data.ok && data.token) {
-          // Tokeni cookie və localStorage-da saxla
-          document.cookie = 'admin_token=' + data.token + '; path=/; max-age=2592000; SameSite=Lax';
+          // Tokeni cookie və localStorage/sessionStorage-da tam saxla
+          document.cookie = 'admin_token=' + encodeURIComponent(data.token) + '; path=/; max-age=2592000; SameSite=Lax';
           localStorage.setItem('admin_token', data.token);
+          localStorage.setItem('winners_admin_token', data.token);
+          sessionStorage.setItem('admin_token', data.token);
+          sessionStorage.setItem('winners_admin_token', data.token);
 
           alertBox.className = 'alert-msg alert-success';
           alertBox.innerText = '✅ Uğurla daxil oldunuz! Admin Paneli açılır...';

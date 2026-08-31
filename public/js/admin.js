@@ -1,4 +1,27 @@
-let adminToken = localStorage.getItem('winners_admin_token') || sessionStorage.getItem('winners_admin_token') || '';
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : '';
+}
+
+let adminToken = localStorage.getItem('admin_token') || sessionStorage.getItem('admin_token') || localStorage.getItem('winners_admin_token') || sessionStorage.getItem('winners_admin_token') || getCookie('admin_token') || '';
+
+function saveAdminToken(token) {
+  adminToken = token;
+  localStorage.setItem('admin_token', token);
+  sessionStorage.setItem('admin_token', token);
+  localStorage.setItem('winners_admin_token', token);
+  sessionStorage.setItem('winners_admin_token', token);
+  document.cookie = 'admin_token=' + encodeURIComponent(token) + '; path=/; max-age=2592000; SameSite=Lax';
+}
+
+function clearAdminToken() {
+  adminToken = '';
+  localStorage.removeItem('admin_token');
+  sessionStorage.removeItem('admin_token');
+  localStorage.removeItem('winners_admin_token');
+  sessionStorage.removeItem('winners_admin_token');
+  document.cookie = 'admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+}
 
 // Saxlanmış XSS-nin qarşısını almaq üçün Yüksək Təhlükəsizlik HTML Təmizləmə Köməkçisi (VULN-02 Fix)
 function escapeHtml(str) {
@@ -100,9 +123,7 @@ async function checkAdminAuth() {
       loadAllAdminData();
       return true;
     } else {
-      adminToken = '';
-      localStorage.removeItem('winners_admin_token');
-      sessionStorage.removeItem('winners_admin_token');
+      clearAdminToken();
       if (gate) gate.style.display = 'flex';
       return false;
     }
@@ -137,11 +158,10 @@ async function handleAdminLogin(e) {
     const data = await res.json();
 
     if (data.ok && data.token) {
-      adminToken = data.token;
-      localStorage.setItem('winners_admin_token', adminToken);
-      sessionStorage.setItem('winners_admin_token', adminToken);
+      saveAdminToken(data.token);
 
-      document.getElementById('adminAuthGate').style.display = 'none';
+      const gate = document.getElementById('adminAuthGate');
+      if (gate) gate.style.display = 'none';
       passInput.value = '';
       loadAllAdminData();
     } else {
@@ -176,9 +196,7 @@ async function handleAdminLogout(notify = true) {
     }
   } catch (e) {}
 
-  adminToken = '';
-  localStorage.removeItem('winners_admin_token');
-  sessionStorage.removeItem('winners_admin_token');
+  clearAdminToken();
 
   const gate = document.getElementById('adminAuthGate');
   if (gate) {
