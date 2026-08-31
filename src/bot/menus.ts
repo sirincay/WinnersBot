@@ -362,7 +362,7 @@ export function getOffersKeyboard(categoryId: string, offers: FazerOffer[], page
     const icon = getOfferIcon(categoryId, off.name, off.offer_id);
     const customEmojiId = getOfferCustomEmojiId(categoryId, off.name, off.offer_id);
     const stock = typeof off.stock === 'number' ? off.stock : (parseInt(String(off.stock ?? ''), 10) || 0);
-    const isOutOfStock = (off as any).in_stock === false || (off as any).status === 'inactive' || (typeof off.stock === 'number' && off.stock <= 0) || (isEpin && stock <= 0);
+    const isOutOfStock = (off as any).in_stock === false || (off as any).status === 'inactive' || (isEpin && stock <= 0);
 
     // Stok bitibsə: Qırmızı Emoji ilə deaktiv 'Stokda Yoxdur' düyməsi göstər
     if (isOutOfStock) {
