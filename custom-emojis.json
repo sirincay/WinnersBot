@@ -83,7 +83,7 @@
   "LIGHTNING_FAST": {
     "name": "İldırım / Ani Çatdırılma İkonu",
     "default": "⚡",
-    "custom_emoji_id": "5785334962190293693"
+    "custom_emoji_id": "6023726576493925831"
   },
   "TARGET_PLAYER_ID": {
     "name": "Oyunçu ID Daxiletmə İkonu",
@@ -123,7 +123,7 @@
   "PUBG_AUTO": {
     "name": "PUBG ID ilə Avtomatik Yükləmə",
     "default": "⚡",
-    "custom_emoji_id": "5785334962190293693"
+    "custom_emoji_id": "6023726576493925831"
   },
   "PUBG_EPIN": {
     "name": "PUBG E-Pin / Aktivasiya Kodu",

@@ -626,10 +626,10 @@ export function createBot(): Bot {
       return;
     }
 
-    // Xüsusi / Premium Emoji Detektoru (Admin və ya İstifadəçilər üçün)
+    // Xüsusi / Premium Emoji Detektoru (YALNIZ Adminlər üçün)
     const customEntities = (ctx.message.entities || []).filter(e => e.type === 'custom_emoji');
 
-    if (customEntities.length > 0 && state.step === 'idle') {
+    if (customEntities.length > 0 && state.step === 'idle' && isUserAdmin(ctx.from.id)) {
       let report = `💎 <b>PREMİUM EMOJİ AŞKARLANDI!</b>\n\n`;
       customEntities.forEach((ent, i) => {
         const customId = (ent as any).custom_emoji_id;
@@ -1744,7 +1744,7 @@ export function createBot(): Bot {
       const devKeyboard = {
         inline_keyboard: [
           [makeUrlBtn('WhatsApp: +994 77 211 70 11', 'https://wa.me/994772117011', getCustomEmojiId('WHATSAPP_SUPPORT') || '5271536803482981220', '💬')],
-          [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
+          [makeUrlBtn('Telegram: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '6023726576493925831', '⚡')],
         ]
       };
 
@@ -1762,7 +1762,7 @@ export function createBot(): Bot {
       const storeKeyboard = {
         inline_keyboard: [
           [makeUrlBtn('🛒 Bota Keç və Sifariş Et', `https://t.me/${config.botUsername || 'WS_StoreBot'}`, getCustomEmojiId('GAMES_CATALOG') || '5994703708653361268', '🎮')],
-          [makeUrlBtn('⚡ Canlı Əlaqə: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '5785334962190293693', '⚡')],
+          [makeUrlBtn('⚡ Canlı Əlaqə: @HusnuTech', 'https://t.me/HusnuTech', getCustomEmojiId('LIGHTNING_FAST') || '6023726576493925831', '⚡')],
         ]
       };
 
