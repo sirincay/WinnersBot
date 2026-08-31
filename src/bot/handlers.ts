@@ -34,7 +34,7 @@ import { config } from '../config/config.js';
 
 
 export interface UserState {
-  step: 'idle' | 'awaiting_player_id' | 'awaiting_binance_amount' | 'awaiting_binance_id' | 'awaiting_m10_receipt' | 'awaiting_card_receipt' | 'awaiting_broadcast_text' | 'awaiting_review_comment' | 'awaiting_game_search' | 'awaiting_user_direct_msg';
+  step: 'idle' | 'awaiting_player_id' | 'awaiting_binance_amount' | 'awaiting_binance_id' | 'awaiting_m10_receipt' | 'awaiting_card_receipt' | 'awaiting_broadcast_text' | 'awaiting_review_comment' | 'awaiting_game_search' | 'awaiting_user_direct_msg' | 'awaiting_admin_user_search' | 'awaiting_admin_order_search';
   extra?: {
     targetTgId?: string;
     [key: string]: any;

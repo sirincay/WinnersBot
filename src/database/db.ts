@@ -439,16 +439,32 @@ export function getAllAdminTelegramIds(): string[] {
 }
 
 export function findUserByQuery(query: string): (UserRecord & { total_spent?: number; orders_count?: number }) | undefined {
-  const clean = query.trim().replace(/^@/, '');
+  if (!query) return undefined;
+  let clean = query.trim().replace(/^@/, '').replace(/^(?:id|tg|telegram|user)[:\s]*/i, '').trim();
   if (!clean) return undefined;
 
   let user: UserRecord | undefined;
-  if (/^\d+$/.test(clean)) {
-    user = db.prepare(`SELECT * FROM users WHERE telegram_id = ? OR id = ?`).get(clean, Number(clean)) as UserRecord | undefined;
+
+  // 1. Birbaşa Telegram ID və ya daxili ID ilə axtar
+  const digitMatch = clean.match(/\b\d{4,15}\b/);
+  const potentialId = digitMatch ? digitMatch[0] : (/^\d+$/.test(clean) ? clean : null);
+
+  if (potentialId) {
+    user = db.prepare(`SELECT * FROM users WHERE telegram_id = ? OR id = ? LIMIT 1`).get(potentialId, Number(potentialId)) as UserRecord | undefined;
   }
+
+  // 2. İstifadəçi adı (Username) ilə dəqiq axtar (@ işarəsiz və ya ilə)
   if (!user) {
-    user = db.prepare(`SELECT * FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(first_name) LIKE LOWER(?) LIMIT 1`).get(clean, `%${clean}%`) as UserRecord | undefined;
+    const rawUsername = clean.replace(/^@/, '').trim();
+    user = db.prepare(`SELECT * FROM users WHERE LOWER(username) = LOWER(?) LIMIT 1`).get(rawUsername) as UserRecord | undefined;
   }
+
+  // 3. Ad (First Name) və ya Username hissəvi axtarışı
+  if (!user) {
+    const rawUsername = clean.replace(/^@/, '').trim();
+    user = db.prepare(`SELECT * FROM users WHERE LOWER(username) LIKE LOWER(?) OR LOWER(first_name) LIKE LOWER(?) LIMIT 1`).get(`%${rawUsername}%`, `%${rawUsername}%`) as UserRecord | undefined;
+  }
+
   if (!user) return undefined;
 
   const agg = db.prepare(`

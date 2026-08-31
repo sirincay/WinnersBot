@@ -512,9 +512,18 @@ export function createBot(): Bot {
   // 1. Admin İstifadəçi Axtarışı və İdarəedilməsi: /user <tg_id və ya @username>
   bot.command(['user', 'istifadeci', 'musteri'], async (ctx) => {
     if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
-    const query = (ctx.match || '').toString().trim();
-    if (!query) {
-      await ctx.reply('⚠️ İstifadə qaydası: <code>/user TELEGRAM_ID</code> və ya <code>/user @username</code>\nMəsələn: <code>/user 1108583389</code> və ya <code>/user @elmir</code>', { parse_mode: 'HTML' });
+    let query = (ctx.match || '').toString().trim();
+    if (!query || query.toLowerCase().includes('və ya') || query.toLowerCase() === 'id' || query.toLowerCase() === '@username') {
+      setUserState(ctx.from.id, { step: 'awaiting_admin_user_search' });
+      await ctx.reply(
+        `🔍 <b>İSTİFADƏÇİ AXTARIŞI</b>\n\n` +
+        `Axtarmaq istədiyiniz müştərinin <b>Telegram ID</b> və ya <b>@istifadəçi_adı</b>-nı bu çata göndərin:\n\n` +
+        `<i>Məsələn: <code>1108583389</code> və ya <code>@username</code></i>`,
+        {
+          parse_mode: 'HTML',
+          reply_markup: new InlineKeyboard().text('❌ Ləğv Et', 'adm_refresh_stats')
+        }
+      );
       return;
     }
     return handleAdminUserSearch(ctx, query);
@@ -523,9 +532,18 @@ export function createBot(): Bot {
   // 2. Admin Sifariş Axtarışı və İdarəedilməsi: /order <order_id>
   bot.command(['order', 'sifaris', 'sifariş'], async (ctx) => {
     if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
-    const query = (ctx.match || '').toString().trim();
-    if (!query) {
-      await ctx.reply('⚠️ İstifadə qaydası: <code>/order SİFARİŞ_ID</code>\nMəsələn: <code>/order ORD-195336</code>', { parse_mode: 'HTML' });
+    let query = (ctx.match || '').toString().trim();
+    if (!query || query.toLowerCase().includes('sifariş_id') || query.toLowerCase().includes('sifaris_id')) {
+      setUserState(ctx.from.id, { step: 'awaiting_admin_order_search' });
+      await ctx.reply(
+        `🧾 <b>SİFARİŞ AXTARIŞI</b>\n\n` +
+        `Axtarmaq istədiyiniz <b>Sifariş ID</b>-ni bu çata göndərin:\n\n` +
+        `<i>Məsələn: <code>ORD-195336</code> və ya <code>#ORD-195336</code></i>`,
+        {
+          parse_mode: 'HTML',
+          reply_markup: new InlineKeyboard().text('❌ Ləğv Et', 'adm_refresh_stats')
+        }
+      );
       return;
     }
     return handleAdminOrderSearch(ctx, query);
@@ -579,6 +597,18 @@ export function createBot(): Bot {
     // Sleş komandalarını kəsmə
     if (text.startsWith('/')) {
       return next();
+    }
+
+    // Admin İstifadəçi Axtarışı Mətni
+    if (state.step === 'awaiting_admin_user_search' && isUserAdmin(ctx.from.id)) {
+      clearUserState(ctx.from.id);
+      return handleAdminUserSearch(ctx, text);
+    }
+
+    // Admin Sifariş Axtarışı Mətni
+    if (state.step === 'awaiting_admin_order_search' && isUserAdmin(ctx.from.id)) {
+      clearUserState(ctx.from.id);
+      return handleAdminOrderSearch(ctx, text);
     }
 
     // Admindən İstifadəçiyə Birbaşa Mesaj

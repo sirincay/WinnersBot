@@ -66,6 +66,8 @@ export async function handleAdminCommand(ctx: Context) {
     `• <code>/setmargin 15</code> — Qazanc faizini dəyişmək`;
 
   const kb = new InlineKeyboard()
+    .text('👤 İstifadəçi Axtar', 'adm_prompt_user_search')
+    .text('🧾 Sifariş Axtar', 'adm_prompt_order_search').row()
     .text('📊 Günlük Hesabat', 'adm_view_report')
     .text('🎮 Oyun İdarəsi (Toggle)', 'adm_view_game_toggles').row()
     .text('📢 Toplu Mesaj', 'adm_prompt_broadcast')
@@ -406,6 +408,38 @@ export async function handleAdminCallbacks(ctx: Context) {
       {
         parse_mode: 'HTML',
         reply_markup: new InlineKeyboard().text('❌ Ləğv Et', 'adm_cancel_broadcast'),
+      }
+    );
+    return;
+  }
+
+  if (data === 'adm_prompt_user_search') {
+    await ctx.answerCallbackQuery();
+    const { setUserState } = await import('./handlers.js');
+    setUserState(ctx.from.id, { step: 'awaiting_admin_user_search' });
+    await ctx.reply(
+      `🔍 <b>İSTİFADƏÇİ AXTARIŞI</b>\n\n` +
+      `Axtarmaq istədiyiniz müştərinin <b>Telegram ID</b> və ya <b>@istifadəçi_adı</b>-nı bu çata göndərin:\n\n` +
+      `<i>Məsələn: <code>1108583389</code> və ya <code>@username</code></i>`,
+      {
+        parse_mode: 'HTML',
+        reply_markup: new InlineKeyboard().text('❌ Ləğv Et', 'adm_refresh_stats'),
+      }
+    );
+    return;
+  }
+
+  if (data === 'adm_prompt_order_search') {
+    await ctx.answerCallbackQuery();
+    const { setUserState } = await import('./handlers.js');
+    setUserState(ctx.from.id, { step: 'awaiting_admin_order_search' });
+    await ctx.reply(
+      `🧾 <b>SİFARİŞ AXTARIŞI</b>\n\n` +
+      `Axtarmaq istədiyiniz <b>Sifariş ID</b>-ni bu çata göndərin:\n\n` +
+      `<i>Məsələn: <code>ORD-195336</code> və ya <code>#ORD-195336</code></i>`,
+      {
+        parse_mode: 'HTML',
+        reply_markup: new InlineKeyboard().text('❌ Ləğv Et', 'adm_refresh_stats'),
       }
     );
     return;
