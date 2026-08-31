@@ -2007,18 +2007,20 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
   app.get('/api/admin/fazer/all-catalog', requireAdminAuth, async (req, res) => {
     try {
       const { topups, giftcards } = await fazerCardsService.fetchAllCategories();
-      const addedCats = getAllApiCategories();
+      const addedCats = getAllApiCategories() || [];
       const addedMap = new Map(addedCats.map(c => [c.category_id, c]));
 
-      const processList = (list: typeof topups, type: 'topup' | 'giftcard') => {
+      const processList = (list: typeof topups = [], type: 'topup' | 'giftcard') => {
+        if (!Array.isArray(list)) return [];
         return list.map(item => {
+          if (!item) return null;
           const added = addedMap.get(item.category_id);
           const isPlaypin = item.category_id === 'pubg_mobile_epin' || 
                             item.category_id === 'pubg_mobile_web' || 
                             (item.note && item.note.includes('PlayPin'));
           return {
             category_id: item.category_id,
-            name: item.name,
+            name: item.name || item.category_id,
             note: item.note || '',
             type,
             provider: isPlaypin ? 'playpin' : 'fazercards',
@@ -2027,16 +2029,20 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
             is_active: added ? added.is_active : 0,
             icon: added ? added.icon : (isPlaypin ? '🎮' : '⚡')
           };
-        });
+        }).filter(Boolean);
       };
+
+      const topupList = processList(topups, 'topup');
+      const giftcardList = processList(giftcards, 'giftcard');
 
       res.json({
         ok: true,
-        topups: processList(topups, 'topup'),
-        giftcards: processList(giftcards,'giftcard'),
-        total_count: topups.length + giftcards.length
+        topups: topupList,
+        giftcards: giftcardList,
+        total_count: topupList.length + giftcardList.length
       });
     } catch (e: any) {
+      console.error('all-catalog error:', e);
       res.status(500).json({ ok: false, error: e.message });
     }
   });
