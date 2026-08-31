@@ -179,9 +179,9 @@ function togglePasswordVisibility(inputId, btn) {
   }
 }
 
-window.handleAdminLogin = handleAdminLogin;
-window.handleAdminLogout = handleAdminLogout;
-window.togglePasswordVisibility = togglePasswordVisibility;
+if (typeof handleAdminLogin !== 'undefined') window.handleAdminLogin = handleAdminLogin;
+if (typeof handleAdminLogout !== 'undefined') window.handleAdminLogout = handleAdminLogout;
+if (typeof togglePasswordVisibility !== 'undefined') window.togglePasswordVisibility = togglePasswordVisibility;
 
 async function handleChangePassword(e) {
   e.preventDefault();
@@ -526,8 +526,8 @@ async function loadBotAnalyticsData() {
 // MÜƏSSİSƏ STATİSTİKASI, SATIŞ DİNAMİK QRAFİKİ VƏ TELEMETRİYA
 // =========================================================================
 
-let currentSalesChartInstance = null;
-let currentChartDays = 7;
+var currentSalesChartInstance = null;
+var currentChartDays = 7;
 
 async function fetchStats() {
   try {
