@@ -438,52 +438,17 @@ export function createServer() {
     next();
   });
 
-  // 🛡️ Qorunan Admin Panel Marşrutu — Server Səviyyəsində Qoruma və Sıfır İctimai Görünüş
+  // 🛡️ Qorunan Admin Panel Marşrutu — Server Səviyyəsində Qoruma və Şifrə Giriş Qapısı
   app.get(['/admin.html', '/admin', '/admin-panel', '/panel-admin'], (req, res) => {
-    const cleanIp = getClientIp(req);
     const isAuth = isRequestAuthorizedAdmin(req);
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
 
     if (isAuth) {
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
       return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin.html'));
     }
 
-    // 🚨 İCAZƏSİZ GİRİŞ CƏHDİ — Log Kanalına bildiriş göndər
-    loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
-      ip: cleanIp,
-      endpoint: req.originalUrl,
-      userAgent: req.headers['user-agent'] as string,
-      reason: 'Vebsaytda Admin hesabı ilə daxil olmadan /admin.html səhifəsinə müraciət edildi (404 qaytarıldı)'
-    });
-
-    // Saytda admin olaraq login olmayan kənar şəxslərə heç bir şifrə xanası və ya admin məlumatı GÖSTƏRİLMİR (404 Səhifə Tapılmadı)
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    return res.status(404).send(`
-      <!DOCTYPE html>
-      <html lang="az">
-      <head>
-        <meta charset="UTF-8">
-        <title>404 — Səhifə Tapılmadı</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-          * { box-sizing: border-box; margin: 0; padding: 0; }
-          body { background: #030712; color: #94a3b8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; text-align: center; }
-          .card { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); padding: 40px 30px; border-radius: 20px; max-width: 420px; width: 100%; }
-          h1 { color: #f8fafc; font-size: 54px; font-weight: 800; line-height: 1; margin-bottom: 12px; }
-          p { font-size: 14px; margin-bottom: 24px; line-height: 1.5; color: #94a3b8; }
-          a { display: inline-block; background: #0284c7; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 13.5px; transition: background 0.2s; }
-          a:hover { background: #0369a1; }
-        </style>
-      </head>
-      <body>
-        <div class="card">
-          <h1>404</h1>
-          <p>Axtardığınız səhifə mövcud deyil, adı dəyişdirilib və ya silinib.</p>
-          <a href="/">← Əsas Mağazaya Qayıt</a>
-        </div>
-      </body>
-      </html>
-    `);
+    // Əgər admin_token yoxdursa -> Şifrə Təsdiq Qapısını (admin-gate.html) göstər
+    return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin-gate.html'));
   });
 
   // Statik fayllar
