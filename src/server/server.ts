@@ -313,6 +313,23 @@ export function createServer() {
     return list;
   };
 
+  // İstifadəçi Tokeni Təsdiq Köməkçisi (VULN-01 & VULN-02 Fix: IDOR və icazəsiz balans xərcləməsinin qarşısını alır)
+  function getValidatedUserTgId(req: express.Request): string {
+    const cookies = parseCookies(req);
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.slice(7).trim()
+      : ((req.headers['x-user-token'] as string) || cookies['user_token'] || '').trim();
+
+    if (token) {
+      const session = getUserSession(token);
+      if (session && session.telegram_id && session.expires_at > Date.now()) {
+        return session.telegram_id;
+      }
+    }
+    return '';
+  }
+
   // Daxil olan HTTP sorğusunun səlahiyyətli Admin tərəfindən edildiyini yoxlayan köməkçi (ARCH-04 Fix)
   const isRequestAuthorizedAdmin = (req: express.Request): boolean => {
     const cookies = parseCookies(req);
@@ -440,15 +457,25 @@ export function createServer() {
 
   // 🛡️ Qorunan Admin Panel Marşrutu — Server Səviyyəsində Qoruma və Şifrə Giriş Qapısı
   app.get(['/admin.html', '/admin', '/admin-panel', '/panel-admin'], (req, res) => {
-    const isAuth = isRequestAuthorizedAdmin(req);
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
 
+    // 1. Əgər admin_token ilə artıq avtorizasiya olunubsa -> admin.html aç
+    const isAuth = isRequestAuthorizedAdmin(req);
     if (isAuth) {
       return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin.html'));
     }
 
-    // Əgər admin_token yoxdursa -> Şifrə Təsdiq Qapısını (admin-gate.html) göstər
-    return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin-gate.html'));
+    // 2. Yoxla: İstifadəçi sayta Telegram ilə daxil olubmu və Admin hüququ varmı?
+    const userTgId = getValidatedUserTgId(req);
+    const isSiteAdmin = userTgId ? isUserAdmin(userTgId) : false;
+
+    if (isSiteAdmin) {
+      // Saytda Admin kimi daxil olubsa -> Şifrə Təsdiq Qapısını (admin-gate.html) göstər
+      return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin-gate.html'));
+    }
+
+    // 3. Əgər istifadəçi sayta daxil olmayıbsa və ya Admin hüququ yoxdursa -> Qətiyyən admin səhifəsini açma, əsas səhifəyə yönləndir!
+    return res.redirect('/');
   });
 
   // Statik fayllar
@@ -512,23 +539,6 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
   });
 
   // ---------------- İCTİMAİ / MAĞAZA API ----------------
-
-  // İstifadəçi Tokeni Təsdiq Köməkçisi (VULN-01 & VULN-02 Fix: IDOR və icazəsiz balans xərcləməsinin qarşısını alır)
-  function getValidatedUserTgId(req: express.Request): string {
-    const cookies = parseCookies(req);
-    const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith('Bearer ')
-      ? authHeader.slice(7).trim()
-      : ((req.headers['x-user-token'] as string) || cookies['user_token'] || '').trim();
-
-    if (token) {
-      const session = getUserSession(token);
-      if (session && session.telegram_id && session.expires_at > Date.now()) {
-        return session.telegram_id;
-      }
-    }
-    return '';
-  }
 
   // İstifadəçi autentifikasiyasını tamamlamaq köməkçisi (VULN-01 Fix: adminToken yalnız /api/admin/auth/login vasitəsilə verilir)
   const handleUserAuthSuccess = (res: express.Response, user: any) => {
