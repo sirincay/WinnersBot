@@ -3,7 +3,16 @@ function getCookie(name) {
   return match ? decodeURIComponent(match[2]) : '';
 }
 
-let adminToken = localStorage.getItem('admin_token') || sessionStorage.getItem('admin_token') || localStorage.getItem('winners_admin_token') || sessionStorage.getItem('winners_admin_token') || getCookie('admin_token') || '';
+function getActiveAdminToken() {
+  return localStorage.getItem('admin_token') || 
+         sessionStorage.getItem('admin_token') || 
+         localStorage.getItem('winners_admin_token') || 
+         sessionStorage.getItem('winners_admin_token') || 
+         getCookie('admin_token') || 
+         '';
+}
+
+let adminToken = getActiveAdminToken();
 
 function saveAdminToken(token) {
   adminToken = token;
@@ -83,9 +92,11 @@ function copyToClipboard(text, label = 'Məlumat') {
 
 // Doğrulanmış Fetch Vücudu
 async function authFetch(url, options = {}) {
+  const token = getActiveAdminToken();
   const headers = Object.assign({}, options.headers || {});
-  if (adminToken) {
-    headers['Authorization'] = `Bearer ${adminToken}`;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+    headers['x-admin-token'] = token;
   }
   if (!headers['Content-Type'] && !(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
@@ -106,19 +117,19 @@ async function authFetch(url, options = {}) {
 // ---------------- ADMİN GİRİŞ VƏ TƏHLÜKƏSİZLİK ----------------
 
 async function checkAdminAuth() {
-  if (!adminToken) {
+  const token = getActiveAdminToken();
+  if (!token) {
     window.location.href = '/admin.html';
     return false;
   }
 
   try {
     const res = await fetch('/api/admin/auth/verify', {
-      headers: { 'Authorization': `Bearer ${adminToken}` }
+      headers: { 'Authorization': `Bearer ${token}` }
     });
     const data = await res.json();
 
     if (data.ok) {
-      loadAllAdminData();
       return true;
     } else {
       clearAdminToken();
@@ -126,7 +137,6 @@ async function checkAdminAuth() {
       return false;
     }
   } catch (e) {
-    loadAllAdminData();
     return true;
   }
 }
@@ -134,11 +144,12 @@ async function checkAdminAuth() {
 async function handleAdminLogout(notify = true) {
   if (notify && !confirm('Admin panelindən çıxış etmək istəyirsiniz?')) return;
 
+  const token = getActiveAdminToken();
   try {
-    if (adminToken) {
+    if (token) {
       await fetch('/api/admin/auth/logout', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${adminToken}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
     }
   } catch (e) {}
@@ -280,17 +291,19 @@ function switchSection(secName, btn) {
   }
 }
 
-// Bütün admin məlumatlarını yüklə
+// Bütün admin məlumatlarını təhlükəsiz və paralel yüklə
 async function loadAllAdminData() {
-  if (!adminToken) return;
-  await Promise.all([
-    fetchStats(),
-    loadBotAnalyticsData(),
-    fetchPendingReceipts(),
-    fetchOrders(),
-    fetchUsers(),
-    fetchSettings(),
-    fetchBannedIps()
+  const token = getActiveAdminToken();
+  if (!token) return;
+
+  await Promise.allSettled([
+    (async () => { try { await fetchStats(); } catch(e) { console.error('fetchStats error:', e); } })(),
+    (async () => { try { await loadBotAnalyticsData(); } catch(e) { console.error('loadBotAnalyticsData error:', e); } })(),
+    (async () => { try { await fetchPendingReceipts(); } catch(e) { console.error('fetchPendingReceipts error:', e); } })(),
+    (async () => { try { await fetchOrders(); } catch(e) { console.error('fetchOrders error:', e); } })(),
+    (async () => { try { await fetchUsers(); } catch(e) { console.error('fetchUsers error:', e); } })(),
+    (async () => { try { await fetchSettings(); } catch(e) { console.error('fetchSettings error:', e); } })(),
+    (async () => { try { await fetchBannedIps(); } catch(e) { console.error('fetchBannedIps error:', e); } })()
   ]);
 }
 
@@ -3881,13 +3894,26 @@ async function saveAllCustomEmojis() {
 }
 
 // Təhlükəsizlik Qapısı Yoxlanışı ilə Admin Panelini Başlat
-window.addEventListener('DOMContentLoaded', () => {
-  checkAdminAuth();
-  // Əgər doğrulanıbsa, statistikaları hər 30 saniyədən bir avtomatik yenilə
-  setInterval(() => {
-    if (adminToken) {
-      loadAllAdminData();
-    }
-  }, 30000);
-});
+async function initAdminApp() {
+  const isAuth = await checkAdminAuth();
+  if (isAuth) {
+    await loadAllAdminData();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initAdminApp();
+  });
+} else {
+  initAdminApp();
+}
+
+// Statistikaları hər 30 saniyədən bir avtomatik fonda yenilə
+setInterval(() => {
+  const token = getActiveAdminToken();
+  if (token) {
+    loadAllAdminData();
+  }
+}, 30000);
 
