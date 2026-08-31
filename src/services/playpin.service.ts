@@ -37,7 +37,7 @@ class PlayPinService {
     if (fromSettings && fromSettings.trim()) {
       return fromSettings.trim();
     }
-    return (process.env.PLAYPIN_API_KEY || '').trim();
+    return (process.env.PLAYPIN_API_KEY || process.env.PLAYPIN_KEY || process.env.PLAYPIN_TOKEN || '').trim();
   }
 
   public isConfigured(): boolean {

@@ -52,7 +52,7 @@ class FazerCardsService {
     if (fromSettings && fromSettings.trim()) {
       return fromSettings.trim();
     }
-    return (process.env.FAZERCARDS_API_KEY || config.fazerCards.apiKey || 'fc_eb9eea253d224b931a44d880').trim();
+    return (process.env.FAZERCARDS_API_KEY || process.env.FAZER_API_KEY || config.fazerCards.apiKey || 'fc_eb9eea253d224b931a44d880').trim();
   }
 
   private get client() {

@@ -11,7 +11,7 @@ export const config = {
   adminPassword: process.env.ADMIN_PASSWORD || '',
   fazerCards: {
     baseUrl: process.env.FAZERCARDS_BASE_URL || 'https://api.fzr.cards/api/v2',
-    apiKey: process.env.FAZERCARDS_API_KEY || '',
+    apiKey: process.env.FAZERCARDS_API_KEY || process.env.FAZER_API_KEY || 'fc_eb9eea253d224b931a44d880',
   },
   server: {
     port: parseInt(process.env.PORT || '3000', 10),
