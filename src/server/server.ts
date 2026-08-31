@@ -474,7 +474,18 @@ export function createServer() {
       return res.sendFile(path.resolve(process.cwd(), 'src', 'views', 'admin-gate.html'));
     }
 
-    // 3. Əgər istifadəçi sayta daxil olmayıbsa və ya Admin hüququ yoxdursa -> Qətiyyən admin səhifəsini açma, əsas səhifəyə yönləndir!
+    // 3. Əgər istifadəçi sayta daxil olmayıbsa və ya Admin hüququ yoxdursa -> Loq kanalına bildiriş göndər və əsas səhifəyə yönləndir
+    const cleanIp = getClientIp(req);
+    loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+      ip: cleanIp,
+      endpoint: req.path || '/admin',
+      userAgent: (req.headers['user-agent'] as string) || 'Bilinməyən Brauzer',
+      reason: userTgId 
+        ? `Saytda daxil olmuş adi istifadəçi (TG: ${userTgId}) veb admin panelinə (${req.path}) cəhd etdi`
+        : `Sayta daxil olmamış anonim istifadəçi veb admin panelinə (${req.path}) cəhd etdi`,
+      actionTaken: 'Giriş bloklandı və əsas səhifəyə yönləndirildi'
+    });
+
     return res.redirect('/');
   });
 
@@ -1176,6 +1187,14 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
     }
 
     if (!token || !adminAuthService.verifyToken(token)) {
+      const cleanIp = getClientIp(req);
+      loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+        ip: cleanIp,
+        endpoint: req.originalUrl || req.path,
+        userAgent: (req.headers['user-agent'] as string) || 'Bilinməyən Brauzer',
+        reason: `İcazəsiz admin API sorğusu: ${req.method} ${req.originalUrl || req.path}`,
+        actionTaken: 'HTTP 401 Unauthorized qaytarıldı'
+      });
       return res.status(401).json({
         ok: false,
         error: 'Təhlükəsizlik icazəsi yoxdur! Zəhmət olmasa admin şifrəsi ilə daxil olun.',

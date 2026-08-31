@@ -26,9 +26,22 @@ import { config } from '../config/config.js';
 import { EMOJIS, getCustomEmojiId } from './emojis.js';
 import { makeBtn } from './menus.js';
 import { steganographyService } from '../services/steganography.service.js';
+import { loggerService } from '../services/logger.service.js';
 
 export async function handleAdminCommand(ctx: Context) {
-  if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+  if (!ctx.from) return;
+
+  if (!isUserAdmin(ctx.from.id)) {
+    const rawUserLabel = ctx.from.username ? `@${ctx.from.username}` : (ctx.from.first_name || String(ctx.from.id));
+    loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+      ip: `TG:${ctx.from.id}`,
+      endpoint: '/admin (Telegram Bot)',
+      userAgent: `Telegram User: ${rawUserLabel} (ID: ${ctx.from.id})`,
+      reason: `İcazəsiz istifadəçi (${rawUserLabel}, ID: ${ctx.from.id}) Telegram botunda /admin komandasına cəhd etdi.`,
+      actionTaken: 'Giriş rədd edildi'
+    });
+    return;
+  }
 
   const stats = getStats();
   let fazerBalStr = '0.00 USD';
@@ -84,7 +97,19 @@ export async function handleAdminCommand(ctx: Context) {
 
 // 1. İstifadəçi Axtarışı və İdarəetməsi (/user <ID | @username>)
 export async function handleAdminUserSearch(ctx: Context, query: string) {
-  if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+  if (!ctx.from) return;
+
+  if (!isUserAdmin(ctx.from.id)) {
+    const rawUserLabel = ctx.from.username ? `@${ctx.from.username}` : (ctx.from.first_name || String(ctx.from.id));
+    loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+      ip: `TG:${ctx.from.id}`,
+      endpoint: `/user ${query}`,
+      userAgent: `Telegram User: ${rawUserLabel} (ID: ${ctx.from.id})`,
+      reason: `İcazəsiz istifadəçi (${rawUserLabel}, ID: ${ctx.from.id}) /user axtarış komandasına cəhd etdi: ${query}`,
+      actionTaken: 'Giriş rədd edildi'
+    });
+    return;
+  }
 
   const user = findUserByQuery(query);
   if (!user) {
@@ -123,7 +148,19 @@ export async function handleAdminUserSearch(ctx: Context, query: string) {
 
 // 2. Sifariş Axtarışı və İdarəetməsi (/order <ID>)
 export async function handleAdminOrderSearch(ctx: Context, query: string) {
-  if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+  if (!ctx.from) return;
+
+  if (!isUserAdmin(ctx.from.id)) {
+    const rawUserLabel = ctx.from.username ? `@${ctx.from.username}` : (ctx.from.first_name || String(ctx.from.id));
+    loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+      ip: `TG:${ctx.from.id}`,
+      endpoint: `/order ${query}`,
+      userAgent: `Telegram User: ${rawUserLabel} (ID: ${ctx.from.id})`,
+      reason: `İcazəsiz istifadəçi (${rawUserLabel}, ID: ${ctx.from.id}) /order axtarış komandasına cəhd etdi: ${query}`,
+      actionTaken: 'Giriş rədd edildi'
+    });
+    return;
+  }
 
   const order = findOrderById(query);
   if (!order) {

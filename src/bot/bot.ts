@@ -372,9 +372,25 @@ export function createBot(): Bot {
   bot.command('admin', handleAdminCommand);
   bot.command('statistika', handleAdminCommand);
 
+  const checkAdminAuth = (ctx: any, cmd: string): boolean => {
+    if (!ctx.from) return false;
+    if (!isUserAdmin(ctx.from.id)) {
+      const rawUserLabel = ctx.from.username ? `@${ctx.from.username}` : (ctx.from.first_name || String(ctx.from.id));
+      loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
+        ip: `TG:${ctx.from.id}`,
+        endpoint: `${cmd} (Telegram Bot)`,
+        userAgent: `Telegram User: ${rawUserLabel} (ID: ${ctx.from.id})`,
+        reason: `İcazəsiz istifadəçi (${rawUserLabel}, ID: ${ctx.from.id}) botda ${cmd} komandasına cəhd etdi.`,
+        actionTaken: 'Giriş rədd edildi'
+      });
+      return false;
+    }
+    return true;
+  };
+
   // Admin kütləvi mesaj komandası: /broadcast və ya /broadcast <mesaj>
   bot.command(['broadcast', 'elan'], async (ctx) => {
-    if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+    if (!checkAdminAuth(ctx, '/broadcast')) return;
     const text = ctx.message?.text?.replace(/^\/(broadcast|elan)/i, '').trim();
     if (!text) {
       const counts = getSegmentCounts();
@@ -412,7 +428,7 @@ export function createBot(): Bot {
 
   // Admin balans artırma komandası: /addbalance <tg_id> <məbləğ>
   bot.command('addbalance', async (ctx) => {
-    if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+    if (!checkAdminAuth(ctx, '/addbalance')) return;
     const parts = (ctx.message?.text || '').split(' ').filter(Boolean);
     if (parts.length < 3) {
       await ctx.reply('⚠️ Format: <code>/addbalance TELEGRAM_ID MƏBLƏĞ</code>\nMəsələn: <code>/addbalance 123456789 20</code>', { parse_mode: 'HTML' });
@@ -439,7 +455,7 @@ export function createBot(): Bot {
 
   // Admin parametrlər komandaları
   bot.command('setrate', async (ctx) => {
-    if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+    if (!checkAdminAuth(ctx, '/setrate')) return;
     const rateStr = ctx.message?.text?.replace('/setrate', '').trim();
     const rate = parseFloat(rateStr || '');
     if (isNaN(rate) || rate <= 0) {
@@ -451,7 +467,7 @@ export function createBot(): Bot {
   });
 
   bot.command('setmargin', async (ctx) => {
-    if (!ctx.from || !isUserAdmin(ctx.from.id)) return;
+    if (!checkAdminAuth(ctx, '/setmargin')) return;
     const marginStr = ctx.message?.text?.replace('/setmargin', '').trim();
     const margin = parseFloat(marginStr || '');
     if (isNaN(margin) || margin < 0) {
