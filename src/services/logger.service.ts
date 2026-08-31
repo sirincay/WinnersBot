@@ -183,12 +183,13 @@ class LoggerService {
 
     let userSection = '';
     if (data.user && (data.user.telegramId || data.user.username || data.user.firstName)) {
-      const tgIdStr = data.user.telegramId ? String(data.user.telegramId) : '';
+      const tgIdStr = data.user.telegramId ? String(data.user.telegramId).trim() : '';
       const cleanUsername = data.user.username ? data.user.username.replace(/^@/, '').trim() : '';
       const fName = (data.user.firstName || '').trim();
       const displayName = fName || (cleanUsername ? `@${cleanUsername}` : (tgIdStr ? `İstifadəçi (${tgIdStr})` : 'İstifadəçi'));
 
       // Kliklənəndə birbaşa profilin açılması üçün link:
+      // Username olduqda https://t.me/username, username olmadıqda tg://user?id=... (Telegram birbaşa profili açır)
       const profileUrl = cleanUsername 
         ? `https://t.me/${cleanUsername}` 
         : (tgIdStr ? `tg://user?id=${tgIdStr}` : '');
@@ -209,8 +210,8 @@ class LoggerService {
 
       userSection =
         `👤 <b>İstifadəçi:</b> ${nameHtml}\n` +
-        (cleanUsername ? `• <b>Telegram Tağı:</b> ${tagHtml}\n` : '') +
-        (tgIdStr ? `• <b>Telegram ID:</b> ${idHtml}\n` : '') +
+        `• <b>Telegram Tağı:</b> ${tagHtml}\n` +
+        `• <b>Telegram ID:</b> ${idHtml}\n` +
         (balStr ? `• <b>Balans:</b> <code>${escapeTgHtml(balStr)}</code>\n` : '') +
         `\n`;
     } else {
