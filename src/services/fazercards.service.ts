@@ -151,6 +151,7 @@ class FazerCardsService {
       'pubg-mobile': 'pubg_mobile_auto',
       'pubg_mobile_auto': 'pubg_mobile_auto',
       'pubg_mobile_web': 'pubg_mobile_web',
+      'pubg_mobile_card': 'pubg_mobile_card',
       'pubg_mobile_epin': 'pubg_mobile_epin',
       'pubg_mobile': 'pubg_mobile_epin',
       'pubg-mobile-uc-turkey': 'pubg_mobile_epin',
@@ -202,6 +203,26 @@ class FazerCardsService {
         name: 'PUBG Mobile (Operator Manual)',
         offers: normalizedOffers,
         note: 'PlayPin API Web Direct Top-Up',
+      };
+      this.offersCache.set(cacheKey, { data: finalData, lastFetch: Date.now() });
+      return finalData;
+    }
+
+    // 1.5. PlayPin PUBG Card Purchase (Kateqoriya 3)
+    if (categoryId === 'pubg_mobile_card') {
+      const res = await playpinService.getPubgCardOffers();
+      const normalizedOffers: FazerOffer[] = (res.offers || []).map(o => ({
+        offer_id: o.id.toString(),
+        name: o.title,
+        price_usd: o.unit_price.toString(),
+        stock: o.stock,
+      }));
+      const finalData: FazerOffersResponse = {
+        ok: true,
+        category_id: 'pubg_mobile_card',
+        name: 'PUBG Mobile (UC Card Purchase)',
+        offers: normalizedOffers,
+        note: 'PlayPin API Card Purchase',
       };
       this.offersCache.set(cacheKey, { data: finalData, lastFetch: Date.now() });
       return finalData;

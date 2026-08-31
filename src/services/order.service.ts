@@ -56,6 +56,7 @@ class OrderService {
     });
 
     const isPlaypinWeb = params.categoryId === 'pubg_mobile_web';
+    const isPlaypinCard = params.categoryId === 'pubg_mobile_card';
 
     try {
       // 1. PUBG Mobile Web Purchase-dirsə -> Birbaşa PlayPin API-yə yönləndir (Manual Sifariş Növbəsi)
@@ -95,6 +96,45 @@ class OrderService {
           return {
             ok: false,
             error: playpinRes.error || 'PUBG Mobile Web Purchase sifarişi tamamlanmadı. Məbləğ balansınıza qaytarıldı.'
+          };
+        }
+      }
+
+      // 1.5. PUBG Mobile Card Purchase -> PlayPin API Manual Order (Player ID lazım deyil)
+      if (isPlaypinCard) {
+        const playpinRes = await playpinService.purchasePubgCard(params.offerId);
+        if (playpinRes.success) {
+          updateOrderStatus(orderId, 'processing', playpinRes.order_id?.toString(), JSON.stringify(playpinRes));
+          await notificationService.notifyUserWebPurchaseAccepted(params.telegramId, {
+            orderId,
+            offerName: params.offerName,
+            categoryName: params.categoryName,
+            playerId: params.playerId || 'N/A',
+            priceAzn,
+            playpinOrderId: playpinRes.order_id,
+          });
+
+          return {
+            ok: true,
+            orderId,
+            fazerOrderId: playpinRes.order_id?.toString(),
+          };
+        } else {
+          updateUserBalance(params.telegramId, priceAzn);
+          updateOrderStatus(orderId, 'failed', undefined, JSON.stringify(playpinRes));
+
+          await notificationService.notifyUserOrderCancelled(params.telegramId, {
+            orderId,
+            offerName: params.offerName,
+            categoryName: params.categoryName,
+            playerId: params.playerId || 'N/A',
+            priceAzn,
+            reason: playpinRes.error || 'Təchizatçı sifarişi qəbul etmədi'
+          });
+
+          return {
+            ok: false,
+            error: playpinRes.error || 'PUBG UC Card Purchase sifarişi tamamlanmadı. Məbləğ balansınıza qaytarıldı.'
           };
         }
       }
