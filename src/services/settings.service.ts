@@ -84,7 +84,8 @@ class SettingsService {
   }
 
   getLogChannelId(): string {
-    return getSetting('log_channel_id', config.logChannelId || '');
+    const val = getSetting('log_channel_id', '');
+    return val && val.trim() ? val.trim() : (config.logChannelId || '').trim();
   }
 
   setLogChannelId(channelId: string): void {

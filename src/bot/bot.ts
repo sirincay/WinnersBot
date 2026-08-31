@@ -478,6 +478,19 @@ export function createBot(): Bot {
     await ctx.reply(`✅ Məhsul qazanc marjası <b>+${margin}%</b> olaraq təyin edildi.`, { parse_mode: 'HTML' });
   });
 
+  // Admin Loq Kanalı Test Komandası: /testlog və ya /logtest
+  bot.command(['testlog', 'logtest', 'testlogger'], async (ctx) => {
+    if (!checkAdminAuth(ctx, '/testlog')) return;
+    const target = settingsService.getLogChannelId();
+    await ctx.reply(`🔄 Loq kanalına (<code>${escapeTgHtml(target || 'Yoxdur')}</code>) test mesajı göndərilir...`, { parse_mode: 'HTML' });
+    const result = await loggerService.sendTestMessage();
+    if (result.ok) {
+      await ctx.reply(`✅ <b>UĞURLU!</b> Test bildirişi Loq Kanalına (<code>${escapeTgHtml(target)}</code>) göndərildi.`, { parse_mode: 'HTML' });
+    } else {
+      await ctx.reply(`❌ <b>XƏTA:</b> ${escapeTgHtml(result.error || 'Naməlum xəta')}`, { parse_mode: 'HTML' });
+    }
+  });
+
   // Tək istifadəlik 2FA şifrəsi yaratmaq üçün Admin /key və ya /otp komandası
   bot.command(['key', 'otp', 'keys', 'apikeys'], async (ctx) => {
     const from = ctx.from;

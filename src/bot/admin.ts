@@ -77,7 +77,8 @@ export async function handleAdminCommand(ctx: Context) {
     `• <code>/backup</code> — Bazanın tam nüsxəsini yüklə\n` +
     `• <code>/addbalance TG_ID MƏBLƏĞ</code> — Əllə balans artırmaq\n` +
     `• <code>/setrate 1.70</code> — Valyuta məzənnəsini dəyişmək\n` +
-    `• <code>/setmargin 15</code> — Qazanc faizini dəyişmək`;
+    `• <code>/setmargin 15</code> — Qazanc faizini dəyişmək\n` +
+    `• <code>/testlog</code> — Loq kanalına test bildirişi göndər`;
 
   const kb = new InlineKeyboard()
     .text('👤 İstifadəçi Axtar', 'adm_prompt_user_search')

@@ -342,6 +342,7 @@ export function initDatabase() {
   if (config.payment.bankCardNumber) upsertSetting.run('bank_card_number', config.payment.bankCardNumber);
   if (config.payment.bankCardHolder) upsertSetting.run('bank_card_holder', config.payment.bankCardHolder);
   if (config.botUsername) upsertSetting.run('bot_username', config.botUsername);
+  if (config.logChannelId) upsertSetting.run('log_channel_id', config.logChannelId);
 
   const insertIfMissing = db.prepare(`INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)`);
   insertIfMissing.run('usd_azn_rate', config.payment.defaultUsdAznRate.toString());
