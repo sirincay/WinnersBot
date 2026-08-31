@@ -376,12 +376,19 @@ export function createBot(): Bot {
     if (!ctx.from) return false;
     if (!isUserAdmin(ctx.from.id)) {
       const rawUserLabel = ctx.from.username ? `@${ctx.from.username}` : (ctx.from.first_name || String(ctx.from.id));
+      const userRecord = getUserById(String(ctx.from.id));
       loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
         ip: `TG:${ctx.from.id}`,
         endpoint: `${cmd} (Telegram Bot)`,
         userAgent: `Telegram User: ${rawUserLabel} (ID: ${ctx.from.id})`,
-        reason: `İcazəsiz istifadəçi (${rawUserLabel}, ID: ${ctx.from.id}) botda ${cmd} komandasına cəhd etdi.`,
-        actionTaken: 'Giriş rədd edildi'
+        reason: `İcazəsiz istifadəçi botda ${cmd} komandasına cəhd etdi.`,
+        actionTaken: 'Giriş rədd edildi',
+        user: {
+          telegramId: ctx.from.id,
+          username: ctx.from.username || null,
+          firstName: ctx.from.first_name || null,
+          balance: userRecord?.balance
+        }
       });
       return false;
     }

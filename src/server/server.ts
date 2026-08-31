@@ -439,6 +439,7 @@ export function createServer() {
         ip: cleanIp,
         endpoint: fullUrl,
         userAgent: req.headers['user-agent'] as string,
+        user: getRequestUser(req),
         reason: 'Şübhəli SQL Injection, XSS və ya Path Traversal payload-u aşkarlandı',
         details: { url: fullUrl, query: req.query }
       });
@@ -467,6 +468,7 @@ export function createServer() {
         endpoint: fullUrl,
         count: offense.count,
         userAgent: req.headers['user-agent'] as string,
+        user: getRequestUser(req),
         reason: `Hacker/Bot tərəfindən həssas fayl/zəiflik axtarışı: ${rawPath}`,
         details: { method: req.method, totalProbes: offense.probes }
       });
@@ -478,6 +480,7 @@ export function createServer() {
           ip: cleanIp,
           endpoint: fullUrl,
           count: offense.count,
+          user: getRequestUser(req),
           reason: `Ardıcıl ${offense.count} həssas tələyə düşdüyü üçün IP avtomatik Ban edildi`
         });
       }
@@ -509,12 +512,16 @@ export function createServer() {
 
     // 3. Əgər istifadəçi sayta daxil olmayıbsa və ya Admin hüququ yoxdursa -> Loq kanalına bildiriş göndər və əsas səhifəyə yönləndir
     const cleanIp = getClientIp(req);
+    const reqUser = getRequestUser(req);
+    const userDisplayName = reqUser?.firstName || (reqUser?.username ? `@${reqUser.username}` : (userTgId ? `ID: ${userTgId}` : 'Anonim'));
+
     loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
       ip: cleanIp,
       endpoint: req.path || '/admin',
       userAgent: (req.headers['user-agent'] as string) || 'Bilinməyən Brauzer',
+      user: reqUser,
       reason: userTgId 
-        ? `Saytda daxil olmuş adi istifadəçi (TG: ${userTgId}) veb admin panelinə (${req.path}) cəhd etdi`
+        ? `Saytda daxil olmuş adi istifadəçi (${userDisplayName}) veb admin panelinə (${req.path}) cəhd etdi`
         : `Sayta daxil olmamış anonim istifadəçi veb admin panelinə (${req.path}) cəhd etdi`,
       actionTaken: 'Giriş bloklandı və əsas səhifəyə yönləndirildi'
     });
@@ -1221,10 +1228,12 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
 
     if (!token || !adminAuthService.verifyToken(token)) {
       const cleanIp = getClientIp(req);
+      const reqUser = getRequestUser(req);
       loggerService.sendSecurityAlert('UNAUTHORIZED_ADMIN_ACCESS', {
         ip: cleanIp,
         endpoint: req.originalUrl || req.path,
         userAgent: (req.headers['user-agent'] as string) || 'Bilinməyən Brauzer',
+        user: reqUser,
         reason: `İcazəsiz admin API sorğusu: ${req.method} ${req.originalUrl || req.path}`,
         actionTaken: 'HTTP 401 Unauthorized qaytarıldı'
       });
@@ -1283,6 +1292,7 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
           endpoint: '/api/admin/auth/login',
           count: tracker.attempts,
           userAgent: req.headers['user-agent'] as string,
+          user: getRequestUser(req),
           reason: `Admin panelinə ardıcıl ${tracker.attempts} yanlış şifrə daxil edildi`
         });
       }
@@ -1294,6 +1304,7 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
           ip: cleanIp,
           endpoint: '/api/admin/auth/login',
           count: tracker.attempts,
+          user: getRequestUser(req),
           reason: '5 uğursuz şifrə cəhdindən sonra IP avtomatik olaraq Ban edildi'
         });
 

@@ -183,16 +183,34 @@ class LoggerService {
 
     let userSection = '';
     if (data.user && (data.user.telegramId || data.user.username || data.user.firstName)) {
-      const tgIdStr = data.user.telegramId ? String(data.user.telegramId) : 'Bilinmir';
-      const uName = data.user.username ? `@${data.user.username.replace(/^@/, '')}` : '<i>Yoxdur</i>';
-      const fName = data.user.firstName ? escapeTgHtml(data.user.firstName) : '<i>Ad qeyd edilməyib</i>';
+      const tgIdStr = data.user.telegramId ? String(data.user.telegramId) : '';
+      const cleanUsername = data.user.username ? data.user.username.replace(/^@/, '').trim() : '';
+      const fName = (data.user.firstName || '').trim();
+      const displayName = fName || (cleanUsername ? `@${cleanUsername}` : (tgIdStr ? `İstifadəçi (${tgIdStr})` : 'İstifadəçi'));
+
+      // Kliklənəndə birbaşa profilin açılması üçün link:
+      const profileUrl = cleanUsername 
+        ? `https://t.me/${cleanUsername}` 
+        : (tgIdStr ? `tg://user?id=${tgIdStr}` : '');
+
+      const nameHtml = profileUrl 
+        ? `<a href="${profileUrl}"><b>${escapeTgHtml(displayName)}</b></a>` 
+        : `<b>${escapeTgHtml(displayName)}</b>`;
+
+      const tagHtml = cleanUsername 
+        ? `<a href="https://t.me/${cleanUsername}">@${escapeTgHtml(cleanUsername)}</a>` 
+        : '<i>Yoxdur</i>';
+
+      const idHtml = tgIdStr 
+        ? (profileUrl ? `<a href="${profileUrl}"><code>${escapeTgHtml(tgIdStr)}</code></a>` : `<code>${escapeTgHtml(tgIdStr)}</code>`)
+        : '<i>Bilinmir</i>';
+
       const balStr = data.user.balance !== undefined ? `${data.user.balance.toFixed(2)} AZN` : null;
 
       userSection =
-        `👤 <b>İstifadəçi Hesabı (Saytda Login Olmuş):</b>\n` +
-        `• <b>Ad:</b> <b>${fName}</b>\n` +
-        `• <b>Telegram Tağı:</b> <b>${uName}</b>\n` +
-        `• <b>Telegram ID:</b> <code>${escapeTgHtml(tgIdStr)}</code>\n` +
+        `👤 <b>İstifadəçi:</b> ${nameHtml}\n` +
+        (cleanUsername ? `• <b>Telegram Tağı:</b> ${tagHtml}\n` : '') +
+        (tgIdStr ? `• <b>Telegram ID:</b> ${idHtml}\n` : '') +
         (balStr ? `• <b>Balans:</b> <code>${escapeTgHtml(balStr)}</code>\n` : '') +
         `\n`;
     } else {
