@@ -1636,8 +1636,18 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
     if (!ip) {
       return res.status(400).json({ ok: false, error: 'IP ünvanı tələb olunur.' });
     }
-    const ok = addBannedIp(ip.trim(), reason || 'Təhlükəsizlik qaydalarının pozulması');
-    res.json({ ok });
+    const cleanIp = ip.trim();
+    if (config.adminWhitelistIps && config.adminWhitelistIps.includes(cleanIp)) {
+      return res.status(400).json({ 
+        ok: false, 
+        error: `Bu IP (${cleanIp}) Admin Whitelist-dədir və qorunur. Özünüzü bloklaya bilməzsiniz!` 
+      });
+    }
+    const ok = addBannedIp(cleanIp, reason || 'Təhlükəsizlik qaydalarının pozulması');
+    if (!ok) {
+      return res.status(500).json({ ok: false, error: 'IP bloklanarkən verilənlər bazası xətası baş verdi.' });
+    }
+    res.json({ ok: true });
   });
 
   // IP ünvanını blokdan çıxart
