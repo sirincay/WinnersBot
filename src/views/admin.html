@@ -930,9 +930,9 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
               <span>Sifarişlər Tarixçəsi (<span id="dossierTabOrdersCount">0</span>)</span>
             </button>
-            <button class="dossier-tab-btn" id="tabBtnÖdənişlər" onclick="switchDossierTab('payments')">
+            <button class="dossier-tab-btn" id="tabBtnPayments" onclick="switchDossierTab('payments')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              <span>Balans Artımları &amp; Qəbzlər (<span id="dossierTabÖdənişlərCount">0</span>)</span>
+              <span>Balans Artımları &amp; Qəbzlər (<span id="dossierTabPaymentsCount">0</span>)</span>
             </button>
             <button class="dossier-tab-btn" id="tabBtnReviews" onclick="switchDossierTab('reviews')">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -962,7 +962,7 @@
           </div>
 
           <!-- Tab 2: Ödənişlər Content -->
-          <div id="dossierTabContentÖdənişlər" class="dossier-tab-pane" style="display: none;">
+          <div id="dossierTabContentPayments" class="dossier-tab-pane" style="display: none;">
             <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
               <table class="admin-table">
                 <thead>
@@ -975,7 +975,7 @@
                     <th>Tarix</th>
                   </tr>
                 </thead>
-                <tbody id="dossierÖdənişlərTbody">
+                <tbody id="dossierPaymentsTbody">
                   <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-muted);">Ödəniş yüklənir...</td></tr>
                 </tbody>
               </table>

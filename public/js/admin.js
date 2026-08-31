@@ -1567,72 +1567,78 @@ async function openUserDossierModal(telegramId) {
     document.getElementById('dossierOrdersVal').innerText = stats.totalOrders;
     document.getElementById('dossierOrdersSub').innerText = `${stats.completedOrders} uğurlu, ${stats.pendingOrders} gözləyən`;
 
-    document.getElementById('dossierSpentVal').innerText = `${(stats.totalSpentAzn || 0).toFixed(2)} ₼`;
+    if (document.getElementById('dossierSpentVal')) document.getElementById('dossierSpentVal').innerText = `${(stats.totalSpentAzn || 0).toFixed(2)} ₼`;
 
     // Tab sayları
-    document.getElementById('dossierTabOrdersCount').innerText = orders.length;
-    document.getElementById('dossierTabPaymentsCount').innerText = payments.length;
-    document.getElementById('dossierTabReviewsCount').innerText = reviews.length;
+    if (document.getElementById('dossierTabOrdersCount')) document.getElementById('dossierTabOrdersCount').innerText = orders.length;
+    if (document.getElementById('dossierTabPaymentsCount')) document.getElementById('dossierTabPaymentsCount').innerText = payments.length;
+    if (document.getElementById('dossierTabReviewsCount')) document.getElementById('dossierTabReviewsCount').innerText = reviews.length;
 
     // Sifarişlər Tabını Göstər
     const ordersTbody = document.getElementById('dossierOrdersTbody');
-    if (orders.length === 0) {
-      ordersTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--text-muted);">Bu istifadəçi hələlik heç bir sifariş etməyib.</td></tr>';
-    } else {
-      ordersTbody.innerHTML = orders.map(o => `
-        <tr>
-          <td><span class="code-pill" onclick="copyToClipboard('${o.id}', 'Sifariş ID')">${o.id}</span></td>
-          <td><strong style="color:#fff;">${o.category_name}</strong><br><small style="color:var(--text-secondary);">${o.offer_name}</small></td>
-          <td><code style="color:var(--brand-emerald);">${o.player_id || (o.fazer_order_id ? 'API Sifariş' : '—')}</code></td>
-          <td><strong style="color:var(--brand-cyan); font-family:var(--font-mono);">${(o.price_azn || 0).toFixed(2)} ₼</strong></td>
-          <td>
-            <span class="status-pill ${o.status === 'completed' ? 'status-completed' : o.status === 'pending' ? 'status-pending' : 'status-failed'}">
-              ${o.status.toUpperCase()}
-            </span>
-          </td>
-          <td><small style="color:var(--text-muted);">${o.created_at || '—'}</small></td>
-        </tr>
-      `).join('');
+    if (ordersTbody) {
+      if (orders.length === 0) {
+        ordersTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--text-muted);">Bu istifadəçi hələlik heç bir sifariş etməyib.</td></tr>';
+      } else {
+        ordersTbody.innerHTML = orders.map(o => `
+          <tr>
+            <td><span class="code-pill" onclick="copyToClipboard('${o.id}', 'Sifariş ID')">${o.id}</span></td>
+            <td><strong style="color:#fff;">${o.category_name}</strong><br><small style="color:var(--text-secondary);">${o.offer_name}</small></td>
+            <td><code style="color:var(--brand-emerald);">${o.player_id || (o.fazer_order_id ? 'API Sifariş' : '—')}</code></td>
+            <td><strong style="color:var(--brand-cyan); font-family:var(--font-mono);">${(o.price_azn || 0).toFixed(2)} ₼</strong></td>
+            <td>
+              <span class="status-pill ${o.status === 'completed' ? 'status-completed' : o.status === 'pending' ? 'status-pending' : 'status-failed'}">
+                ${(o.status || 'PENDING').toUpperCase()}
+              </span>
+            </td>
+            <td><small style="color:var(--text-muted);">${o.created_at || '—'}</small></td>
+          </tr>
+        `).join('');
+      }
     }
 
     // Ödənişlər Tabını Göstər
     const paymentsTbody = document.getElementById('dossierPaymentsTbody');
-    if (payments.length === 0) {
-      paymentsTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--text-muted);">Bu istifadəçi hələlik depozit sorğusu göndərməyib.</td></tr>';
-    } else {
-      paymentsTbody.innerHTML = payments.map(p => `
-        <tr>
-          <td><span class="code-pill" onclick="copyToClipboard('${p.id}', 'Ödəniş ID')">${p.id}</span></td>
-          <td><strong style="color:#fff; text-transform:uppercase;">${p.method}</strong></td>
-          <td><strong style="color:var(--brand-emerald); font-family:var(--font-mono);">${(p.amount_azn || 0).toFixed(2)} ₼</strong></td>
-          <td>
-            ${p.receipt_path ? `<a href="${p.receipt_path}" target="_blank" style="color:#38bdf8; text-decoration:none; font-size:11px;">🖼️ Qəbzə Bax</a>` : '—'}
-          </td>
-          <td>
-            <span class="status-pill ${p.status === 'approved' || p.status === 'completed' ? 'status-completed' : p.status === 'pending' ? 'status-pending' : 'status-failed'}">
-              ${p.status.toUpperCase()}
-            </span>
-          </td>
-          <td><small style="color:var(--text-muted);">${p.created_at || '—'}</small></td>
-        </tr>
-      `).join('');
+    if (paymentsTbody) {
+      if (payments.length === 0) {
+        paymentsTbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:var(--text-muted);">Bu istifadəçi hələlik depozit sorğusu göndərməyib.</td></tr>';
+      } else {
+        paymentsTbody.innerHTML = payments.map(p => `
+          <tr>
+            <td><span class="code-pill" onclick="copyToClipboard('${p.id}', 'Ödəniş ID')">${p.id}</span></td>
+            <td><strong style="color:#fff; text-transform:uppercase;">${p.method}</strong></td>
+            <td><strong style="color:var(--brand-emerald); font-family:var(--font-mono);">${(p.amount_azn || 0).toFixed(2)} ₼</strong></td>
+            <td>
+              ${p.receipt_path ? `<a href="${p.receipt_path}" target="_blank" style="color:#38bdf8; text-decoration:none; font-size:11px;">🖼️ Qəbzə Bax</a>` : '—'}
+            </td>
+            <td>
+              <span class="status-pill ${p.status === 'approved' || p.status === 'completed' ? 'status-completed' : p.status === 'pending' ? 'status-pending' : 'status-failed'}">
+                ${(p.status || 'PENDING').toUpperCase()}
+              </span>
+            </td>
+            <td><small style="color:var(--text-muted);">${p.created_at || '—'}</small></td>
+          </tr>
+        `).join('');
+      }
     }
 
     // Rəylər Tabını Göstər
     const reviewsListEl = document.getElementById('dossierReviewsList');
-    if (reviews.length === 0) {
-      reviewsListEl.innerHTML = '<div style="text-align:center; padding:24px; color:var(--text-muted);">İstifadəçi hələlik rəy bildirməyib.</div>';
-    } else {
-      reviewsListEl.innerHTML = reviews.map(r => `
-        <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <div style="color:#fbbf24; font-size:13px;">${'★'.repeat(r.rating || 5)}${'☆'.repeat(Math.max(0, 5 - (r.rating || 5)))}</div>
-            <span style="font-size:11px; color:var(--text-muted);">${r.created_at || ''}</span>
+    if (reviewsListEl) {
+      if (reviews.length === 0) {
+        reviewsListEl.innerHTML = '<div style="text-align:center; padding:24px; color:var(--text-muted);">İstifadəçi hələlik rəy bildirməyib.</div>';
+      } else {
+        reviewsListEl.innerHTML = reviews.map(r => `
+          <div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <div style="color:#fbbf24; font-size:13px;">${'★'.repeat(r.rating || 5)}${'☆'.repeat(Math.max(0, 5 - (r.rating || 5)))}</div>
+              <span style="font-size:11px; color:var(--text-muted);">${r.created_at || ''}</span>
+            </div>
+            <div style="font-size:13px; color:#fff;">${r.comment || 'Şərh qeyd olunmayıb.'}</div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Məhsul: <strong>${r.product_name || 'Oyun'}</strong></div>
           </div>
-          <div style="font-size:13px; color:#fff;">${r.comment || 'Şərh qeyd olunmayıb.'}</div>
-          <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">Məhsul: <strong>${r.product_name || 'Oyun'}</strong></div>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
 
     // Standart olaraq sifarişlər tabına keç
