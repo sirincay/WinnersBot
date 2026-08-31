@@ -212,21 +212,30 @@ export function initDatabase() {
       db.prepare("UPDATE api_categories SET name = 'PUBG Mobile (Web Purchase)' WHERE category_id = 'pubg_mobile_web'").run();
     } catch (e: any) { console.error("Database error:", e?.message || e); }
 
-    const countRow = db.prepare(`SELECT COUNT(*) as c FROM api_categories`).get() as { c: number };
-    if (countRow.c <= 3) {
-      const seedStmt = db.prepare(`
-        INSERT OR IGNORE INTO api_categories (category_id, name, icon, type, is_active, sort_order)
-        VALUES (?, ?, ?, ?, 1, ?)
-      `);
-      seedStmt.run('free_fire_cis', 'Free Fire (CIS)', '🔥', 'topup', 4);
-      seedStmt.run('valorant_tr', 'Valorant VP (TR)', '🎯','giftcard', 5);
-      seedStmt.run('brawl_stars_turkey', 'Brawl Stars', '⭐', 'topup', 6);
-      seedStmt.run('mobile_legends_direct', 'Mobile Legends', '⚔️', 'topup', 7);
-      seedStmt.run('roblox_global', 'Roblox (Global)', '🧱','giftcard', 8);
-      seedStmt.run('steam_usd', 'Steam Pulqabı (Wallet) USD', '🎮','giftcard', 9);
-      seedStmt.run('telegram_stars', 'Telegram Stars', '⭐️', 'topup', 10);
-      seedStmt.run('telegram_premium_gift', 'Telegram Premium', '👑', 'topup', 11);
-    }
+    const seedStmt = db.prepare(`
+      INSERT OR IGNORE INTO api_categories (category_id, name, icon, type, is_active, sort_order)
+      VALUES (?, ?, ?, ?, 1, ?)
+    `);
+    seedStmt.run('free_fire_cis', 'Free Fire (CIS)', '🔥', 'topup', 4);
+    seedStmt.run('valorant_tr', 'Valorant VP (TR)', '🎯','giftcard', 5);
+    seedStmt.run('brawl_stars_turkey', 'Brawl Stars', '⭐', 'topup', 6);
+    seedStmt.run('mobile_legends_direct', 'Mobile Legends', '⚔️', 'topup', 7);
+    seedStmt.run('roblox_global', 'Roblox (Global)', '🧱','giftcard', 8);
+    seedStmt.run('steam_usd', 'Steam Pulqabı (Wallet) USD', '🎮','giftcard', 9);
+    seedStmt.run('telegram_stars', 'Telegram Stars', '⭐️', 'topup', 10);
+    seedStmt.run('telegram_premium_gift', 'Telegram Premium', '👑', 'topup', 11);
+    seedStmt.run('8_ball_pool', '8 Ball Pool', '🎱', 'topup', 12);
+    seedStmt.run('eafc_mobile_id', 'EA Sports FC Mobile', '⚽', 'topup', 13);
+    seedStmt.run('codm_garena_sgmy', 'Call of Duty Mobile', '🎖️', 'topup', 14);
+    seedStmt.run('delta_force', 'Delta Force', '🔫', 'topup', 15);
+    seedStmt.run('discord_global', 'Discord Nitro', '💎', 'giftcard', 16);
+    seedStmt.run('netflix_us', 'Netflix (US)', '🎬', 'giftcard', 17);
+    seedStmt.run('spotify_us', 'Spotify (US)', '🎵', 'giftcard', 18);
+    seedStmt.run('afk_journey', 'AFK Journey', '✨', 'topup', 19);
+    seedStmt.run('app_store_itunes_us', 'App Store & iTunes (US)', '🍏', 'giftcard', 20);
+    seedStmt.run('epic_games_us', 'Epic Games (US)', '🎮', 'giftcard', 21);
+    seedStmt.run('point_blank_id', 'Point Blank', '🎯', 'topup', 22);
+    seedStmt.run('ea_sports_fctm_26_ea_points', 'EA Sports FC Points', '⚽', 'giftcard', 23);
   } catch (e: any) { console.error("Database error:", e?.message || e); }
 
   // Xüsusi Stok Kodları Cədvəlini Yarat (Telegram botda ani rəqəmsal çatdırılma üçün)

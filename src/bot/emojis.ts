@@ -151,24 +151,40 @@ export function getCategoryCustomEmojiId(categoryId: string): string | null {
     }
   } catch (e) {}
 
+  const directKey = (categoryId || '').toUpperCase();
+  const fromDirect = getCustomEmojiId(directKey);
+  if (fromDirect) return fromDirect;
+
   const cat = (categoryId || '').toLowerCase();
   // Əvvəlcə Xüsusi yoxlamalar
   if (cat.includes('brawl')) return getCustomEmojiId('BRAWL_STARS');
-  if (cat.includes('pubg') && (cat.includes('auto') || cat.includes('direct'))) return getCustomEmojiId('PUBG_AUTO') || getCustomEmojiId('PUBG_MOBILE');
+  if (cat.includes('pubg') && (cat.includes('auto') || cat.includes('direct'))) return getCustomEmojiId('PUBG_MOBILE_AUTO') || getCustomEmojiId('PUBG_AUTO') || getCustomEmojiId('PUBG_MOBILE');
+  if (cat.includes('pubg') && cat.includes('epin')) return getCustomEmojiId('PUBG_MOBILE_EPIN') || getCustomEmojiId('PUBG_EPIN') || getCustomEmojiId('PUBG_MOBILE');
+  if (cat.includes('pubg') && (cat.includes('web') || cat.includes('manual'))) return getCustomEmojiId('PUBG_MOBILE_WEB') || getCustomEmojiId('PUBG_MOBILE');
   if (cat.includes('pubg')) return getCustomEmojiId('PUBG_MOBILE');
-  if (cat.includes('free_fire') || cat.includes('freefire')) return getCustomEmojiId('FREE_FIRE');
+  if (cat.includes('free_fire') || cat.includes('freefire')) return getCustomEmojiId('FREE_FIRE_CIS') || getCustomEmojiId('FREE_FIRE');
   if (cat.includes('telegram_stars') || (cat.includes('star') && !cat.includes('brawl'))) return getCustomEmojiId('TELEGRAM_STARS');
-  if (cat.includes('premium')) return getCustomEmojiId('TELEGRAM_PREMIUM');
-  if (cat.includes('roblox')) return getCustomEmojiId('ROBLOX');
+  if (cat.includes('premium')) return getCustomEmojiId('TELEGRAM_PREMIUM_GIFT') || getCustomEmojiId('TELEGRAM_PREMIUM');
+  if (cat.includes('roblox')) return getCustomEmojiId('ROBLOX_GLOBAL') || getCustomEmojiId('ROBLOX');
   if (cat.includes('steam')) return getCustomEmojiId('STEAM');
-  if (cat.includes('mobile_legends') || cat.includes('mlbb')) return getCustomEmojiId('MOBILE_LEGENDS');
+  if (cat.includes('mobile_legends') || cat.includes('mlbb')) return getCustomEmojiId('MOBILE_LEGENDS_DIRECT') || getCustomEmojiId('MOBILE_LEGENDS_GLOBAL') || getCustomEmojiId('MOBILE_LEGENDS');
   if (cat.includes('king')) return getCustomEmojiId('BE_THE_KING');
-  if (cat.includes('valorant')) return getCustomEmojiId('VALORANT');
-  if (cat.includes('netflix')) return getCustomEmojiId('NETFLIX');
-  if (cat.includes('genshin')) return getCustomEmojiId('GENSHIN');
-  if (cat.includes('pool')) return getCustomEmojiId('POOL_8_BALL');
-  if (cat.includes('arena')) return getCustomEmojiId('ARENA_BREAKOUT');
+  if (cat.includes('valorant')) return getCustomEmojiId('VALORANT_TR') || getCustomEmojiId('VALORANT');
+  if (cat.includes('netflix')) return getCustomEmojiId('NETFLIX_US') || getCustomEmojiId('NETFLIX');
+  if (cat.includes('spotify')) return getCustomEmojiId('SPOTIFY_US') || getCustomEmojiId('SPOTIFY_PREMIUM');
+  if (cat.includes('discord') || cat.includes('nitro')) return getCustomEmojiId('DISCORD_GLOBAL') || getCustomEmojiId('DISCORD_NITRO');
+  if (cat.includes('eafc') || cat.includes('ea_sports') || cat.includes('fifa')) return getCustomEmojiId('EAFC_MOBILE_ID') || getCustomEmojiId('EA_SPORTS_FCTM_26_EA_POINTS');
+  if (cat.includes('codm') || cat.includes('call_of_duty') || cat.includes('duty')) return getCustomEmojiId('CODM_GARENA_SGMY') || getCustomEmojiId('CALL_OF_DUTY');
+  if (cat.includes('delta')) return getCustomEmojiId('DELTA_FORCE') || getCustomEmojiId('DELTA_FORCE_STEAM_GLOBAL');
+  if (cat.includes('pool') || cat.includes('8_ball')) return getCustomEmojiId('8_BALL_POOL') || getCustomEmojiId('POOL_8_BALL');
+  if (cat.includes('afk')) return getCustomEmojiId('AFK_JOURNEY');
+  if (cat.includes('itunes') || cat.includes('apple') || cat.includes('app_store')) return getCustomEmojiId('APP_STORE_ITUNES_US');
+  if (cat.includes('epic')) return getCustomEmojiId('EPIC_GAMES_US');
+  if (cat.includes('point_blank') || cat.includes('pb')) return getCustomEmojiId('POINT_BLANK_ID');
+  if (cat.includes('battlefield')) return getCustomEmojiId('BATTLEFIELDTM_2042_XBOX_BFC');
   if (cat.includes('asphalt')) return getCustomEmojiId('ASPHALT');
+  if (cat.includes('genshin')) return getCustomEmojiId('GENSHIN');
+  if (cat.includes('arena')) return getCustomEmojiId('ARENA_BREAKOUT');
   if (cat.includes('magic')) return getCustomEmojiId('AGE_OF_MAGIC');
   return null;
 }
