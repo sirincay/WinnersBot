@@ -1525,9 +1525,10 @@ Hiring: For custom enterprise web and Telegram bot systems contact @HusnuTech`);
     }
   });
 
-  // Geniş statistikalarla bütün istifadəçilər
+  // Geniş statistikalarla bütün istifadəçilər (standart olaraq yalnız real müştərilər)
   app.get('/api/admin/users', requireAdminAuth, (req, res) => {
-    const users = getAllUsersWithStats();
+    const includeSandbox = req.query.include_sandbox === 'true';
+    const users = getAllUsersWithStats(includeSandbox);
     res.json({ ok: true, users });
   });
 

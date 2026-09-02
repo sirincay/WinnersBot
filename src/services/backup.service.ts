@@ -46,10 +46,10 @@ class BackupService {
       // 7 gündən köhnə nüsxələri (backups) təmizlə
       this.cleanOldBackups(7);
 
-      // Statistikaları topla
-      const users = getAllUsers();
-      const orders = getAllOrders();
-      const payments = getAllPayments();
+      // Statistikaları topla (yalnız real müştərilər və sifarişlər)
+      const users = getAllUsers().filter(u => u.telegram_id !== '999000111' && u.telegram_id !== '999900111' && !u.telegram_id.startsWith('SANDBOX_'));
+      const orders = getAllOrders().filter(o => !o.id.startsWith('SB-') && o.telegram_id !== '999000111' && o.telegram_id !== '999900111');
+      const payments = getAllPayments().filter(p => p.telegram_id !== '999000111' && p.telegram_id !== '999900111');
 
       const totalBalance = users.reduce((acc, u) => acc + (u.balance || 0), 0);
       const completedOrders = orders.filter(o => o.status === 'completed');

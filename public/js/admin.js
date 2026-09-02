@@ -1310,15 +1310,23 @@ function renderUsers(list) {
   const tbody = document.getElementById('usersTableBody');
   const mobUsersContainer = document.getElementById('usersMobileCardsContainer');
 
+  // Təhlükəsizlik üçün sandbox / test hesablarını klient tərəfdə də təmizlə
+  const realUsers = (list || []).filter(u => u.telegram_id !== '999000111' && u.telegram_id !== '999900111' && !u.telegram_id.startsWith('SANDBOX_'));
+
   if (document.getElementById('totalUsersCountDisplay')) {
-    document.getElementById('totalUsersCountDisplay').innerText = list.length;
+    document.getElementById('totalUsersCountDisplay').innerText = realUsers.length;
+  }
+
+  const totalBal = realUsers.reduce((sum, u) => sum + (Number(u.balance) || 0), 0);
+  if (document.getElementById('totalUsersBalanceDisplay')) {
+    document.getElementById('totalUsersBalanceDisplay').innerText = `${totalBal.toFixed(2)} ₼`;
   }
 
   if (tbody) {
-    if (!list || list.length === 0) {
+    if (!realUsers || realUsers.length === 0) {
       tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-secondary); padding: 24px;">İstifadəçi tapılmadı.</td></tr>';
     } else {
-      tbody.innerHTML = list.map(u => {
+      tbody.innerHTML = realUsers.map(u => {
         const isIpBan = u.is_ip_banned === 1 || (u.block_reason && u.block_reason.includes('IP Ban'));
         const isBlocked = u.is_blocked === 1 || isIpBan;
         const nameEscaped = encodeURIComponent(u.first_name || u.username || u.telegram_id);
@@ -1392,10 +1400,10 @@ function renderUsers(list) {
 
   // İstifadəçilər üçün 2-Sütunlu Yan-Yana Mobil Kartlar
   if (mobUsersContainer) {
-    if (!list || list.length === 0) {
+    if (!realUsers || realUsers.length === 0) {
       mobUsersContainer.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 24px; grid-column: span 2;">İstifadəçi tapılmadı.</div>';
     } else {
-      mobUsersContainer.innerHTML = list.map(u => {
+      mobUsersContainer.innerHTML = realUsers.map(u => {
         const isIpBan = u.is_ip_banned === 1 || (u.block_reason && u.block_reason.includes('IP Ban'));
         const isBlocked = u.is_blocked === 1 || isIpBan;
         const nameEscaped = encodeURIComponent(u.first_name || u.username || u.telegram_id);

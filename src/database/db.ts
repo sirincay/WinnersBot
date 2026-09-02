@@ -585,6 +585,21 @@ export function getDailyFinancialReport(dateStr?: string): {
   };
 }
 
+export function getUsersCount(): number {
+  try {
+    const row = db.prepare(`
+      SELECT COUNT(*) as count FROM users 
+      WHERE is_blocked = 0 
+        AND telegram_id NOT LIKE 'PROVIDER_%'
+        AND telegram_id NOT LIKE 'SANDBOX_%'
+        AND telegram_id NOT IN ('999000111', '999900111')
+    `).get() as { count: number };
+    return row.count;
+  } catch (e) {
+    return 0;
+  }
+}
+
 export function hasUserChosenLanguage(telegramId: string | number): boolean {
   const tgIdStr = telegramId.toString();
   try {
@@ -611,19 +626,41 @@ export function findUserByIdentifier(identifier: string): UserRecord | undefined
   return stmt.get(clean, clean, '@' + clean) as unknown as UserRecord | undefined;
 }
 
+export function searchUsers(query: string): UserRecord[] {
+  const clean = query.trim();
+  const stmt = db.prepare(`
+    SELECT * FROM users 
+    WHERE (telegram_id LIKE ? OR LOWER(username) LIKE LOWER(?) OR LOWER(first_name) LIKE LOWER(?))
+      AND telegram_id NOT LIKE 'PROVIDER_%'
+      AND telegram_id NOT LIKE 'SANDBOX_%'
+      AND telegram_id NOT IN ('999000111', '999900111')
+    ORDER BY id DESC LIMIT 20
+  `);
+  return stmt.all(`%${clean}%`, `%${clean}%`, `%${clean}%`) as unknown as UserRecord[];
+}
+
 export type UserSegment = 'all' | 'zero_balance' | 'active_buyers' | 'vip' | 'inactive_7d';
 
 export function getAllUsers(): UserRecord[] {
-  const stmt = db.prepare(`SELECT * FROM users WHERE is_blocked = 0 AND telegram_id NOT LIKE 'PROVIDER_%' ORDER BY id DESC`);
+  const stmt = db.prepare(`
+    SELECT * FROM users 
+    WHERE is_blocked = 0 
+      AND telegram_id NOT LIKE 'PROVIDER_%'
+      AND telegram_id NOT LIKE 'SANDBOX_%'
+      AND telegram_id NOT IN ('999000111', '999900111')
+    ORDER BY id DESC
+  `);
   return stmt.all() as unknown as UserRecord[];
 }
 
 export function getUsersBySegment(segment: UserSegment = 'all'): UserRecord[] {
   try {
+    const baseFilter = `is_blocked = 0 AND telegram_id NOT LIKE 'PROVIDER_%' AND telegram_id NOT LIKE 'SANDBOX_%' AND telegram_id NOT IN ('999000111', '999900111')`;
+
     if (segment === 'zero_balance') {
       return db.prepare(`
         SELECT * FROM users 
-        WHERE is_blocked = 0 AND telegram_id NOT LIKE 'PROVIDER_%' AND (balance <= 0 OR balance IS NULL) 
+        WHERE ${baseFilter} AND (balance <= 0 OR balance IS NULL) 
         ORDER BY id DESC
       `).all() as unknown as UserRecord[];
     }
@@ -632,7 +669,9 @@ export function getUsersBySegment(segment: UserSegment = 'all'): UserRecord[] {
       return db.prepare(`
         SELECT DISTINCT u.* FROM users u
         JOIN orders o ON (o.user_id = u.id OR o.telegram_id = u.telegram_id)
-        WHERE u.is_blocked = 0 AND u.telegram_id NOT LIKE 'PROVIDER_%' AND o.status = 'completed'
+        WHERE ${baseFilter.replace(/telegram_id/g, 'u.telegram_id').replace(/is_blocked/g, 'u.is_blocked')}
+          AND o.status = 'completed'
+          AND o.id NOT LIKE 'SB-%'
         ORDER BY u.id DESC
       `).all() as unknown as UserRecord[];
     }
@@ -640,8 +679,8 @@ export function getUsersBySegment(segment: UserSegment = 'all'): UserRecord[] {
     if (segment === 'vip') {
       return db.prepare(`
         SELECT u.* FROM users u
-        LEFT JOIN orders o ON (o.user_id = u.id OR o.telegram_id = u.telegram_id) AND o.status = 'completed'
-        WHERE u.is_blocked = 0 AND u.telegram_id NOT LIKE 'PROVIDER_%'
+        LEFT JOIN orders o ON (o.user_id = u.id OR o.telegram_id = u.telegram_id) AND o.status = 'completed' AND o.id NOT LIKE 'SB-%'
+        WHERE ${baseFilter.replace(/telegram_id/g, 'u.telegram_id').replace(/is_blocked/g, 'u.is_blocked')}
         GROUP BY u.id
         HAVING u.balance >= 10 OR SUM(COALESCE(o.price_azn, 0)) >= 50
         ORDER BY u.id DESC
@@ -651,18 +690,19 @@ export function getUsersBySegment(segment: UserSegment = 'all'): UserRecord[] {
     if (segment === 'inactive_7d') {
       return db.prepare(`
         SELECT u.* FROM users u
-        WHERE u.is_blocked = 0 AND u.telegram_id NOT LIKE 'PROVIDER_%'
+        WHERE ${baseFilter.replace(/telegram_id/g, 'u.telegram_id').replace(/is_blocked/g, 'u.is_blocked')}
           AND u.created_at <= datetime('now', '-7 days')
           AND NOT EXISTS (
             SELECT 1 FROM orders o 
             WHERE (o.user_id = u.id OR o.telegram_id = u.telegram_id) 
               AND o.created_at >= datetime('now', '-7 days')
+              AND o.id NOT LIKE 'SB-%'
           )
         ORDER BY u.id DESC
       `).all() as unknown as UserRecord[];
     }
 
-    return db.prepare(`SELECT * FROM users WHERE is_blocked = 0 AND telegram_id NOT LIKE 'PROVIDER_%' ORDER BY id DESC`).all() as unknown as UserRecord[];
+    return db.prepare(`SELECT * FROM users WHERE ${baseFilter} ORDER BY id DESC`).all() as unknown as UserRecord[];
   } catch (err: any) {
     console.error(`getUsersBySegment [${segment}] xətası:`, err.message);
     return getAllUsers();
@@ -920,7 +960,11 @@ export function setUserRole(telegramId: string | number, isAdmin: number): boole
   return res.changes > 0;
 }
 
-export function getAllUsersWithStats(): any[] {
+export function getAllUsersWithStats(includeSandbox = false): any[] {
+  const sandboxFilter = includeSandbox
+    ? "WHERE u.telegram_id NOT LIKE 'PROVIDER_%'"
+    : "WHERE u.telegram_id NOT LIKE 'PROVIDER_%' AND u.telegram_id NOT LIKE 'SANDBOX_%' AND u.telegram_id NOT IN ('999000111', '999900111')";
+
   const stmt = db.prepare(`
     SELECT 
       u.*,
@@ -929,8 +973,9 @@ export function getAllUsersWithStats(): any[] {
       CASE WHEN b.ip IS NOT NULL THEN 1 ELSE 0 END as is_ip_banned,
       b.reason as ip_ban_reason
     FROM users u
-    LEFT JOIN orders o ON u.telegram_id = o.telegram_id
+    LEFT JOIN orders o ON u.telegram_id = o.telegram_id AND o.id NOT LIKE 'SB-%'
     LEFT JOIN banned_ips b ON u.last_ip = b.ip
+    ${sandboxFilter}
     GROUP BY u.id
     ORDER BY u.id DESC
   `);

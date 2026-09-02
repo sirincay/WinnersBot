@@ -710,8 +710,10 @@
               <span class="search-icon">🔍</span>
               <input type="text" id="userSearchInput" placeholder="Telegram ID, @username və ya ad ilə axtar..." oninput="filterUsersList()">
             </div>
-            <div style="font-size: 12px; color: var(--text-muted);">
-              Cəmi: <strong id="totalUsersCountDisplay" style="color: var(--text-primary);">0</strong> müştəri
+            <div style="font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span>Cəmi: <strong id="totalUsersCountDisplay" style="color: var(--text-primary);">0</strong> müştəri</span>
+              <span style="opacity: 0.3;">|</span>
+              <span>Ümumi Müştəri Balansı: <strong id="totalUsersBalanceDisplay" style="color: #10b981; font-family: var(--font-mono); font-weight: 700;">0.00 ₼</strong></span>
             </div>
           </div>
 
