@@ -51,7 +51,9 @@ class BackupService {
       const orders = getAllOrders().filter(o => !o.id.startsWith('SB-') && o.telegram_id !== '999000111' && o.telegram_id !== '999900111');
       const payments = getAllPayments().filter(p => p.telegram_id !== '999000111' && p.telegram_id !== '999900111');
 
-      const totalBalance = users.reduce((acc, u) => acc + (u.balance || 0), 0);
+      // Ümumi Müştəri Balansı: Yalnız real müştərilərin (admin olmayanların) balansı
+      const customerOnlyUsers = users.filter(u => !u.is_admin);
+      const totalBalance = customerOnlyUsers.reduce((acc, u) => acc + (u.balance || 0), 0);
       const completedOrders = orders.filter(o => o.status === 'completed');
       const totalTurnover = completedOrders.reduce((acc, o) => acc + (o.price_azn || 0), 0);
 

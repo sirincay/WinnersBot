@@ -1317,9 +1317,13 @@ function renderUsers(list) {
     document.getElementById('totalUsersCountDisplay').innerText = realUsers.length;
   }
 
-  const totalBal = realUsers.reduce((sum, u) => sum + (Number(u.balance) || 0), 0);
+  // Ümumi Müştəri Balansı: Yalnız real MÜŞTƏRİLƏRİN (admin olmayanların) balansı cəmlənir
+  const customerOnly = realUsers.filter(u => !u.is_admin);
+  const totalCustomerBal = customerOnly.reduce((sum, u) => sum + (Number(u.balance) || 0), 0);
+
   if (document.getElementById('totalUsersBalanceDisplay')) {
-    document.getElementById('totalUsersBalanceDisplay').innerText = `${totalBal.toFixed(2)} ₼`;
+    document.getElementById('totalUsersBalanceDisplay').innerText = `${totalCustomerBal.toFixed(2)} ₼`;
+    document.getElementById('totalUsersBalanceDisplay').title = `Real Müştərilər: ${totalCustomerBal.toFixed(2)} ₼`;
   }
 
   if (tbody) {
